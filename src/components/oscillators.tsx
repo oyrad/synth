@@ -6,7 +6,7 @@ import { DEFAULT_OSCILLATOR_DATA, type OscillatorData } from '../utils/default-o
 import { Slider } from './ui/slider.tsx';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from './ui/select.tsx';
 import { isOscillatorType } from '../utils/midi.ts';
-import { X } from 'lucide-react';
+import { PlusIcon, X } from 'lucide-react';
 
 interface OscillatorsProps {
   oscillators: Array<OscillatorData>;
@@ -16,26 +16,9 @@ interface OscillatorsProps {
 export function Oscillators({ oscillators, setOscillators }: OscillatorsProps) {
   return (
     <div className="flex flex-col gap-4 w-2/3">
-      <div className="flex justify-between items-center">
-        <h3 className="font-mono text-2xl">Oscillators</h3>
-        <Button
-          size="lg"
-          variant="outline"
-          onClick={() => {
-            setOscillators((prev) => [
-              ...prev,
-              {
-                ...DEFAULT_OSCILLATOR_DATA,
-                id: crypto.randomUUID()
-              }
-            ]);
-          }}
-        >
-          Add oscillator
-        </Button>
-      </div>
+      <h3 className="font-mono text-2xl">Oscillators</h3>
 
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {oscillators.map(oscillator =>
           <div
             className="flex flex-col gap-4 rounded-xl border border-gray-200 p-4"
@@ -129,6 +112,20 @@ export function Oscillators({ oscillators, setOscillators }: OscillatorsProps) {
             </div>
           </div>
         )}
+
+        <div
+          className="flex justify-center items-center rounded-xl border border-gray-200 cursor-pointer bg-gray-50 hover:bg-gray-100 transition-all min-h-[194px]"
+          onClick={() => {
+            setOscillators((prev) => [
+              ...prev,
+              {
+                ...DEFAULT_OSCILLATOR_DATA,
+                id: crypto.randomUUID()
+              }
+            ]);
+          }}>
+          <PlusIcon size={100} className="text-gray-400" />
+        </div>
       </div>
     </div>
   );
