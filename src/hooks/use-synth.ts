@@ -1,61 +1,70 @@
 import { useCallback, useRef } from 'react';
 import { midiNoteToFrequency } from '../utils/audio.ts';
 import { useAudioCtx } from './use-audio-context.ts';
+import type { OscillatorData } from '../utils/default-oscillator-data.ts';
 
 interface Voice {
-  oscillator: OscillatorNode;
-  gain: GainNode;
+  oscillators: Array<{ oscillator: OscillatorNode; gain: GainNode }>;
 }
 
 interface UseSynthParams {
-  waveform: OscillatorType;
-  isVelocitySensitive: boolean;
+  oscillators: Array<OscillatorData>;
 }
 
-export function useSynth({ waveform, isVelocitySensitive }: UseSynthParams) {
+export function useSynth({ oscillators }: UseSynthParams) {
   const voices = useRef<Record<number, Voice>>({});
 
   const { getAudioContext, getAnalyser } = useAudioCtx();
 
-  const audioContext = getAudioContext();
-  const analyser = getAnalyser();
-
   const noteOn = useCallback((note: number, velocity: number) => {
+    const audioContext = getAudioContext();
+    const analyser = getAnalyser();
+
     if (voices.current[note]) {
       return;
     }
 
-    const oscillator = audioContext.createOscillator();
-    oscillator.type = waveform;
-    oscillator.frequency.value = midiNoteToFrequency(note);
+    const noteVoices = oscillators.map((oscillatorData) => {
+      const osc = audioContext.createOscillator();
+      osc.type = oscillatorData.waveform;
+      osc.frequency.value = midiNoteToFrequency(note);
+      osc.detune.value = oscillatorData.detune;
 
-    const gainNode = audioContext.createGain();
-    gainNode.gain.value = isVelocitySensitive ? velocity / 127 * 0.33 : 0.33;
+      const gainNode = audioContext.createGain();
+      gainNode.gain.value = (oscillatorData.velocitySensitive
+        ? (velocity / 127) * (0.33 / Math.sqrt(oscillators.length))
+        : (0.33 / Math.sqrt(oscillators.length))) * (oscillatorData.volume / 100);
 
-    oscillator.connect(gainNode);
-    gainNode.connect(analyser);
+      osc.connect(gainNode);
+      gainNode.connect(analyser);
+      osc.start();
+
+      return { oscillator: osc, gain: gainNode };
+    });
+
     analyser.connect(audioContext.destination);
-    oscillator.start();
-
-    voices.current[note] = { oscillator, gain: gainNode };
-  }, [audioContext, analyser, waveform, isVelocitySensitive]);
+    voices.current[note] = { oscillators: noteVoices };
+  }, [getAnalyser, getAudioContext, oscillators]);
 
   const noteOff = useCallback((note: number) => {
+    const audioContext = getAudioContext();
+
     const voice = voices.current[note];
     if (!voice) {
       return;
     }
 
-    const { gain, oscillator } = voice;
     const now = audioContext.currentTime;
 
-    gain.gain.setValueAtTime(gain.gain.value, now);
-    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.1);
-    oscillator.stop(now + 0.1);
-    oscillator.addEventListener('ended', () => oscillator.disconnect());
+    voice.oscillators.forEach(({ oscillator, gain }) => {
+      gain.gain.setValueAtTime(gain.gain.value, now);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.1);
+      oscillator.stop(now + 0.1);
+      oscillator.addEventListener('ended', () => oscillator.disconnect());
+    });
 
     delete voices.current[note];
-  }, [audioContext]);
+  }, [getAudioContext]);
 
   return { noteOn, noteOff };
 }

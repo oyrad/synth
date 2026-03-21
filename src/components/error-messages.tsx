@@ -21,7 +21,7 @@ export function ErrorMessages({ isGranted, midiInput, isAudioReady }: ErrorMessa
       <Alert hidden={!!midiInput} variant="destructive" className="w-96 bg-red-50 border-red-300">
         <TriangleAlert />
         <AlertTitle>
-          No MIDI input found
+          No MIDI inputs found
         </AlertTitle>
         <AlertDescription>
           Connect a MIDI device and refresh the page.

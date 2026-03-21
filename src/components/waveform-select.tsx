@@ -11,7 +11,7 @@ export function WaveformSelect({ waveform, onSelect }: WaveformSelectProps) {
       value={waveform}
       onValueChange={onSelect}
     >
-      <SelectTrigger className="w-[180px]">
+      <SelectTrigger className="w-full">
         <SelectValue placeholder="Select waveform" />
       </SelectTrigger>
       <SelectContent>
@@ -22,5 +22,6 @@ export function WaveformSelect({ waveform, onSelect }: WaveformSelectProps) {
           <SelectItem value="sawtooth">Sawtooth</SelectItem>
         </SelectGroup>
       </SelectContent>
-    </Select>);
+    </Select>
+  );
 }
