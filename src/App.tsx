@@ -1,61 +1,38 @@
 import { useState } from 'react';
 import { useSynth } from './hooks/use-synth.ts';
 import { useMidi } from './hooks/use-midi.ts';
-import { isOscillatorType } from './utils/midi.ts';
+import { Button } from './components/ui/button.tsx';
+import { WaveformVisualizer } from './components/waveform-visualizer.tsx';
+import { useAudioCtx } from './hooks/use-audio-context.ts';
+import { ErrorMessages } from './components/error-messages.tsx';
+import { Oscillators } from './components/oscillators.tsx';
 
 export default function App() {
-  const [lastNote, setLastNote] = useState<number | null>(null);
-  const [lastVelocity, setLastVelocity] = useState<number | null>(null);
-  const [audioReady, setAudioReady] = useState(false);
-  const [waveForm, setWaveForm] = useState<OscillatorType>('sine');
+  const [waveform] = useState<OscillatorType>('sine');
+  const [isVelocitySensitive] = useState(true);
 
-  const { resume, noteOn, noteOff } = useSynth({ waveForm });
+  const { isAudioReady, getAudioContext } = useAudioCtx();
 
-  const startAudio = () => {
-    resume().then(() => setAudioReady(true));
-  };
-
-  const { midiInput } = useMidi({
-    onNoteOn: (note: number, velocity: number) => {
-      setLastNote(note);
-      setLastVelocity(velocity);
-      noteOn(note, velocity);
-    },
-    onNoteOff: noteOff
-  });
+  const { noteOn, noteOff } = useSynth({ waveform, isVelocitySensitive });
+  const { midiInput, isGranted } = useMidi({ onNoteOn: noteOn, onNoteOff: noteOff });
 
   return (
-    <div style={{
-      fontSize: '4rem',
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      height: '100vh',
-      gap: '1rem'
-    }}>
-      <p className="text-red-500 font-bold">{midiInput ? midiInput?.name : 'No MIDI input found'}</p>
-      <select
-        value={waveForm}
-        onChange={(e) => {
-          if (isOscillatorType(e.target.value)) {
-            setWaveForm(e.target.value);
-          }
-        }}
-      >
-        <option value="sine">sine</option>
-        <option value="square">square</option>
-        <option value="triangle">triangle</option>
-        <option value="sawtooth">sawtooth</option>
-      </select>
+    <main className="flex flex-col items-center gap-4 py-8">
+      <ErrorMessages isAudioReady={isAudioReady} midiInput={midiInput} isGranted={isGranted} />
 
-      {!audioReady && (
-        <button onClick={startAudio} style={{ fontSize: '1rem', padding: '1rem' }}>
+      {!isAudioReady && (
+        <Button
+          onClick={() => {
+            void getAudioContext().resume();
+          }}
+        >
           Start Audio
-        </button>
+        </Button>
       )}
 
-      <p>{audioReady && <>{lastNote} / {lastVelocity}</>}</p>
-    </div>
+      <Oscillators />
+
+      <WaveformVisualizer />
+    </main>
   );
 }

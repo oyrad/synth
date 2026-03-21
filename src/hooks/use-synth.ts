@@ -1,6 +1,6 @@
-// useSynth.ts
 import { useCallback, useRef } from 'react';
 import { midiNoteToFrequency } from '../utils/audio.ts';
+import { useAudioCtx } from './use-audio-context.ts';
 
 interface Voice {
   oscillator: OscillatorNode;
@@ -8,50 +8,46 @@ interface Voice {
 }
 
 interface UseSynthParams {
-  waveForm: OscillatorType;
+  waveform: OscillatorType;
+  isVelocitySensitive: boolean;
 }
 
-export function useSynth({ waveForm = 'sine' }: UseSynthParams) {
-  const ctx = useRef<AudioContext | null>(null);
+export function useSynth({ waveform, isVelocitySensitive }: UseSynthParams) {
   const voices = useRef<Record<number, Voice>>({});
 
-  const getCtx = (): AudioContext => {
-    if (!ctx.current) {
-      ctx.current = new AudioContext();
-    }
+  const { getAudioContext, getAnalyser } = useAudioCtx();
 
-    return ctx.current;
-  };
+  const audioContext = getAudioContext();
+  const analyser = getAnalyser();
 
   const noteOn = useCallback((note: number, velocity: number) => {
-    const context = getCtx();
     if (voices.current[note]) {
       return;
     }
 
-    const oscillator = context.createOscillator();
-    oscillator.type = waveForm;
+    const oscillator = audioContext.createOscillator();
+    oscillator.type = waveform;
     oscillator.frequency.value = midiNoteToFrequency(note);
 
-    const gainNode = context.createGain();
-    gainNode.gain.value = (velocity / 127) * 0.33;
+    const gainNode = audioContext.createGain();
+    gainNode.gain.value = isVelocitySensitive ? velocity / 127 * 0.33 : 0.33;
 
     oscillator.connect(gainNode);
-    gainNode.connect(context.destination);
+    gainNode.connect(analyser);
+    analyser.connect(audioContext.destination);
     oscillator.start();
 
     voices.current[note] = { oscillator, gain: gainNode };
-  }, [waveForm]);
+  }, [audioContext, analyser, waveform, isVelocitySensitive]);
 
   const noteOff = useCallback((note: number) => {
-    const context = getCtx();
     const voice = voices.current[note];
     if (!voice) {
       return;
     }
 
     const { gain, oscillator } = voice;
-    const now = context.currentTime;
+    const now = audioContext.currentTime;
 
     gain.gain.setValueAtTime(gain.gain.value, now);
     gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.1);
@@ -59,11 +55,7 @@ export function useSynth({ waveForm = 'sine' }: UseSynthParams) {
     oscillator.addEventListener('ended', () => oscillator.disconnect());
 
     delete voices.current[note];
-  }, []);
+  }, [audioContext]);
 
-  const resume = useCallback(() => {
-    return getCtx().resume();
-  }, []);
-
-  return { resume, noteOn, noteOff };
+  return { noteOn, noteOff };
 }

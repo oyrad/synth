@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { parseMidiMessage } from '../utils/midi.ts';
-import { useRequestMidiAccess } from '../use-request-midi-access.ts';
+import { useRequestMidiAccess } from './use-request-midi-access.ts';
 
 interface MidiHandlers {
   onNoteOn?: (note: number, velocity: number, channel: number) => void;
@@ -9,7 +9,7 @@ interface MidiHandlers {
 }
 
 export function useMidi(handlers: MidiHandlers) {
-  const { midiInput } = useRequestMidiAccess();
+  const { isGranted, midiInput } = useRequestMidiAccess();
 
   useEffect(() => {
     if (!midiInput) {
@@ -41,5 +41,5 @@ export function useMidi(handlers: MidiHandlers) {
     return () => midiInput.removeEventListener('midimessage', onMessage);
   }, [midiInput, handlers]);
 
-  return { midiInput };
+  return { isGranted, midiInput };
 }
