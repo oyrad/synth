@@ -15,8 +15,8 @@ import {
   SelectValue,
 } from './ui/select.tsx';
 import { type Dispatch, type SetStateAction, useState } from 'react';
-import type { OscillatorData } from '../utils/default-oscillator-data.ts';
 import { usePresetStore } from '../hooks/use-preset-store.ts';
+import type { OscillatorData } from './oscillators.tsx';
 
 interface LoadPresetDialogProps {
   setOscillators: Dispatch<SetStateAction<Array<OscillatorData>>>;

@@ -2,10 +2,6 @@ import { Button } from './ui/button.tsx';
 import { Checkbox } from './ui/checkbox.tsx';
 import { Label } from './ui/label.tsx';
 import type { Dispatch, SetStateAction } from 'react';
-import {
-  DEFAULT_OSCILLATOR_DATA,
-  type OscillatorData,
-} from '../utils/default-oscillator-data.ts';
 import { Slider } from './ui/slider.tsx';
 import {
   Select,
@@ -19,6 +15,16 @@ import { isOscillatorType } from '../utils/midi.ts';
 import { PlusIcon, X } from 'lucide-react';
 import { LoadPresetDialog } from './load-preset-dialog.tsx';
 import { SavePresetDialog } from './save-preset-dialog.tsx';
+import { DEFAULT_OSCILLATOR } from '../consts/default-oscillator.ts';
+
+export interface OscillatorData {
+  id: string;
+  waveform: OscillatorType;
+  velocitySensitive: boolean;
+  volume: number;
+  detune: number;
+  transpose: number;
+}
 
 interface OscillatorsProps {
   oscillators: Array<OscillatorData>;
@@ -153,6 +159,31 @@ export function Oscillators({ oscillators, setOscillators }: OscillatorsProps) {
                 }
               />
             </div>
+
+            <div className="flex flex-col gap-2">
+              <div className="flex justify-between items-center">
+                <Label>Transpose</Label>
+                <p className="text-sm">{oscillator.transpose}</p>
+              </div>
+              <Slider
+                defaultValue={[oscillator.transpose]}
+                min={-24}
+                max={24}
+                step={1}
+                onValueChange={(value) =>
+                  setOscillators((prev) =>
+                    prev.map((osc) =>
+                      osc.id === oscillator.id
+                        ? {
+                            ...osc,
+                            transpose: value[0],
+                          }
+                        : osc,
+                    ),
+                  )
+                }
+              />
+            </div>
           </div>
         ))}
 
@@ -162,7 +193,7 @@ export function Oscillators({ oscillators, setOscillators }: OscillatorsProps) {
             setOscillators((prev) => [
               ...prev,
               {
-                ...DEFAULT_OSCILLATOR_DATA,
+                ...DEFAULT_OSCILLATOR,
                 id: crypto.randomUUID(),
               },
             ]);

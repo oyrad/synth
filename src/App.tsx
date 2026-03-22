@@ -1,19 +1,16 @@
 import { useSynth } from './hooks/use-synth.ts';
 import { useMidi } from './hooks/use-midi.ts';
 import { WaveformVisualizer } from './components/waveform-visualizer.tsx';
-import { Oscillators } from './components/oscillators.tsx';
+import { type OscillatorData, Oscillators } from './components/oscillators.tsx';
 import { useEffect, useState } from 'react';
-import {
-  DEFAULT_OSCILLATOR_DATA,
-  type OscillatorData,
-} from './utils/default-oscillator-data.ts';
 import { StatusBar } from './components/status-bar.tsx';
 import { StartAudioDialog } from './components/start-audio-dialog.tsx';
+import { DEFAULT_OSCILLATOR } from './consts/default-oscillator.ts';
 
 export default function App() {
   const [oscillators, setOscillators] = useState<Array<OscillatorData>>([
     {
-      ...DEFAULT_OSCILLATOR_DATA,
+      ...DEFAULT_OSCILLATOR,
       id: crypto.randomUUID(),
     },
   ]);

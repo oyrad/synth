@@ -1,7 +1,7 @@
 import { useCallback, useRef } from 'react';
 import { midiNoteToFrequency } from '../utils/audio.ts';
 import { useAudioCtx } from './use-audio-context.ts';
-import type { OscillatorData } from '../utils/default-oscillator-data.ts';
+import type { OscillatorData } from '../components/oscillators.tsx';
 
 interface Voice {
   oscillators: Array<{
@@ -34,7 +34,7 @@ export function useSynth({ oscillators }: UseSynthParams) {
         const osc = audioContext.createOscillator();
         osc.type = oscillatorData.waveform;
         osc.frequency.value = midiNoteToFrequency(note);
-        osc.detune.value = oscillatorData.detune;
+        osc.detune.value = oscillatorData.detune + oscillatorData.transpose * 100;
 
         const gainNode = audioContext.createGain();
         gainNode.gain.value =

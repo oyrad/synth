@@ -8,8 +8,8 @@ import {
 import { Button } from './ui/button.tsx';
 import { Input } from './ui/input.tsx';
 import { useState } from 'react';
-import type { OscillatorData } from '../utils/default-oscillator-data.ts';
 import { usePresetStore } from '../hooks/use-preset-store.ts';
+import type { OscillatorData } from './oscillators.tsx';
 
 interface SavePresetDialogProps {
   data: {
