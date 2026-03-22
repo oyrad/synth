@@ -1,7 +1,7 @@
-import { useEffect, useRef } from 'react';
+import { memo, useEffect, useRef } from 'react';
 import { useAudioCtx } from '../hooks/use-audio-context.ts';
 
-export function WaveformVisualizer() {
+function WaveformVisualizerComponent() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const { getAnalyser } = useAudioCtx();
@@ -67,3 +67,5 @@ export function WaveformVisualizer() {
 
   return <canvas ref={canvasRef} className="w-full h-48" />;
 }
+
+export const WaveformVisualizer = memo(WaveformVisualizerComponent);

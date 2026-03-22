@@ -1,12 +1,13 @@
 import { cn } from '../utils/cn.ts';
 import { useAudioCtx } from '../hooks/use-audio-context.ts';
+import { memo } from 'react';
 
 interface StatusBarProps {
   isGranted: boolean;
   midiInput: MIDIInput | null | undefined;
 }
 
-export function StatusBar({ isGranted, midiInput }: StatusBarProps) {
+export function StatusBarComponent({ isGranted, midiInput }: StatusBarProps) {
   const { isAudioReady } = useAudioCtx();
 
   return (
@@ -28,3 +29,5 @@ export function StatusBar({ isGranted, midiInput }: StatusBarProps) {
     </div>
   );
 }
+
+export const StatusBar = memo(StatusBarComponent);

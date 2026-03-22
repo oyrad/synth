@@ -13,7 +13,6 @@ export default function App() {
     id: crypto.randomUUID()
   }]);
 
-
   const { noteOn, noteOff, updateVoices } = useSynth({ oscillators });
   const { midiInput, isGranted } = useMidi({ onNoteOn: noteOn, onNoteOff: noteOff });
 
