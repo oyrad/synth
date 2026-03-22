@@ -1,8 +1,8 @@
-import type { AdsrEnvelope } from '../components/adsr.tsx';
+import type { AdsrEnvelope } from '../components/adsr/adsr.tsx';
 
 export const DEFAULT_ADSR: AdsrEnvelope = {
-  attack: 0.1,
-  decay: 0.1,
+  attack: 0.5,
+  decay: 0.5,
   sustain: 0.8,
-  release: 0.3,
+  release: 0.5,
 };

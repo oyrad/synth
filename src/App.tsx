@@ -1,11 +1,14 @@
 import { useSynth } from './hooks/use-synth.ts';
 import { useMidi } from './hooks/use-midi.ts';
-import { type OscillatorData, Oscillators } from './components/oscillators.tsx';
+import {
+  type OscillatorData,
+  Oscillators,
+} from './components/oscillators/oscillators.tsx';
 import { useEffect, useState } from 'react';
 import { StatusBar } from './components/status-bar.tsx';
 import { StartAudioDialog } from './components/start-audio-dialog.tsx';
 import { DEFAULT_OSCILLATOR } from './consts/default-oscillator.ts';
-import { Adsr, type AdsrEnvelope } from './components/adsr.tsx';
+import { Adsr, type AdsrEnvelope } from './components/adsr/adsr.tsx';
 import { DEFAULT_ADSR } from './consts/default-adsr.ts';
 import { WaveformVisualizer } from './components/waveform-visualizer.tsx';
 import { LoadPresetDialog } from './components/load-preset-dialog.tsx';
@@ -47,12 +50,7 @@ export default function App() {
         </div>
 
         <Adsr adsr={adsr} setAdsr={setAdsr} />
-
-        <Oscillators
-          oscillators={oscillators}
-          setOscillators={setOscillators}
-          adsr={adsr}
-        />
+        <Oscillators oscillators={oscillators} setOscillators={setOscillators} />
       </div>
 
       <StatusBar midiInput={midiInput} isGranted={isGranted} />

@@ -1,8 +1,7 @@
-import { Button } from './ui/button.tsx';
-import { Checkbox } from './ui/checkbox.tsx';
-import { Label } from './ui/label.tsx';
+import { Button } from '../ui/button.tsx';
+import { Label } from '../ui/label.tsx';
 import type { Dispatch, SetStateAction } from 'react';
-import { Slider } from './ui/slider.tsx';
+import { Slider } from '../ui/slider.tsx';
 import {
   Select,
   SelectContent,
@@ -10,16 +9,16 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from './ui/select.tsx';
-import { isOscillatorType } from '../utils/midi.ts';
+} from '../ui/select.tsx';
+import { isOscillatorType } from '../../utils/midi.ts';
 import { PlusIcon, X } from 'lucide-react';
-import { DEFAULT_OSCILLATOR } from '../consts/default-oscillator.ts';
-import type { AdsrEnvelope } from './adsr.tsx';
+import { DEFAULT_OSCILLATOR } from '../../consts/default-oscillator.ts';
+import { Toggle } from '../ui/toggle.tsx';
 
 export interface OscillatorData {
   id: string;
   waveform: OscillatorType;
-  velocitySensitive: boolean;
+  isMute: boolean;
   volume: number;
   detune: number;
   transpose: number;
@@ -28,7 +27,6 @@ export interface OscillatorData {
 interface OscillatorsProps {
   oscillators: Array<OscillatorData>;
   setOscillators: Dispatch<SetStateAction<Array<OscillatorData>>>;
-  adsr: AdsrEnvelope;
 }
 
 export function Oscillators({ oscillators, setOscillators }: OscillatorsProps) {
@@ -70,6 +68,20 @@ export function Oscillators({ oscillators, setOscillators }: OscillatorsProps) {
                 </SelectContent>
               </Select>
 
+              <Toggle
+                variant="mute"
+                className="px-4"
+                onClick={() => {
+                  setOscillators((prev) =>
+                    prev.map((osc) =>
+                      osc.id === oscillator.id ? { ...osc, isMute: !osc.isMute } : osc,
+                    ),
+                  );
+                }}
+              >
+                Mute
+              </Toggle>
+
               <Button
                 variant="destructive"
                 size="icon"
@@ -81,28 +93,6 @@ export function Oscillators({ oscillators, setOscillators }: OscillatorsProps) {
               >
                 <X />
               </Button>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <Checkbox
-                id={`velocity-sensitive-${oscillator.id}`}
-                checked={oscillator.velocitySensitive}
-                onCheckedChange={(checked) =>
-                  setOscillators((prev) => {
-                    return prev.map((osc) =>
-                      osc.id === oscillator.id
-                        ? {
-                            ...osc,
-                            velocitySensitive: checked === true,
-                          }
-                        : osc,
-                    );
-                  })
-                }
-              />
-              <Label htmlFor={`velocity-sensitive-${oscillator.id}`}>
-                Velocity sensitive
-              </Label>
             </div>
 
             <div className="flex flex-col gap-2">
@@ -184,7 +174,7 @@ export function Oscillators({ oscillators, setOscillators }: OscillatorsProps) {
 
         <div
           hidden={oscillators.length >= 6}
-          className="flex justify-center items-center rounded-xl border border-gray-200 cursor-pointer bg-gray-50 hover:bg-gray-100 transition-all min-h-[242px]"
+          className="flex justify-center items-center rounded-xl border border-gray-200 cursor-pointer bg-gray-50 hover:bg-gray-100 transition-all min-h-[210px]"
           onClick={() => {
             setOscillators((prev) => [
               ...prev,

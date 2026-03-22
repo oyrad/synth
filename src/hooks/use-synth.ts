@@ -1,15 +1,15 @@
 import { useCallback, useRef } from 'react';
 import { midiNoteToFrequency } from '../utils/audio.ts';
 import { useAudioCtx } from './use-audio-context.ts';
-import type { OscillatorData } from '../components/oscillators.tsx';
-import type { AdsrEnvelope } from '../components/adsr.tsx';
+import type { OscillatorData } from '../components/oscillators/oscillators.tsx';
+import type { AdsrEnvelope } from '../components/adsr/adsr.tsx';
 
 interface Voice {
   masterGain: GainNode;
   oscillators: Array<{
     id: string;
-    oscillator: OscillatorNode;
-    gain: GainNode;
+    oscillator: OscillatorNode | null;
+    gain: GainNode | null;
     velocity: number;
   }>;
 }
@@ -49,6 +49,15 @@ export function useSynth({ oscillators, adsr }: UseSynthParams) {
       masterGain.gain.linearRampToValueAtTime(sustain, now + attack + decay);
 
       const noteVoices = oscillators.map((oscillatorData) => {
+        if (oscillatorData.isMute) {
+          return {
+            id: oscillatorData.id,
+            oscillator: null,
+            gain: null,
+            velocity,
+          };
+        }
+
         const osc = audioContext.createOscillator();
         osc.type = oscillatorData.waveform;
         osc.frequency.value = midiNoteToFrequency(note);
@@ -56,9 +65,8 @@ export function useSynth({ oscillators, adsr }: UseSynthParams) {
 
         const gainNode = audioContext.createGain();
         gainNode.gain.value =
-          (oscillatorData.velocitySensitive
-            ? (velocity / 127) * (0.33 / Math.sqrt(oscillators.length))
-            : 0.33 / Math.sqrt(oscillators.length)) *
+          (velocity / 127) *
+          (0.33 / Math.sqrt(oscillators.length)) *
           (oscillatorData.volume / 100);
 
         osc.connect(gainNode);
@@ -88,17 +96,16 @@ export function useSynth({ oscillators, adsr }: UseSynthParams) {
       const masterGain = voice.masterGain;
       const now = audioContext.currentTime;
 
-      masterGain.gain.setValueAtTime(masterGain.gain.value, now);
+      const release = Math.max(adsr.release, 0.01);
 
-      if (adsr.release > 0) {
-        masterGain.gain.exponentialRampToValueAtTime(0.0001, now + adsr.release);
-      } else {
-        masterGain.gain.setValueAtTime(0, now);
-      }
+      masterGain.gain.setValueAtTime(masterGain.gain.value, now);
+      masterGain.gain.exponentialRampToValueAtTime(0.0001, now + release);
 
       voice.oscillators.forEach(({ oscillator }) => {
-        oscillator.stop(now + adsr.release);
-        oscillator.addEventListener('ended', () => oscillator.disconnect());
+        if (oscillator) {
+          oscillator.stop(now + release);
+          oscillator.addEventListener('ended', () => oscillator.disconnect());
+        }
       });
 
       delete voices.current[note];
@@ -106,26 +113,44 @@ export function useSynth({ oscillators, adsr }: UseSynthParams) {
     [adsr.release, getAudioContext],
   );
 
-  const updateVoices = useCallback((updatedOscillators: Array<OscillatorData>) => {
-    Object.values(voices.current).forEach((voice) => {
-      voice.oscillators.forEach((voiceOsc) => {
-        const oscillatorData = updatedOscillators.find((o) => o.id === voiceOsc.id);
-        if (!oscillatorData) {
-          return;
-        }
+  const updateVoices = useCallback(
+    (updatedOscillators: Array<OscillatorData>) => {
+      const audioContext = getAudioContext();
+      const now = audioContext.currentTime;
 
-        voiceOsc.oscillator.type = oscillatorData.waveform;
-        voiceOsc.oscillator.detune.value =
-          oscillatorData.detune + oscillatorData.transpose * 100;
+      Object.values(voices.current).forEach((voice) => {
+        voice.oscillators.forEach((voiceOsc) => {
+          const oscillatorData = updatedOscillators.find((o) => o.id === voiceOsc.id);
+          if (!oscillatorData) {
+            return;
+          }
 
-        voiceOsc.gain.gain.value =
-          (oscillatorData.velocitySensitive
-            ? (voiceOsc.velocity / 127) * (0.33 / Math.sqrt(updatedOscillators.length))
-            : 0.33 / Math.sqrt(updatedOscillators.length)) *
-          (oscillatorData.volume / 100);
+          if (!voiceOsc.oscillator || !voiceOsc.gain) {
+            return;
+          }
+
+          if (oscillatorData.isMute) {
+            voiceOsc.gain.gain.setValueAtTime(voiceOsc.gain.gain.value, now);
+            voiceOsc.gain.gain.linearRampToValueAtTime(0, now + 0.005);
+            return;
+          }
+
+          const targetGain =
+            (voiceOsc.velocity / 127) *
+            (0.33 / Math.sqrt(updatedOscillators.length)) *
+            (oscillatorData.volume / 100);
+
+          voiceOsc.oscillator.type = oscillatorData.waveform;
+          voiceOsc.oscillator.detune.value =
+            oscillatorData.detune + oscillatorData.transpose * 100;
+
+          voiceOsc.gain.gain.setValueAtTime(voiceOsc.gain.gain.value, now);
+          voiceOsc.gain.gain.linearRampToValueAtTime(targetGain, now + 0.005);
+        });
       });
-    });
-  }, []);
+    },
+    [getAudioContext],
+  );
 
   return { noteOn, noteOff, updateVoices };
 }
