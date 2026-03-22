@@ -13,6 +13,7 @@ import { DEFAULT_ADSR } from './consts/default-adsr.ts';
 import { WaveformVisualizer } from './components/waveform-visualizer.tsx';
 import { LoadPresetDialog } from './components/load-preset-dialog.tsx';
 import { SavePresetDialog } from './components/save-preset-dialog.tsx';
+import { useSettingsStore } from './hooks/use-settings-store.ts';
 
 export default function App() {
   const [oscillators, setOscillators] = useState<Array<OscillatorData>>([
@@ -30,13 +31,15 @@ export default function App() {
     onNoteOff: noteOff,
   });
 
+  const showVisualizer = useSettingsStore((s) => s.showVisualizer);
+
   useEffect(() => {
     updateVoices(oscillators);
   }, [oscillators, updateVoices]);
 
   return (
     <main className="flex flex-col items-center gap-4 pt-8 pb-16">
-      <WaveformVisualizer />
+      {showVisualizer && <WaveformVisualizer />}
 
       <div className="px-8 md:px-44 xl:px-96 w-full flex flex-col gap-8">
         <div className="flex gap-1">
@@ -49,8 +52,8 @@ export default function App() {
           <SavePresetDialog data={{ oscillators, adsr }} />
         </div>
 
-        <Adsr adsr={adsr} setAdsr={setAdsr} />
         <Oscillators oscillators={oscillators} setOscillators={setOscillators} />
+        <Adsr adsr={adsr} setAdsr={setAdsr} />
       </div>
 
       <StatusBar midiInput={midiInput} isGranted={isGranted} />

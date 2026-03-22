@@ -1,6 +1,7 @@
 import { cn } from '../utils/cn.ts';
 import { useAudioCtx } from '../hooks/use-audio-context.ts';
 import { memo } from 'react';
+import { SettingsDialog } from './settings-dialog.tsx';
 
 interface StatusBarProps {
   isGranted: boolean;
@@ -40,6 +41,8 @@ export function StatusBarComponent({ isGranted, midiInput }: StatusBarProps) {
           {midiInput ? `Connected device: ${midiInput?.name}` : 'No MIDI input'}
         </p>
       </div>
+
+      <SettingsDialog />
     </div>
   );
 }
