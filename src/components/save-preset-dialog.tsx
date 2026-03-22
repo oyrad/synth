@@ -9,6 +9,7 @@ import { Button } from './ui/button.tsx';
 import { Input } from './ui/input.tsx';
 import { useState } from 'react';
 import { type Preset, usePresetStore } from '../hooks/use-preset-store.ts';
+import { Save } from 'lucide-react';
 
 interface SavePresetDialogProps {
   data: Preset['data'];
@@ -23,7 +24,7 @@ export function SavePresetDialog({ data }: SavePresetDialogProps) {
   return (
     <Dialog open={isOpen} onOpenChange={(open) => setIsOpen(open)}>
       <DialogTrigger asChild>
-        <Button className="bg-emerald-600 hover:bg-emerald-700">Save preset</Button>
+        <Save className="cursor-pointer" />
       </DialogTrigger>
       <DialogContent>
         <DialogHeader className="gap-3">

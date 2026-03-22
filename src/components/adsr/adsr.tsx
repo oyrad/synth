@@ -1,7 +1,7 @@
 import { Slider } from '../ui/slider.tsx';
 import { Label } from '../ui/label.tsx';
-import type { Dispatch, SetStateAction } from 'react';
 import { AdsrVisualizer } from './adsr-visualizer.tsx';
+import { useSynthStore } from '../../hooks/use-synth-store.ts';
 
 export interface AdsrEnvelope {
   attack: number;
@@ -10,12 +10,10 @@ export interface AdsrEnvelope {
   release: number;
 }
 
-interface AdsrProps {
-  adsr: AdsrEnvelope;
-  setAdsr: Dispatch<SetStateAction<AdsrEnvelope>>;
-}
+export function Adsr() {
+  const adsr = useSynthStore((s) => s.adsr);
+  const updateAdsr = useSynthStore((s) => s.updateAdsr);
 
-export function Adsr({ adsr, setAdsr }: AdsrProps) {
   return (
     <div className="flex flex-col gap-4">
       <p className="font-mono text-3xl">ADSR Envelope</p>
@@ -34,9 +32,7 @@ export function Adsr({ adsr, setAdsr }: AdsrProps) {
               max={1}
               step={0.01}
               value={[adsr.attack]}
-              onValueChange={(value) =>
-                setAdsr((prev) => ({ ...prev, attack: value[0] }))
-              }
+              onValueChange={(value) => updateAdsr({ attack: value[0] })}
             />
           </div>
           <div className="flex flex-col gap-2">
@@ -49,7 +45,7 @@ export function Adsr({ adsr, setAdsr }: AdsrProps) {
               max={1}
               step={0.01}
               value={[adsr.decay]}
-              onValueChange={(value) => setAdsr((prev) => ({ ...prev, decay: value[0] }))}
+              onValueChange={(value) => updateAdsr({ decay: value[0] })}
             />
           </div>
           <div className="flex flex-col gap-2">
@@ -62,9 +58,7 @@ export function Adsr({ adsr, setAdsr }: AdsrProps) {
               max={1}
               step={0.01}
               value={[adsr.sustain]}
-              onValueChange={(value) =>
-                setAdsr((prev) => ({ ...prev, sustain: value[0] }))
-              }
+              onValueChange={(value) => updateAdsr({ sustain: value[0] })}
             />
           </div>
           <div className="flex flex-col gap-2">
@@ -77,9 +71,7 @@ export function Adsr({ adsr, setAdsr }: AdsrProps) {
               max={1}
               step={0.01}
               value={[adsr.release]}
-              onValueChange={(value) =>
-                setAdsr((prev) => ({ ...prev, release: value[0] }))
-              }
+              onValueChange={(value) => updateAdsr({ release: value[0] })}
             />
           </div>
         </div>

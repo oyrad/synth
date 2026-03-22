@@ -2,6 +2,20 @@ import { cn } from '../utils/cn.ts';
 import { useAudioCtx } from '../hooks/use-audio-context.ts';
 import { memo } from 'react';
 import { SettingsDialog } from './settings-dialog.tsx';
+import { SavePresetDialog } from './save-preset-dialog.tsx';
+import { useSynthStore } from '../hooks/use-synth-store.ts';
+import { LoadPresetDialog } from './load-preset-dialog.tsx';
+
+function StatusBarIndicator({ text, isActive }: { text: string; isActive: boolean }) {
+  return (
+    <div className="flex items-center gap-2">
+      <div
+        className={cn(`rounded-full bg-red-500 w-3 h-3 ${isActive && 'bg-emerald-500'}`)}
+      />
+      <p className="text-sm">{text}</p>
+    </div>
+  );
+}
 
 interface StatusBarProps {
   isGranted: boolean;
@@ -11,38 +25,27 @@ interface StatusBarProps {
 export function StatusBarComponent({ isGranted, midiInput }: StatusBarProps) {
   const { isAudioReady } = useAudioCtx();
 
+  const { oscillators, adsr, loadPreset } = useSynthStore();
+
   return (
     <div className="fixed bottom-0 left-0 w-full bg-black text-white py-3 px-6 flex gap-6">
-      <div className="flex items-center gap-2">
-        <div
-          className={cn(
-            `rounded-full bg-red-500 w-3 h-3 ${isAudioReady && 'bg-emerald-500'}`,
-          )}
-        />
-        <p className="text-sm">Audio started</p>
-      </div>
+      <StatusBarIndicator text="Audio started" isActive={isAudioReady} />
+      <StatusBarIndicator text="MIDI Access grante" isActive={isGranted} />
+      <StatusBarIndicator
+        text={midiInput ? `Connected device: ${midiInput?.name}` : 'No MIDI input'}
+        isActive={!!midiInput}
+      />
 
-      <div className="flex items-center gap-2">
-        <div
-          className={cn(
-            `rounded-full bg-red-500 w-3 h-3 ${isGranted && 'bg-emerald-500'}`,
-          )}
+      <div className="ml-auto flex items-center gap-6">
+        <LoadPresetDialog onLoad={loadPreset} />
+        <SavePresetDialog
+          data={{
+            oscillators,
+            adsr,
+          }}
         />
-        <p className="text-sm">MIDI Access granted</p>
+        <SettingsDialog />
       </div>
-
-      <div className="flex items-center gap-2">
-        <div
-          className={cn(
-            `rounded-full bg-red-500 w-3 h-3 ${!!midiInput && 'bg-emerald-500'}`,
-          )}
-        />
-        <p className="text-sm">
-          {midiInput ? `Connected device: ${midiInput?.name}` : 'No MIDI input'}
-        </p>
-      </div>
-
-      <SettingsDialog />
     </div>
   );
 }

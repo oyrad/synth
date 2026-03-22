@@ -16,8 +16,8 @@ export function SettingsDialog() {
 
   return (
     <Dialog>
-      <DialogTrigger className="ml-auto cursor-pointer">
-        <Settings size={20} />
+      <DialogTrigger className="cursor-pointer">
+        <Settings />
       </DialogTrigger>
       <DialogContent showCloseButton={true}>
         <DialogHeader>

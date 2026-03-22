@@ -1,6 +1,5 @@
 import { Button } from '../ui/button.tsx';
 import { Label } from '../ui/label.tsx';
-import type { Dispatch, SetStateAction } from 'react';
 import { Slider } from '../ui/slider.tsx';
 import {
   Select,
@@ -12,8 +11,8 @@ import {
 } from '../ui/select.tsx';
 import { isOscillatorType } from '../../utils/midi.ts';
 import { PlusIcon, X } from 'lucide-react';
-import { DEFAULT_OSCILLATOR } from '../../consts/default-oscillator.ts';
 import { Toggle } from '../ui/toggle.tsx';
+import { useSynthStore } from '../../hooks/use-synth-store.ts';
 
 export interface OscillatorData {
   id: string;
@@ -24,12 +23,12 @@ export interface OscillatorData {
   transpose: number;
 }
 
-interface OscillatorsProps {
-  oscillators: Array<OscillatorData>;
-  setOscillators: Dispatch<SetStateAction<Array<OscillatorData>>>;
-}
+export function Oscillators() {
+  const oscillators = useSynthStore((s) => s.oscillators);
+  const updateOscillator = useSynthStore((s) => s.updateOscillator);
+  const removeOscillator = useSynthStore((s) => s.removeOscillator);
+  const addOscillator = useSynthStore((s) => s.addOscillator);
 
-export function Oscillators({ oscillators, setOscillators }: OscillatorsProps) {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex justify-between items-center">
@@ -47,11 +46,7 @@ export function Oscillators({ oscillators, setOscillators }: OscillatorsProps) {
                 value={oscillator.waveform}
                 onValueChange={(value) => {
                   if (isOscillatorType(value)) {
-                    setOscillators((prev) =>
-                      prev.map((osc) =>
-                        osc.id === oscillator.id ? { ...osc, waveform: value } : osc,
-                      ),
-                    );
+                    updateOscillator(oscillator.id, { waveform: value });
                   }
                 }}
               >
@@ -72,11 +67,7 @@ export function Oscillators({ oscillators, setOscillators }: OscillatorsProps) {
                 variant="mute"
                 className="px-4"
                 onClick={() => {
-                  setOscillators((prev) =>
-                    prev.map((osc) =>
-                      osc.id === oscillator.id ? { ...osc, isMute: !osc.isMute } : osc,
-                    ),
-                  );
+                  updateOscillator(oscillator.id, { isMute: !oscillator.isMute });
                 }}
               >
                 Mute
@@ -86,9 +77,7 @@ export function Oscillators({ oscillators, setOscillators }: OscillatorsProps) {
                 variant="destructive"
                 size="icon"
                 onClick={() => {
-                  setOscillators((prev) =>
-                    prev.filter((osc) => osc.id !== oscillator.id),
-                  );
+                  removeOscillator(oscillator.id);
                 }}
               >
                 <X />
@@ -106,16 +95,7 @@ export function Oscillators({ oscillators, setOscillators }: OscillatorsProps) {
                 max={100}
                 step={1}
                 onValueChange={(value) =>
-                  setOscillators((prev) =>
-                    prev.map((osc) =>
-                      osc.id === oscillator.id
-                        ? {
-                            ...osc,
-                            volume: value[0],
-                          }
-                        : osc,
-                    ),
-                  )
+                  updateOscillator(oscillator.id, { volume: value[0] })
                 }
               />
             </div>
@@ -131,16 +111,7 @@ export function Oscillators({ oscillators, setOscillators }: OscillatorsProps) {
                 max={100}
                 step={1}
                 onValueChange={(value) =>
-                  setOscillators((prev) =>
-                    prev.map((osc) =>
-                      osc.id === oscillator.id
-                        ? {
-                            ...osc,
-                            detune: value[0],
-                          }
-                        : osc,
-                    ),
-                  )
+                  updateOscillator(oscillator.id, { detune: value[0] })
                 }
               />
             </div>
@@ -156,16 +127,7 @@ export function Oscillators({ oscillators, setOscillators }: OscillatorsProps) {
                 max={24}
                 step={1}
                 onValueChange={(value) =>
-                  setOscillators((prev) =>
-                    prev.map((osc) =>
-                      osc.id === oscillator.id
-                        ? {
-                            ...osc,
-                            transpose: value[0],
-                          }
-                        : osc,
-                    ),
-                  )
+                  updateOscillator(oscillator.id, { transpose: value[0] })
                 }
               />
             </div>
@@ -176,13 +138,7 @@ export function Oscillators({ oscillators, setOscillators }: OscillatorsProps) {
           hidden={oscillators.length >= 6}
           className="flex justify-center items-center rounded-xl border border-gray-200 cursor-pointer bg-gray-50 hover:bg-gray-100 transition-all min-h-[210px]"
           onClick={() => {
-            setOscillators((prev) => [
-              ...prev,
-              {
-                ...DEFAULT_OSCILLATOR,
-                id: crypto.randomUUID(),
-              },
-            ]);
+            addOscillator();
           }}
         >
           <PlusIcon size={100} className="text-gray-400" />

@@ -16,6 +16,7 @@ import {
 } from './ui/select.tsx';
 import { useState } from 'react';
 import { type Preset, usePresetStore } from '../hooks/use-preset-store.ts';
+import { SlidersHorizontal } from 'lucide-react';
 
 interface LoadPresetDialogProps {
   onLoad: (data: Preset) => void;
@@ -30,9 +31,7 @@ export function LoadPresetDialog({ onLoad }: LoadPresetDialogProps) {
   return (
     <Dialog open={isOpen} onOpenChange={(open) => setIsOpen(open)}>
       <DialogTrigger asChild>
-        <Button className="bg-slate-600 hover:bg-slate-700" disabled={!presets.length}>
-          Load preset
-        </Button>
+        <SlidersHorizontal className="cursor-pointer" />
       </DialogTrigger>
       <DialogContent>
         <DialogHeader className="gap-3">

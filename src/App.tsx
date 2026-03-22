@@ -1,28 +1,16 @@
 import { useSynth } from './hooks/use-synth.ts';
 import { useMidi } from './hooks/use-midi.ts';
-import {
-  type OscillatorData,
-  Oscillators,
-} from './components/oscillators/oscillators.tsx';
-import { useEffect, useState } from 'react';
+import { Oscillators } from './components/oscillators/oscillators.tsx';
+import { useEffect } from 'react';
 import { StatusBar } from './components/status-bar.tsx';
 import { StartAudioDialog } from './components/start-audio-dialog.tsx';
-import { DEFAULT_OSCILLATOR } from './consts/default-oscillator.ts';
-import { Adsr, type AdsrEnvelope } from './components/adsr/adsr.tsx';
-import { DEFAULT_ADSR } from './consts/default-adsr.ts';
+import { Adsr } from './components/adsr/adsr.tsx';
 import { WaveformVisualizer } from './components/waveform-visualizer.tsx';
-import { LoadPresetDialog } from './components/load-preset-dialog.tsx';
-import { SavePresetDialog } from './components/save-preset-dialog.tsx';
 import { useSettingsStore } from './hooks/use-settings-store.ts';
+import { useSynthStore } from './hooks/use-synth-store.ts';
 
 export default function App() {
-  const [oscillators, setOscillators] = useState<Array<OscillatorData>>([
-    {
-      ...DEFAULT_OSCILLATOR,
-      id: crypto.randomUUID(),
-    },
-  ]);
-  const [adsr, setAdsr] = useState<AdsrEnvelope>(DEFAULT_ADSR);
+  const { oscillators, adsr } = useSynthStore();
 
   const { noteOn, noteOff, updateVoices } = useSynth({ adsr, oscillators });
 
@@ -42,18 +30,8 @@ export default function App() {
       {showVisualizer && <WaveformVisualizer />}
 
       <div className="px-8 md:px-44 xl:px-96 w-full flex flex-col gap-8">
-        <div className="flex gap-1">
-          <LoadPresetDialog
-            onLoad={(preset) => {
-              setOscillators(preset.data.oscillators);
-              setAdsr(preset.data.adsr);
-            }}
-          />
-          <SavePresetDialog data={{ oscillators, adsr }} />
-        </div>
-
-        <Oscillators oscillators={oscillators} setOscillators={setOscillators} />
-        <Adsr adsr={adsr} setAdsr={setAdsr} />
+        <Oscillators />
+        <Adsr />
       </div>
 
       <StatusBar midiInput={midiInput} isGranted={isGranted} />
