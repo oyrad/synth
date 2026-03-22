@@ -33,7 +33,7 @@ interface OscillatorsProps {
 
 export function Oscillators({ oscillators, setOscillators }: OscillatorsProps) {
   return (
-    <div className="flex flex-col gap-4 w-2/3">
+    <div className="flex flex-col gap-4">
       <div className="flex justify-between items-center">
         <p className="font-mono text-3xl">Oscillators</p>
 
@@ -43,7 +43,7 @@ export function Oscillators({ oscillators, setOscillators }: OscillatorsProps) {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {oscillators.map((oscillator) => (
           <div
             className="flex flex-col gap-4 rounded-xl border border-gray-200 p-4"
@@ -188,7 +188,8 @@ export function Oscillators({ oscillators, setOscillators }: OscillatorsProps) {
         ))}
 
         <div
-          className="flex justify-center items-center rounded-xl border border-gray-200 cursor-pointer bg-gray-50 hover:bg-gray-100 transition-all min-h-[194px]"
+          hidden={oscillators.length >= 6}
+          className="flex justify-center items-center rounded-xl border border-gray-200 cursor-pointer bg-gray-50 hover:bg-gray-100 transition-all min-h-[242px]"
           onClick={() => {
             setOscillators((prev) => [
               ...prev,

@@ -2,8 +2,10 @@ import { useCallback, useRef } from 'react';
 import { midiNoteToFrequency } from '../utils/audio.ts';
 import { useAudioCtx } from './use-audio-context.ts';
 import type { OscillatorData } from '../components/oscillators.tsx';
+import type { AdsrEnvelope } from '../components/adsr.tsx';
 
 interface Voice {
+  masterGain: GainNode;
   oscillators: Array<{
     id: string;
     oscillator: OscillatorNode;
@@ -14,9 +16,10 @@ interface Voice {
 
 interface UseSynthParams {
   oscillators: Array<OscillatorData>;
+  adsr: AdsrEnvelope;
 }
 
-export function useSynth({ oscillators }: UseSynthParams) {
+export function useSynth({ oscillators, adsr }: UseSynthParams) {
   const voices = useRef<Record<number, Voice>>({});
 
   const { getAudioContext, getAnalyser } = useAudioCtx();
@@ -29,6 +32,21 @@ export function useSynth({ oscillators }: UseSynthParams) {
       if (voices.current[note]) {
         return;
       }
+
+      const { attack, decay, sustain } = adsr;
+
+      const masterGain = audioContext.createGain();
+      const now = audioContext.currentTime;
+
+      masterGain.gain.setValueAtTime(0, now);
+
+      if (attack > 0) {
+        masterGain.gain.linearRampToValueAtTime(1, now + attack);
+      } else {
+        masterGain.gain.setValueAtTime(1, now);
+      }
+
+      masterGain.gain.linearRampToValueAtTime(sustain, now + attack + decay);
 
       const noteVoices = oscillators.map((oscillatorData) => {
         const osc = audioContext.createOscillator();
@@ -44,16 +62,18 @@ export function useSynth({ oscillators }: UseSynthParams) {
           (oscillatorData.volume / 100);
 
         osc.connect(gainNode);
-        gainNode.connect(analyser);
+        gainNode.connect(masterGain);
         osc.start();
 
         return { id: oscillatorData.id, oscillator: osc, gain: gainNode, velocity };
       });
 
+      masterGain.connect(analyser);
+
       analyser.connect(audioContext.destination);
-      voices.current[note] = { oscillators: noteVoices };
+      voices.current[note] = { masterGain, oscillators: noteVoices };
     },
-    [getAnalyser, getAudioContext, oscillators],
+    [adsr, getAnalyser, getAudioContext, oscillators],
   );
 
   const noteOff = useCallback(
@@ -65,18 +85,20 @@ export function useSynth({ oscillators }: UseSynthParams) {
         return;
       }
 
+      const masterGain = voice.masterGain;
       const now = audioContext.currentTime;
 
-      voice.oscillators.forEach(({ oscillator, gain }) => {
-        gain.gain.setValueAtTime(gain.gain.value, now);
-        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.1);
-        oscillator.stop(now + 0.1);
+      masterGain.gain.setValueAtTime(masterGain.gain.value, now);
+      masterGain.gain.exponentialRampToValueAtTime(0.0001, now + adsr.release);
+
+      voice.oscillators.forEach(({ oscillator }) => {
+        oscillator.stop(now + adsr.release);
         oscillator.addEventListener('ended', () => oscillator.disconnect());
       });
 
       delete voices.current[note];
     },
-    [getAudioContext],
+    [adsr.release, getAudioContext],
   );
 
   const updateVoices = useCallback((updatedOscillators: Array<OscillatorData>) => {
@@ -88,7 +110,8 @@ export function useSynth({ oscillators }: UseSynthParams) {
         }
 
         voiceOsc.oscillator.type = oscillatorData.waveform;
-        voiceOsc.oscillator.detune.value = oscillatorData.detune;
+        voiceOsc.oscillator.detune.value =
+          oscillatorData.detune + oscillatorData.transpose * 100;
 
         voiceOsc.gain.gain.value =
           (oscillatorData.velocitySensitive

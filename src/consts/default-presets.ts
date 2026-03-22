@@ -2,22 +2,6 @@ import type { Preset } from '../hooks/use-preset-store.ts';
 
 export const DEFAULT_PRESETS: Array<Preset> = [
   {
-    id: 'default-init',
-    name: 'Init',
-    data: {
-      oscillators: [
-        {
-          id: 'init-osc-1',
-          waveform: 'sine',
-          volume: 100,
-          detune: 0,
-          transpose: 0,
-          velocitySensitive: true,
-        },
-      ],
-    },
-  },
-  {
     id: 'default-saw-lead',
     name: 'Saw lead',
     data: {
