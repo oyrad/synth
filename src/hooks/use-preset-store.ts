@@ -2,12 +2,14 @@ import { create } from 'zustand/react';
 import { persist } from 'zustand/middleware';
 import { DEFAULT_PRESETS } from '../consts/default-presets.ts';
 import type { OscillatorData } from '../components/oscillators.tsx';
+import type { AdsrEnvelope } from '../components/adsr.tsx';
 
 export interface Preset {
   id: string;
   name: string;
   data: {
     oscillators: Array<OscillatorData>;
+    adsr: AdsrEnvelope;
   };
 }
 

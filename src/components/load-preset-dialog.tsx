@@ -14,15 +14,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from './ui/select.tsx';
-import { type Dispatch, type SetStateAction, useState } from 'react';
-import { usePresetStore } from '../hooks/use-preset-store.ts';
-import type { OscillatorData } from './oscillators.tsx';
+import { useState } from 'react';
+import { type Preset, usePresetStore } from '../hooks/use-preset-store.ts';
 
 interface LoadPresetDialogProps {
-  setOscillators: Dispatch<SetStateAction<Array<OscillatorData>>>;
+  onLoad: (data: Preset) => void;
 }
 
-export function LoadPresetDialog({ setOscillators }: LoadPresetDialogProps) {
+export function LoadPresetDialog({ onLoad }: LoadPresetDialogProps) {
   const [selectedPresetId, setSelectedPresetId] = useState('');
   const [isOpen, setIsOpen] = useState(false);
 
@@ -63,7 +62,7 @@ export function LoadPresetDialog({ setOscillators }: LoadPresetDialogProps) {
                 const preset = presets.find((preset) => preset.id === selectedPresetId);
 
                 if (preset) {
-                  setOscillators(preset.data.oscillators);
+                  onLoad(preset);
                 }
               }
 

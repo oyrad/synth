@@ -13,9 +13,8 @@ import {
 } from './ui/select.tsx';
 import { isOscillatorType } from '../utils/midi.ts';
 import { PlusIcon, X } from 'lucide-react';
-import { LoadPresetDialog } from './load-preset-dialog.tsx';
-import { SavePresetDialog } from './save-preset-dialog.tsx';
 import { DEFAULT_OSCILLATOR } from '../consts/default-oscillator.ts';
+import type { AdsrEnvelope } from './adsr.tsx';
 
 export interface OscillatorData {
   id: string;
@@ -29,6 +28,7 @@ export interface OscillatorData {
 interface OscillatorsProps {
   oscillators: Array<OscillatorData>;
   setOscillators: Dispatch<SetStateAction<Array<OscillatorData>>>;
+  adsr: AdsrEnvelope;
 }
 
 export function Oscillators({ oscillators, setOscillators }: OscillatorsProps) {
@@ -36,11 +36,6 @@ export function Oscillators({ oscillators, setOscillators }: OscillatorsProps) {
     <div className="flex flex-col gap-4">
       <div className="flex justify-between items-center">
         <p className="font-mono text-3xl">Oscillators</p>
-
-        <div className="flex gap-1">
-          <LoadPresetDialog setOscillators={setOscillators} />
-          <SavePresetDialog data={{ oscillators }} />
-        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

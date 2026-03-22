@@ -15,6 +15,7 @@ export const DEFAULT_PRESETS: Array<Preset> = [
           velocitySensitive: true,
         },
       ],
+      adsr: { attack: 0.01, decay: 0.1, sustain: 0.8, release: 0.2 },
     },
   },
   {
@@ -47,6 +48,7 @@ export const DEFAULT_PRESETS: Array<Preset> = [
           velocitySensitive: true,
         },
       ],
+      adsr: { attack: 0.02, decay: 0.2, sustain: 0.7, release: 0.3 },
     },
   },
   {
@@ -79,6 +81,7 @@ export const DEFAULT_PRESETS: Array<Preset> = [
           velocitySensitive: false,
         },
       ],
+      adsr: { attack: 0.01, decay: 0.01, sustain: 1.0, release: 0.05 },
     },
   },
   {
@@ -103,6 +106,7 @@ export const DEFAULT_PRESETS: Array<Preset> = [
           velocitySensitive: true,
         },
       ],
+      adsr: { attack: 0.01, decay: 0.3, sustain: 0.5, release: 0.15 },
     },
   },
   {
@@ -135,6 +139,7 @@ export const DEFAULT_PRESETS: Array<Preset> = [
           velocitySensitive: false,
         },
       ],
+      adsr: { attack: 0.8, decay: 0.4, sustain: 0.7, release: 1.2 },
     },
   },
   {
@@ -167,6 +172,7 @@ export const DEFAULT_PRESETS: Array<Preset> = [
           velocitySensitive: true,
         },
       ],
+      adsr: { attack: 0.01, decay: 0.15, sustain: 0.9, release: 0.3 },
     },
   },
   {
@@ -191,6 +197,7 @@ export const DEFAULT_PRESETS: Array<Preset> = [
           velocitySensitive: false,
         },
       ],
+      adsr: { attack: 0.05, decay: 0.2, sustain: 0.6, release: 0.25 },
     },
   },
   {
@@ -215,6 +222,7 @@ export const DEFAULT_PRESETS: Array<Preset> = [
           velocitySensitive: true,
         },
       ],
+      adsr: { attack: 0.01, decay: 0.05, sustain: 1.0, release: 0.1 },
     },
   },
   {
@@ -247,6 +255,7 @@ export const DEFAULT_PRESETS: Array<Preset> = [
           velocitySensitive: true,
         },
       ],
+      adsr: { attack: 0.01, decay: 0.8, sustain: 0.0, release: 0.5 },
     },
   },
 ];

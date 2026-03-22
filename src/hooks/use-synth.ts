@@ -89,7 +89,12 @@ export function useSynth({ oscillators, adsr }: UseSynthParams) {
       const now = audioContext.currentTime;
 
       masterGain.gain.setValueAtTime(masterGain.gain.value, now);
-      masterGain.gain.exponentialRampToValueAtTime(0.0001, now + adsr.release);
+
+      if (adsr.release > 0) {
+        masterGain.gain.exponentialRampToValueAtTime(0.0001, now + adsr.release);
+      } else {
+        masterGain.gain.setValueAtTime(0, now);
+      }
 
       voice.oscillators.forEach(({ oscillator }) => {
         oscillator.stop(now + adsr.release);
