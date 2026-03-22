@@ -65,5 +65,5 @@ export function WaveformVisualizer() {
     return () => cancelAnimationFrame(frameId);
   }, [getAnalyser]);
 
-  return <canvas ref={canvasRef} className="w-full h-96" />;
+  return <canvas ref={canvasRef} className="w-full h-48" />;
 }

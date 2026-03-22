@@ -16,7 +16,7 @@ interface OscillatorsProps {
 export function Oscillators({ oscillators, setOscillators }: OscillatorsProps) {
   return (
     <div className="flex flex-col gap-4 w-2/3">
-      <h3 className="font-mono text-2xl">Oscillators</h3>
+      <p className="font-mono text-3xl">Oscillators</p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {oscillators.map(oscillator =>

@@ -4,7 +4,7 @@ import { useAudioCtx } from './use-audio-context.ts';
 import type { OscillatorData } from '../utils/default-oscillator-data.ts';
 
 interface Voice {
-  oscillators: Array<{ oscillator: OscillatorNode; gain: GainNode }>;
+  oscillators: Array<{ id: string; oscillator: OscillatorNode; gain: GainNode; velocity: number }>;
 }
 
 interface UseSynthParams {
@@ -39,7 +39,7 @@ export function useSynth({ oscillators }: UseSynthParams) {
       gainNode.connect(analyser);
       osc.start();
 
-      return { oscillator: osc, gain: gainNode };
+      return { id: oscillatorData.id, oscillator: osc, gain: gainNode, velocity };
     });
 
     analyser.connect(audioContext.destination);
@@ -66,5 +66,23 @@ export function useSynth({ oscillators }: UseSynthParams) {
     delete voices.current[note];
   }, [getAudioContext]);
 
-  return { noteOn, noteOff };
+  const updateVoices = useCallback((updatedOscillators: Array<OscillatorData>) => {
+    Object.values(voices.current).forEach((voice) => {
+      voice.oscillators.forEach((voiceOsc) => {
+        const oscillatorData = updatedOscillators.find(o => o.id === voiceOsc.id);
+        if (!oscillatorData) {
+          return;
+        }
+
+        voiceOsc.oscillator.type = oscillatorData.waveform;
+        voiceOsc.oscillator.detune.value = oscillatorData.detune;
+
+        voiceOsc.gain.gain.value = (oscillatorData.velocitySensitive
+          ? (voiceOsc.velocity / 127) * (0.33 / Math.sqrt(updatedOscillators.length))
+          : (0.33 / Math.sqrt(updatedOscillators.length))) * (oscillatorData.volume / 100);
+      });
+    });
+  }, []);
+
+  return { noteOn, noteOff, updateVoices };
 }

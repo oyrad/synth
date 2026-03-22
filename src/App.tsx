@@ -1,12 +1,11 @@
 import { useSynth } from './hooks/use-synth.ts';
 import { useMidi } from './hooks/use-midi.ts';
-import { Button } from './components/ui/button.tsx';
 import { WaveformVisualizer } from './components/waveform-visualizer.tsx';
-import { useAudioCtx } from './hooks/use-audio-context.ts';
-import { ErrorMessages } from './components/error-messages.tsx';
 import { Oscillators } from './components/oscillators.tsx';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { DEFAULT_OSCILLATOR_DATA, type OscillatorData } from './utils/default-oscillator-data.ts';
+import { StatusBar } from './components/status-bar.tsx';
+import { StartAudioDialog } from './components/start-audio-dialog.tsx';
 
 export default function App() {
   const [oscillators, setOscillators] = useState<Array<OscillatorData>>([{
@@ -14,28 +13,26 @@ export default function App() {
     id: crypto.randomUUID()
   }]);
 
-  const { isAudioReady, getAudioContext } = useAudioCtx();
 
-  const { noteOn, noteOff } = useSynth({ oscillators });
+  const { noteOn, noteOff, updateVoices } = useSynth({ oscillators });
   const { midiInput, isGranted } = useMidi({ onNoteOn: noteOn, onNoteOff: noteOff });
 
-  return (
-    <main className="flex flex-col items-center gap-4 py-8">
-      <ErrorMessages isAudioReady={isAudioReady} midiInput={midiInput} isGranted={isGranted} />
+  useEffect(() => {
+    updateVoices(oscillators);
+  }, [oscillators, updateVoices]);
 
-      {!isAudioReady && (
-        <Button
-          onClick={() => {
-            void getAudioContext().resume();
-          }}
-        >
-          Start Audio
-        </Button>
-      )}
+  return (
+    <main className="flex flex-col items-center gap-4 pt-8 pb-16">
+      <WaveformVisualizer />
 
       <Oscillators oscillators={oscillators} setOscillators={setOscillators} />
 
-      <WaveformVisualizer />
+      <StatusBar
+        midiInput={midiInput}
+        isGranted={isGranted}
+      />
+
+      <StartAudioDialog />
     </main>
   );
 }
