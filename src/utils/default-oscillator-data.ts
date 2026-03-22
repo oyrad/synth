@@ -10,5 +10,5 @@ export const DEFAULT_OSCILLATOR_DATA: Omit<OscillatorData, 'id'> = {
   waveform: 'sine',
   velocitySensitive: true,
   volume: 50,
-  detune: 0
+  detune: 0,
 };

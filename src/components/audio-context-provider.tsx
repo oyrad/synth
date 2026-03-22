@@ -4,7 +4,8 @@ import { AudioCtx } from '../audio-context.tsx';
 export function AudioContextProvider({ children }: { children: ReactNode }) {
   const audioContext = useRef<AudioContext | null>(null);
   const analyser = useRef<AnalyserNode | null>(null);
-  const [audioContextState, setAudioContextState] = useState<AudioContextState>('suspended');
+  const [audioContextState, setAudioContextState] =
+    useState<AudioContextState>('suspended');
 
   const getAudioContext = useCallback(() => {
     if (!audioContext.current) {
@@ -31,11 +32,10 @@ export function AudioContextProvider({ children }: { children: ReactNode }) {
       value={{
         isAudioReady: audioContextState === 'running',
         getAudioContext,
-        getAnalyser
+        getAnalyser,
       }}
     >
       {children}
     </AudioCtx.Provider>
   );
 }
-

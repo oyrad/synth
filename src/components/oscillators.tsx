@@ -2,9 +2,19 @@ import { Button } from './ui/button.tsx';
 import { Checkbox } from './ui/checkbox.tsx';
 import { Label } from './ui/label.tsx';
 import type { Dispatch, SetStateAction } from 'react';
-import { DEFAULT_OSCILLATOR_DATA, type OscillatorData } from '../utils/default-oscillator-data.ts';
+import {
+  DEFAULT_OSCILLATOR_DATA,
+  type OscillatorData,
+} from '../utils/default-oscillator-data.ts';
 import { Slider } from './ui/slider.tsx';
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from './ui/select.tsx';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from './ui/select.tsx';
 import { isOscillatorType } from '../utils/midi.ts';
 import { PlusIcon, X } from 'lucide-react';
 
@@ -19,7 +29,7 @@ export function Oscillators({ oscillators, setOscillators }: OscillatorsProps) {
       <p className="font-mono text-3xl">Oscillators</p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-        {oscillators.map(oscillator =>
+        {oscillators.map((oscillator) => (
           <div
             className="flex flex-col gap-4 rounded-xl border border-gray-200 p-4"
             key={oscillator.id}
@@ -30,7 +40,11 @@ export function Oscillators({ oscillators, setOscillators }: OscillatorsProps) {
                 onValueChange={(value) => {
                   if (isOscillatorType(value)) {
                     setOscillators((prev) =>
-                      prev.map(osc => osc.id === oscillator.id ? { ...osc, waveform: value } : osc)
+                      prev.map((osc) =>
+                        osc.id === oscillator.id
+                          ? { ...osc, waveform: value }
+                          : osc,
+                      ),
                     );
                   }
                 }}
@@ -52,7 +66,9 @@ export function Oscillators({ oscillators, setOscillators }: OscillatorsProps) {
                 variant="destructive"
                 size="icon"
                 onClick={() => {
-                  setOscillators((prev) => prev.filter(osc => osc.id !== oscillator.id));
+                  setOscillators((prev) =>
+                    prev.filter((osc) => osc.id !== oscillator.id),
+                  );
                 }}
               >
                 <X />
@@ -63,14 +79,22 @@ export function Oscillators({ oscillators, setOscillators }: OscillatorsProps) {
               <Checkbox
                 id={`velocity-sensitive-${oscillator.id}`}
                 checked={oscillator.velocitySensitive}
-                onCheckedChange={(checked) => setOscillators((prev) => {
-                  return prev.map(osc => osc.id === oscillator.id ? {
-                    ...osc,
-                    velocitySensitive: checked === true
-                  } : osc);
-                })}
+                onCheckedChange={(checked) =>
+                  setOscillators((prev) => {
+                    return prev.map((osc) =>
+                      osc.id === oscillator.id
+                        ? {
+                            ...osc,
+                            velocitySensitive: checked === true,
+                          }
+                        : osc,
+                    );
+                  })
+                }
               />
-              <Label htmlFor={`velocity-sensitive-${oscillator.id}`}>Velocity sensitive</Label>
+              <Label htmlFor={`velocity-sensitive-${oscillator.id}`}>
+                Velocity sensitive
+              </Label>
             </div>
 
             <div className="flex flex-col gap-2">
@@ -83,12 +107,18 @@ export function Oscillators({ oscillators, setOscillators }: OscillatorsProps) {
                 min={0}
                 max={100}
                 step={1}
-                onValueChange={(value) => setOscillators((prev) =>
-                  prev.map(osc => osc.id === oscillator.id ? {
-                    ...osc,
-                    volume: value[0]
-                  } : osc)
-                )}
+                onValueChange={(value) =>
+                  setOscillators((prev) =>
+                    prev.map((osc) =>
+                      osc.id === oscillator.id
+                        ? {
+                            ...osc,
+                            volume: value[0],
+                          }
+                        : osc,
+                    ),
+                  )
+                }
               />
             </div>
 
@@ -102,16 +132,22 @@ export function Oscillators({ oscillators, setOscillators }: OscillatorsProps) {
                 min={-100}
                 max={100}
                 step={1}
-                onValueChange={(value) => setOscillators((prev) =>
-                  prev.map(osc => osc.id === oscillator.id ? {
-                    ...osc,
-                    detune: value[0]
-                  } : osc)
-                )}
+                onValueChange={(value) =>
+                  setOscillators((prev) =>
+                    prev.map((osc) =>
+                      osc.id === oscillator.id
+                        ? {
+                            ...osc,
+                            detune: value[0],
+                          }
+                        : osc,
+                    ),
+                  )
+                }
               />
             </div>
           </div>
-        )}
+        ))}
 
         <div
           className="flex justify-center items-center rounded-xl border border-gray-200 cursor-pointer bg-gray-50 hover:bg-gray-100 transition-all min-h-[194px]"
@@ -120,10 +156,11 @@ export function Oscillators({ oscillators, setOscillators }: OscillatorsProps) {
               ...prev,
               {
                 ...DEFAULT_OSCILLATOR_DATA,
-                id: crypto.randomUUID()
-              }
+                id: crypto.randomUUID(),
+              },
             ]);
-          }}>
+          }}
+        >
           <PlusIcon size={100} className="text-gray-400" />
         </div>
       </div>

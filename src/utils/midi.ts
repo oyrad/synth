@@ -9,8 +9,8 @@ export interface ParsedMidiMessage {
 
 export function parseMidiMessage(data: Uint8Array): ParsedMidiMessage {
   const [status, data1, data2] = data;
-  const type = status & 0xF0;
-  const channel = (status & 0x0F) + 1;
+  const type = status & 0xf0;
+  const channel = (status & 0x0f) + 1;
 
   if (type === 0x90 && data2 > 0) {
     return { type: 'noteOn', channel, data1, data2 };
@@ -24,7 +24,7 @@ export function parseMidiMessage(data: Uint8Array): ParsedMidiMessage {
     return { type: 'noteOff', channel, data1, data2 };
   }
 
-  if (type === 0xB0) {
+  if (type === 0xb0) {
     return { type: 'cc', channel, data1, data2 };
   }
 
