@@ -4,6 +4,7 @@ import { usePresetStore } from '../hooks/use-preset-store.ts';
 import { useSynthStore } from '../hooks/use-synth-store.ts';
 import { SavePresetDialog } from './save-preset-dialog.tsx';
 import { useMemo } from 'react';
+import { toast } from 'sonner';
 
 export function PresetControl() {
   const { nextPreset, previousPreset, activePreset, deletePreset, savePreset, saveNewPreset } =
@@ -63,6 +64,7 @@ export function PresetControl() {
                 adsr,
               },
             });
+            toast('Preset saved.');
           }}
         >
           <Save />
@@ -84,6 +86,7 @@ export function PresetControl() {
                 adsr,
               },
             });
+            toast('Preset created');
           }}
         />
 
@@ -91,6 +94,7 @@ export function PresetControl() {
           variant="destructive"
           onClick={() => {
             deletePreset(activePreset.id);
+            toast('Preset deleted.');
             handleNext();
           }}
         >

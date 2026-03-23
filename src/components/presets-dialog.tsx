@@ -1,16 +1,11 @@
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from './ui/dialog.tsx';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog.tsx';
 import { Button } from './ui/button.tsx';
 import { useState } from 'react';
 import { usePresetStore } from '../hooks/use-preset-store.ts';
 import { SlidersHorizontal, Trash2 } from 'lucide-react';
 import { cn } from '../utils/cn.ts';
 import { useSynthStore } from '../hooks/use-synth-store.ts';
+import { toast } from 'sonner';
 
 export function PresetsDialog() {
   const { presets, deletePreset, setActivePreset } = usePresetStore();
@@ -35,7 +30,7 @@ export function PresetsDialog() {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader className="gap-3">
-          <DialogTitle>Presets</DialogTitle>
+          <DialogTitle className="font-semibold">Presets</DialogTitle>
         </DialogHeader>
 
         <div className="flex flex-col gap-1">
@@ -64,6 +59,7 @@ export function PresetsDialog() {
                 if (preset) {
                   setActivePreset(preset.id);
                   loadPreset(preset);
+                  toast('Preset loaded.');
                 }
               }
 
@@ -80,6 +76,7 @@ export function PresetsDialog() {
               if (selectedPresetId) {
                 deletePreset(selectedPresetId);
                 setSelectedPresetId(null);
+                toast('Preset deleted.');
               }
             }}
           >

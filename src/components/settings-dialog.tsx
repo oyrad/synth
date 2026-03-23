@@ -1,14 +1,9 @@
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from './ui/dialog.tsx';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog.tsx';
 import { Settings } from 'lucide-react';
 import { useSettingsStore } from '../hooks/use-settings-store.ts';
 import { Checkbox } from './ui/checkbox.tsx';
 import { Label } from './ui/label.tsx';
+import { toast } from 'sonner';
 
 export function SettingsDialog() {
   const { showVisualizer, velocitySensitive, setShowVisualizer, setVelocitySensitive } =
@@ -21,7 +16,7 @@ export function SettingsDialog() {
       </DialogTrigger>
       <DialogContent showCloseButton={true}>
         <DialogHeader>
-          <DialogTitle>Settings</DialogTitle>
+          <DialogTitle className="font-semibold">Settings</DialogTitle>
         </DialogHeader>
 
         <div className="flex items-center justify-between">
@@ -30,7 +25,10 @@ export function SettingsDialog() {
           </Label>
           <Checkbox
             checked={showVisualizer}
-            onCheckedChange={(checked) => setShowVisualizer(!!checked)}
+            onCheckedChange={(checked) => {
+              setShowVisualizer(!!checked);
+              toast(`Visualizer ${checked ? 'enabled' : 'disabled'}.`);
+            }}
           />
         </div>
 
@@ -40,7 +38,10 @@ export function SettingsDialog() {
           </Label>
           <Checkbox
             checked={velocitySensitive}
-            onCheckedChange={(checked) => setVelocitySensitive(!!checked)}
+            onCheckedChange={(checked) => {
+              setVelocitySensitive(!!checked);
+              toast(`Velocity sensitivity ${checked ? 'enabled' : 'disabled'}.`);
+            }}
           />
         </div>
       </DialogContent>
