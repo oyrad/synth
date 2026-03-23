@@ -23,13 +23,13 @@ export function SavePresetDialog({ trigger, onSave }: SavePresetDialogProps) {
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent>
         <DialogHeader className="gap-3">
-          <DialogTitle>Save preset</DialogTitle>
+          <DialogTitle>New preset</DialogTitle>
 
           <div className="flex gap-2">
             <Input
               id="preset-name"
               type="text"
-              placeholder="Preset name"
+              placeholder="Name"
               value={presetName}
               onChange={(e) => {
                 setPresetName(e.target.value);
@@ -38,6 +38,10 @@ export function SavePresetDialog({ trigger, onSave }: SavePresetDialogProps) {
 
             <Button
               onClick={() => {
+                if (!presetName.trim()) {
+                  return;
+                }
+
                 onSave(presetName);
 
                 setPresetName('');

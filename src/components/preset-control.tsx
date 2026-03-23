@@ -3,20 +3,18 @@ import { ArrowLeft, ArrowRight, Plus, Save, Trash2 } from 'lucide-react';
 import { usePresetStore } from '../hooks/use-preset-store.ts';
 import { useSynthStore } from '../hooks/use-synth-store.ts';
 import { SavePresetDialog } from './save-preset-dialog.tsx';
+import { useMemo } from 'react';
 
 export function PresetControl() {
-  const {
-    nextPreset,
-    previousPreset,
-    getActivePreset,
-    deletePreset,
-    savePreset,
-    saveNewPreset,
-  } = usePresetStore();
+  const { nextPreset, previousPreset, activePreset, deletePreset, savePreset, saveNewPreset } =
+    usePresetStore();
 
   const { oscillators, adsr, loadPreset } = useSynthStore();
 
-  const activePreset = getActivePreset();
+  const isDirty = useMemo(
+    () => JSON.stringify({ oscillators, adsr }) !== JSON.stringify(activePreset.data),
+    [oscillators, adsr, activePreset],
+  );
 
   const handleNext = () => {
     const preset = nextPreset();
@@ -34,7 +32,7 @@ export function PresetControl() {
 
   return (
     <div className="border border-gray-200 rounded-lg p-4 flex flex-col gap-2 w-fit">
-      <p className="font-mono text-3xl font-semibold uppercase">{activePreset?.name}</p>
+      <p className="font-mono text-3xl font-semibold uppercase">{activePreset.name}</p>
 
       <div className="flex gap-2">
         <Button
@@ -56,6 +54,7 @@ export function PresetControl() {
         </Button>
 
         <Button
+          disabled={!isDirty}
           onClick={() => {
             savePreset({
               id: activePreset?.id || '',
@@ -91,10 +90,8 @@ export function PresetControl() {
         <Button
           variant="destructive"
           onClick={() => {
-            if (activePreset) {
-              deletePreset(activePreset.id);
-              handleNext();
-            }
+            deletePreset(activePreset.id);
+            handleNext();
           }}
         >
           <Trash2 />

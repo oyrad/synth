@@ -15,8 +15,7 @@ export interface Preset {
 
 interface PresetStoreValues {
   presets: Array<Preset>;
-  activePresetId: string | null;
-  getActivePreset: () => Preset | undefined;
+  activePreset: Preset;
   savePreset: ({ id, data }: { id: string; data: Preset['data'] }) => void;
   saveNewPreset: ({ name, data }: { name: string; data: Preset['data'] }) => void;
   deletePreset: (id: string) => void;
@@ -29,27 +28,20 @@ export const usePresetStore = create<PresetStoreValues>()(
   persist(
     (set, get) => ({
       presets: DEFAULT_PRESETS,
-      activePresetId: DEFAULT_PRESETS[0].id,
-
-      getActivePreset: () => {
-        const { presets, activePresetId } = get();
-        return presets.find((p) => p.id === activePresetId);
-      },
+      activePreset: DEFAULT_PRESETS[0],
 
       savePreset: ({ id, data }) => {
-        const preset = get().presets.find((p) => p.id === id);
-        if (preset) {
-          set((state) => ({
-            presets: state.presets.map((p) =>
-              p.id === id
-                ? {
-                    ...p,
-                    data,
-                  }
-                : p,
-            ),
-          }));
-        }
+        set((state) => {
+          const updatedPreset = state.presets.find((p) => p.id === id);
+          if (!updatedPreset) return state;
+
+          const updated = { ...updatedPreset, data };
+
+          return {
+            presets: state.presets.map((p) => (p.id === id ? updated : p)),
+            activePreset: state.activePreset.id === id ? updated : state.activePreset,
+          };
+        });
       },
 
       saveNewPreset: ({ name, data }) => {
@@ -64,7 +56,6 @@ export const usePresetStore = create<PresetStoreValues>()(
               data,
             },
           ],
-          activePresetId: id,
         }));
       },
 
@@ -73,21 +64,24 @@ export const usePresetStore = create<PresetStoreValues>()(
           presets: state.presets.filter((preset) => preset.id !== id),
         })),
 
-      setActivePreset: (id) => set({ activePresetId: id }),
+      setActivePreset: (id) =>
+        set({
+          activePreset: get().presets.find((preset) => preset.id === id) || get().activePreset,
+        }),
 
       nextPreset: () => {
-        const { presets, activePresetId } = get();
-        const index = presets.findIndex((p) => p.id === activePresetId);
+        const { presets, activePreset } = get();
+        const index = presets.findIndex((p) => p.id === activePreset.id);
         const next = presets[(index + 1) % presets.length];
-        set({ activePresetId: next.id });
+        set({ activePreset: next });
         return next;
       },
 
       previousPreset: () => {
-        const { presets, activePresetId } = get();
-        const index = presets.findIndex((p) => p.id === activePresetId);
+        const { presets, activePreset } = get();
+        const index = presets.findIndex((p) => p.id === activePreset.id);
         const prev = presets[(index - 1 + presets.length) % presets.length];
-        set({ activePresetId: prev.id });
+        set({ activePreset: prev });
         return prev;
       },
     }),
