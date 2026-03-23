@@ -5,9 +5,10 @@ import { useEffect } from 'react';
 import { StatusBar } from './components/status-bar.tsx';
 import { StartAudioDialog } from './components/start-audio-dialog.tsx';
 import { Adsr } from './components/adsr/adsr.tsx';
-import { WaveformVisualizer } from './components/waveform-visualizer.tsx';
 import { useSettingsStore } from './hooks/use-settings-store.ts';
 import { useSynthStore } from './hooks/use-synth-store.ts';
+import { PresetControl } from './components/preset-control.tsx';
+import { WaveformVisualizer } from './components/waveform-visualizer.tsx';
 
 export default function App() {
   const { oscillators, adsr } = useSynthStore();
@@ -26,10 +27,11 @@ export default function App() {
   }, [oscillators, updateVoices]);
 
   return (
-    <main className="flex flex-col items-center gap-4 pt-8 pb-16">
+    <main className="flex flex-col gap-4 pt-8 pb-16">
       {showVisualizer && <WaveformVisualizer />}
 
       <div className="px-8 md:px-44 xl:px-96 w-full flex flex-col gap-8">
+        <PresetControl />
         <Oscillators />
         <Adsr />
       </div>

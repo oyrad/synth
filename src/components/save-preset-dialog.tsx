@@ -7,53 +7,46 @@ import {
 } from './ui/dialog.tsx';
 import { Button } from './ui/button.tsx';
 import { Input } from './ui/input.tsx';
-import { useState } from 'react';
-import { type Preset, usePresetStore } from '../hooks/use-preset-store.ts';
-import { Save } from 'lucide-react';
+import { type ReactNode, useState } from 'react';
 
 interface SavePresetDialogProps {
-  data: Preset['data'];
+  trigger: ReactNode;
+  onSave: (name: string) => void;
 }
 
-export function SavePresetDialog({ data }: SavePresetDialogProps) {
+export function SavePresetDialog({ trigger, onSave }: SavePresetDialogProps) {
   const [presetName, setPresetName] = useState('');
   const [isOpen, setIsOpen] = useState(false);
 
-  const { savePreset } = usePresetStore();
-
   return (
     <Dialog open={isOpen} onOpenChange={(open) => setIsOpen(open)}>
-      <DialogTrigger asChild>
-        <Save className="cursor-pointer" />
-      </DialogTrigger>
+      <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent>
         <DialogHeader className="gap-3">
           <DialogTitle>Save preset</DialogTitle>
 
-          <Input
-            id="preset-name"
-            type="text"
-            placeholder="Preset name"
-            value={presetName}
-            onChange={(e) => {
-              setPresetName(e.target.value);
-            }}
-          />
+          <div className="flex gap-2">
+            <Input
+              id="preset-name"
+              type="text"
+              placeholder="Preset name"
+              value={presetName}
+              onChange={(e) => {
+                setPresetName(e.target.value);
+              }}
+            />
 
-          <Button
-            onClick={() => {
-              savePreset({
-                id: crypto.randomUUID(),
-                name: presetName,
-                data,
-              });
+            <Button
+              onClick={() => {
+                onSave(presetName);
 
-              setPresetName('');
-              setIsOpen(false);
-            }}
-          >
-            Save
-          </Button>
+                setPresetName('');
+                setIsOpen(false);
+              }}
+            >
+              Save
+            </Button>
+          </div>
         </DialogHeader>
       </DialogContent>
     </Dialog>

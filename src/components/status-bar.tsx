@@ -2,9 +2,7 @@ import { cn } from '../utils/cn.ts';
 import { useAudioCtx } from '../hooks/use-audio-context.ts';
 import { memo } from 'react';
 import { SettingsDialog } from './settings-dialog.tsx';
-import { SavePresetDialog } from './save-preset-dialog.tsx';
-import { useSynthStore } from '../hooks/use-synth-store.ts';
-import { LoadPresetDialog } from './load-preset-dialog.tsx';
+import { PresetsDialog } from './presets-dialog.tsx';
 
 function StatusBarIndicator({ text, isActive }: { text: string; isActive: boolean }) {
   return (
@@ -25,25 +23,17 @@ interface StatusBarProps {
 export function StatusBarComponent({ isGranted, midiInput }: StatusBarProps) {
   const { isAudioReady } = useAudioCtx();
 
-  const { oscillators, adsr, loadPreset } = useSynthStore();
-
   return (
     <div className="fixed bottom-0 left-0 w-full bg-black text-white py-3 px-6 flex gap-6">
-      <StatusBarIndicator text="Audio started" isActive={isAudioReady} />
-      <StatusBarIndicator text="MIDI Access grante" isActive={isGranted} />
+      <StatusBarIndicator text="Audio ready" isActive={isAudioReady} />
+      <StatusBarIndicator text="MIDI Access granted" isActive={isGranted} />
       <StatusBarIndicator
         text={midiInput ? `Connected device: ${midiInput?.name}` : 'No MIDI input'}
         isActive={!!midiInput}
       />
 
       <div className="ml-auto flex items-center gap-6">
-        <LoadPresetDialog onLoad={loadPreset} />
-        <SavePresetDialog
-          data={{
-            oscillators,
-            adsr,
-          }}
-        />
+        <PresetsDialog />
         <SettingsDialog />
       </div>
     </div>

@@ -10,7 +10,7 @@ import {
   SelectValue,
 } from '../ui/select.tsx';
 import { isOscillatorType } from '../../utils/midi.ts';
-import { PlusIcon, X } from 'lucide-react';
+import { Plus, X } from 'lucide-react';
 import { Toggle } from '../ui/toggle.tsx';
 import { useSynthStore } from '../../hooks/use-synth-store.ts';
 
@@ -31,8 +31,18 @@ export function Oscillators() {
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex justify-between items-center">
-        <p className="font-mono text-3xl">Oscillators</p>
+      <div className="flex items-center gap-3">
+        <p className="font-mono text-2xl">Oscillators</p>
+        <Button
+          disabled={oscillators.length >= 6}
+          variant="outline"
+          onClick={() => {
+            addOscillator();
+          }}
+        >
+          <Plus />
+          Add
+        </Button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -133,16 +143,6 @@ export function Oscillators() {
             </div>
           </div>
         ))}
-
-        <div
-          hidden={oscillators.length >= 6}
-          className="flex justify-center items-center rounded-xl border border-gray-200 cursor-pointer bg-gray-50 hover:bg-gray-100 transition-all min-h-[210px]"
-          onClick={() => {
-            addOscillator();
-          }}
-        >
-          <PlusIcon size={100} className="text-gray-400" />
-        </div>
       </div>
     </div>
   );
