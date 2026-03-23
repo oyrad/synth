@@ -1,5 +1,5 @@
 import { Button } from './ui/button.tsx';
-import { ArrowLeft, ArrowRight, Plus, Save, Trash2 } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Plus, RotateCcw, Save, Trash2 } from 'lucide-react';
 import { usePresetStore } from '../hooks/use-preset-store.ts';
 import { useSynthStore } from '../hooks/use-synth-store.ts';
 import { SavePresetDialog } from './save-preset-dialog.tsx';
@@ -32,7 +32,7 @@ export function PresetControl() {
   };
 
   return (
-    <div className="border border-gray-200 rounded-lg p-4 flex flex-col gap-2 w-fit">
+    <div className="border border-gray-200 rounded-lg p-4 flex flex-col gap-3 w-fit">
       <p className="font-mono text-3xl font-semibold uppercase">{activePreset.name}</p>
 
       <div className="flex gap-2">
@@ -55,6 +55,7 @@ export function PresetControl() {
         </Button>
 
         <Button
+          variant="secondary"
           disabled={!isDirty}
           onClick={() => {
             savePreset({
@@ -73,7 +74,7 @@ export function PresetControl() {
 
         <SavePresetDialog
           trigger={
-            <Button variant="outline">
+            <Button variant="secondary">
               <Plus />
               Save as new
             </Button>
@@ -89,6 +90,17 @@ export function PresetControl() {
             toast('Preset created');
           }}
         />
+
+        <Button
+          variant="secondary"
+          onClick={() => {
+            loadPreset(activePreset);
+            toast('Preset reloaded.');
+          }}
+        >
+          <RotateCcw />
+          Reload
+        </Button>
 
         <Button
           variant="destructive"
