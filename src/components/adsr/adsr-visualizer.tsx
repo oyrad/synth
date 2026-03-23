@@ -19,7 +19,11 @@ export function AdsrVisualizer({ adsr }: AdsrVisualizerProps) {
   const sustainY = height - adsr.sustain * height;
 
   return (
-    <svg width="100%" viewBox="0 0 300 100" className="border border-gray-200 rounded-lg">
+    <svg
+      width="100%"
+      viewBox="0 0 300 100"
+      className="border border-gray-200 dark:border-gray-600 rounded-lg"
+    >
       <line
         x1={attackX}
         y1={0}

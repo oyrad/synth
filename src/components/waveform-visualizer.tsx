@@ -31,6 +31,8 @@ function WaveformVisualizerComponent() {
       const { width, height } = canvas;
       ctx2d.clearRect(0, 0, width, height);
 
+      ctx2d.strokeStyle = getComputedStyle(canvas).color;
+
       let startIndex = 0;
       for (let i = 1; i < buffer.length - 1; i++) {
         if (buffer[i - 1] < 128 && buffer[i] >= 128) {

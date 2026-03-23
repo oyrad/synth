@@ -32,7 +32,7 @@ export function PresetControl() {
   };
 
   return (
-    <div className="border border-gray-200 rounded-lg p-4 flex flex-col gap-3 w-fit">
+    <div className="border border-gray-200 dark:border-gray-600 rounded-lg p-4 flex flex-col gap-3 w-fit">
       <p className="font-mono text-3xl font-semibold uppercase">{activePreset.name}</p>
 
       <div className="flex gap-2">

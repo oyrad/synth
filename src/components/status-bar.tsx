@@ -3,13 +3,12 @@ import { useAudioCtx } from '../hooks/use-audio-context.ts';
 import { memo } from 'react';
 import { SettingsDialog } from './settings-dialog.tsx';
 import { PresetsDialog } from './presets-dialog.tsx';
+import { ThemeToggle } from './theme-toggle.tsx';
 
 function StatusBarIndicator({ text, isActive }: { text: string; isActive: boolean }) {
   return (
     <div className="flex items-center gap-2">
-      <div
-        className={cn(`rounded-full bg-red-500 w-3 h-3 ${isActive && 'bg-emerald-500'}`)}
-      />
+      <div className={cn('rounded-full bg-red-500 w-3 h-3', isActive && 'bg-emerald-500')} />
       <p className="text-sm">{text}</p>
     </div>
   );
@@ -33,6 +32,7 @@ export function StatusBarComponent({ isGranted, midiInput }: StatusBarProps) {
       />
 
       <div className="ml-auto flex items-center gap-6">
+        <ThemeToggle />
         <PresetsDialog />
         <SettingsDialog />
       </div>

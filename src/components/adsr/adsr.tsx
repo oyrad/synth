@@ -21,7 +21,7 @@ export function Adsr() {
       <div className="flex gap-4">
         <AdsrVisualizer adsr={adsr} />
 
-        <div className="flex flex-col gap-6 border border-gray-200 rounded-lg p-4 w-sm">
+        <div className="flex flex-col gap-6 border border-gray-200 dark:border-gray-600 rounded-lg p-4 w-sm">
           <div className="flex flex-col gap-2">
             <div className="flex justify-between items-center">
               <Label>Attack</Label>

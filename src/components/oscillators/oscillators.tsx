@@ -48,7 +48,7 @@ export function Oscillators() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {oscillators.map((oscillator) => (
           <div
-            className="flex flex-col gap-4 rounded-xl border border-gray-200 p-4"
+            className="flex flex-col gap-4 rounded-xl border border-gray-200 dark:border-gray-600 p-4"
             key={oscillator.id}
           >
             <div className="flex gap-2">
@@ -104,9 +104,7 @@ export function Oscillators() {
                 min={0}
                 max={100}
                 step={1}
-                onValueChange={(value) =>
-                  updateOscillator(oscillator.id, { volume: value[0] })
-                }
+                onValueChange={(value) => updateOscillator(oscillator.id, { volume: value[0] })}
               />
             </div>
 
@@ -120,9 +118,7 @@ export function Oscillators() {
                 min={-100}
                 max={100}
                 step={1}
-                onValueChange={(value) =>
-                  updateOscillator(oscillator.id, { detune: value[0] })
-                }
+                onValueChange={(value) => updateOscillator(oscillator.id, { detune: value[0] })}
               />
             </div>
 
@@ -136,9 +132,7 @@ export function Oscillators() {
                 min={-24}
                 max={24}
                 step={1}
-                onValueChange={(value) =>
-                  updateOscillator(oscillator.id, { transpose: value[0] })
-                }
+                onValueChange={(value) => updateOscillator(oscillator.id, { transpose: value[0] })}
               />
             </div>
           </div>
