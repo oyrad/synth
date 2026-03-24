@@ -33,7 +33,7 @@ export function PresetsDialog() {
           <DialogTitle className="font-semibold">Presets</DialogTitle>
         </DialogHeader>
 
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-1 max-h-96 overflow-y-auto">
           {presets.map((preset) => (
             <div
               className={cn(
@@ -48,7 +48,7 @@ export function PresetsDialog() {
           ))}
         </div>
 
-        <div className="flex gap-1">
+        <div className="flex gap-2">
           <Button
             disabled={!selectedPresetId}
             className="flex-1"
