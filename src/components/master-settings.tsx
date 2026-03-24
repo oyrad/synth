@@ -20,7 +20,7 @@ export function MasterSettings() {
           min={0}
           max={100}
           step={1}
-          defaultValue={[masterVolume]}
+          value={[masterVolume]}
           onValueChange={(value) => setMasterVolume(value[0])}
         />
       </div>
@@ -34,7 +34,7 @@ export function MasterSettings() {
           min={-100}
           max={100}
           step={1}
-          defaultValue={[masterTune]}
+          value={[masterTune]}
           onValueChange={(value) => setMasterTune(value[0])}
         />
       </div>

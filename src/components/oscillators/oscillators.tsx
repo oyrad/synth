@@ -100,7 +100,7 @@ export function Oscillators() {
                 <p className="text-sm">{oscillator.volume}</p>
               </div>
               <Slider
-                defaultValue={[oscillator.volume]}
+                value={[oscillator.volume]}
                 min={0}
                 max={100}
                 step={1}
@@ -114,7 +114,7 @@ export function Oscillators() {
                 <p className="text-sm">{oscillator.detune}</p>
               </div>
               <Slider
-                defaultValue={[oscillator.detune]}
+                value={[oscillator.detune]}
                 min={-100}
                 max={100}
                 step={1}
@@ -128,7 +128,7 @@ export function Oscillators() {
                 <p className="text-sm">{oscillator.transpose}</p>
               </div>
               <Slider
-                defaultValue={[oscillator.transpose]}
+                value={[oscillator.transpose]}
                 min={-24}
                 max={24}
                 step={1}
