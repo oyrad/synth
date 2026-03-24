@@ -10,7 +10,7 @@ const toggleVariants = cva(
       variant: {
         default: 'bg-transparent',
         outline: 'border border-input bg-transparent hover:bg-muted',
-        mute: 'text-yellow-500 border border-yellow-300 bg-yellow-50 data-[state=on]:bg-yellow-400 data-[state=on]:text-white data-[state=on]:border-yellow-400 hover:bg-yellow-100 transition-all cursor-pointer hover:text-yellow-600 dark:text-yellow-400 dark:border-yellow-600 dark:bg-yellow-900/10 dark:hover:bg-yellow-900/20 dark:data-[state=on]:bg-yellow-600 dark:data-[state=on]:text-white dark:data-[state=on]:border-yellow-600',
+        mute: 'text-yellow-500 border border-yellow-300 bg-yellow-50 data-[state=on]:bg-yellow-400 data-[state=on]:text-white data-[state=on]:border-yellow-400 hover:bg-yellow-100 transition-all cursor-pointer hover:text-yellow-600 dark:text-yellow-300 dark:border-yellow-500 dark:bg-yellow-800/10 dark:hover:bg-yellow-800/20 dark:data-[state=on]:bg-yellow-500 dark:data-[state=on]:text-white dark:data-[state=on]:border-yellow-500',
       },
       size: {
         default: 'h-8 min-w-8 px-2',

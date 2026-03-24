@@ -11,13 +11,18 @@ import { PresetControl } from './components/preset-control.tsx';
 import { WaveformVisualizer } from './components/waveform-visualizer.tsx';
 import { MasterSettings } from './components/master-settings.tsx';
 import { LoadPresetOnInit } from './components/load-preset-on-init.tsx';
+import { useRequestMidiAccess } from './hooks/use-request-midi-access.ts';
+import { useMidiStore } from './stores/use-midi-store.tsx';
 
 export default function App() {
+  const { isGranted } = useRequestMidiAccess();
+
   const { oscillators, adsr } = useSynthStore();
+  const { selectedInput: midiInput } = useMidiStore();
 
   const { noteOn, noteOff, updateVoices } = useSynth({ adsr, oscillators });
 
-  const { midiInput, isGranted } = useMidi({
+  useMidi({
     onNoteOn: noteOn,
     onNoteOff: noteOff,
   });

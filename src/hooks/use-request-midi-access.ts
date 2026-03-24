@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
+import { useMidiStore } from '../stores/use-midi-store.tsx';
 
 export function useRequestMidiAccess() {
-  const [midiInput, setMidiInput] = useState<MIDIInput | null | undefined>(null);
   const [isGranted, setIsGranted] = useState(false);
+
+  const { setInputs, setSelectedInput } = useMidiStore();
 
   useEffect(() => {
     if (navigator.requestMIDIAccess) {
@@ -16,14 +18,16 @@ export function useRequestMidiAccess() {
             return;
           }
 
-          const firstInput = midiAccess.inputs.values().next().value;
-          setMidiInput(firstInput);
+          const inputs = Array.from(midiAccess.inputs.values());
+
+          setInputs(inputs);
+          setSelectedInput(inputs[0]);
         })
         .catch((err) => {
           console.error(err);
         });
     }
-  }, [isGranted]);
+  }, [isGranted, setInputs, setSelectedInput]);
 
-  return { isGranted, midiInput };
+  return { isGranted };
 }
