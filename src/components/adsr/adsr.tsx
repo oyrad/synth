@@ -18,7 +18,7 @@ export function Adsr() {
     <div className="flex flex-col gap-4">
       <p className="font-mono text-2xl">ADSR Envelope</p>
 
-      <div className="flex gap-4">
+      <div className="flex gap-4 items-stretch">
         <AdsrVisualizer adsr={adsr} />
 
         <div className="flex flex-col gap-6 border border-gray-200 dark:border-gray-600 rounded-lg p-4 w-sm">

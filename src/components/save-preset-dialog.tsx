@@ -1,10 +1,4 @@
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from './ui/dialog.tsx';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog.tsx';
 import { Button } from './ui/button.tsx';
 import { Input } from './ui/input.tsx';
 import { type ReactNode, useState } from 'react';
@@ -37,6 +31,7 @@ export function SavePresetDialog({ trigger, onSave }: SavePresetDialogProps) {
             />
 
             <Button
+              disabled={!presetName.trim()}
               onClick={() => {
                 if (!presetName.trim()) {
                   return;
