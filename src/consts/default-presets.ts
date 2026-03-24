@@ -1,4 +1,4 @@
-import type { Preset } from '../hooks/use-preset-store.ts';
+import type { Preset } from '../stores/use-preset-store.ts';
 
 export const DEFAULT_PRESETS: Array<Preset> = [
   {

@@ -21,10 +21,7 @@ export const useSynthStore = create<SynthStoreValues>()((set) => ({
 
   addOscillator: () =>
     set((state) => ({
-      oscillators: [
-        ...state.oscillators,
-        { ...DEFAULT_OSCILLATOR, id: crypto.randomUUID() },
-      ],
+      oscillators: [...state.oscillators, { ...DEFAULT_OSCILLATOR, id: crypto.randomUUID() }],
     })),
 
   removeOscillator: (id) =>
@@ -34,9 +31,7 @@ export const useSynthStore = create<SynthStoreValues>()((set) => ({
 
   updateOscillator: (id, data) =>
     set((state) => ({
-      oscillators: state.oscillators.map((osc) =>
-        osc.id === id ? { ...osc, ...data } : osc,
-      ),
+      oscillators: state.oscillators.map((osc) => (osc.id === id ? { ...osc, ...data } : osc)),
     })),
 
   updateAdsr: (data) =>

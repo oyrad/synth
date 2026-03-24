@@ -1,10 +1,10 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog.tsx';
 import { Button } from './ui/button.tsx';
 import { useState } from 'react';
-import { usePresetStore } from '../hooks/use-preset-store.ts';
+import { usePresetStore } from '../stores/use-preset-store.ts';
 import { SlidersHorizontal, Trash2 } from 'lucide-react';
 import { cn } from '../utils/cn.ts';
-import { useSynthStore } from '../hooks/use-synth-store.ts';
+import { useSynthStore } from '../stores/use-synth-store.ts';
 import { toast } from 'sonner';
 
 export function PresetsDialog() {

@@ -1,9 +1,9 @@
 import { useCallback, useRef } from 'react';
-import { midiNoteToFrequency } from '../utils/audio.ts';
+import { calculateVelocity, midiNoteToFrequency } from '../utils/audio.ts';
 import { useAudioCtx } from './use-audio-context.ts';
 import type { OscillatorData } from '../components/oscillators/oscillators.tsx';
 import type { AdsrEnvelope } from '../components/adsr/adsr.tsx';
-import { useSettingsStore } from './use-settings-store.ts';
+import { useSettingsStore } from '../stores/use-settings-store.ts';
 
 interface Voice {
   masterGain: GainNode;
@@ -26,6 +26,9 @@ export function useSynth({ oscillators, adsr }: UseSynthParams) {
   const { getAudioContext, getAnalyser } = useAudioCtx();
 
   const velocitySensitive = useSettingsStore((s) => s.velocitySensitive);
+
+  const masterVolume = useSettingsStore((s) => s.masterVolume);
+  const masterTune = useSettingsStore((s) => s.masterTune);
 
   const noteOn = useCallback(
     (note: number, velocity: number) => {
@@ -64,14 +67,15 @@ export function useSynth({ oscillators, adsr }: UseSynthParams) {
         const osc = audioContext.createOscillator();
         osc.type = oscillatorData.waveform;
         osc.frequency.value = midiNoteToFrequency(note);
-        osc.detune.value = oscillatorData.detune + oscillatorData.transpose * 100;
+        osc.detune.value = oscillatorData.detune + oscillatorData.transpose * 100 + masterTune;
 
         const gainNode = audioContext.createGain();
-        gainNode.gain.value = velocitySensitive
-          ? (velocity / 127) *
-            (0.33 / Math.sqrt(oscillators.length)) *
-            (oscillatorData.volume / 100)
-          : (0.33 / Math.sqrt(oscillators.length)) * (oscillatorData.volume / 100);
+        gainNode.gain.value = calculateVelocity({
+          velocity: velocitySensitive ? velocity : 127,
+          numOscillators: oscillators.length,
+          oscVolume: oscillatorData.volume,
+          masterVolume,
+        });
 
         osc.connect(gainNode);
         gainNode.connect(masterGain);
@@ -85,7 +89,7 @@ export function useSynth({ oscillators, adsr }: UseSynthParams) {
       analyser.connect(audioContext.destination);
       voices.current[note] = { masterGain, oscillators: noteVoices };
     },
-    [adsr, getAnalyser, getAudioContext, oscillators, velocitySensitive],
+    [adsr, getAnalyser, getAudioContext, masterTune, masterVolume, oscillators, velocitySensitive],
   );
 
   const noteOff = useCallback(
@@ -139,23 +143,23 @@ export function useSynth({ oscillators, adsr }: UseSynthParams) {
             return;
           }
 
-          const targetGain = velocitySensitive
-            ? (voiceOsc.velocity / 127) *
-              (0.33 / Math.sqrt(updatedOscillators.length)) *
-              (oscillatorData.volume / 100)
-            : (0.33 / Math.sqrt(updatedOscillators.length)) *
-              (oscillatorData.volume / 100);
+          const targetGain = calculateVelocity({
+            velocity: velocitySensitive ? voiceOsc.velocity : 127,
+            numOscillators: updatedOscillators.length,
+            oscVolume: oscillatorData.volume,
+            masterVolume,
+          });
 
           voiceOsc.oscillator.type = oscillatorData.waveform;
           voiceOsc.oscillator.detune.value =
-            oscillatorData.detune + oscillatorData.transpose * 100;
+            oscillatorData.detune + oscillatorData.transpose * 100 + masterTune;
 
           voiceOsc.gain.gain.setValueAtTime(voiceOsc.gain.gain.value, now);
           voiceOsc.gain.gain.linearRampToValueAtTime(targetGain, now + 0.005);
         });
       });
     },
-    [getAudioContext, velocitySensitive],
+    [getAudioContext, masterTune, masterVolume, velocitySensitive],
   );
 
   return { noteOn, noteOff, updateVoices };

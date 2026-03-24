@@ -1,7 +1,7 @@
 import { Slider } from '../ui/slider.tsx';
 import { Label } from '../ui/label.tsx';
 import { AdsrVisualizer } from './adsr-visualizer.tsx';
-import { useSynthStore } from '../../hooks/use-synth-store.ts';
+import { useSynthStore } from '../../stores/use-synth-store.ts';
 
 export interface AdsrEnvelope {
   attack: number;

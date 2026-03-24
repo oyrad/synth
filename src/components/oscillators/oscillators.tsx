@@ -12,7 +12,7 @@ import {
 import { isOscillatorType } from '../../utils/midi.ts';
 import { Plus, X } from 'lucide-react';
 import { Toggle } from '../ui/toggle.tsx';
-import { useSynthStore } from '../../hooks/use-synth-store.ts';
+import { useSynthStore } from '../../stores/use-synth-store.ts';
 
 export interface OscillatorData {
   id: string;

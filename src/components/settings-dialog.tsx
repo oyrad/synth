@@ -1,6 +1,6 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog.tsx';
 import { Settings } from 'lucide-react';
-import { useSettingsStore } from '../hooks/use-settings-store.ts';
+import { useSettingsStore } from '../stores/use-settings-store.ts';
 import { Checkbox } from './ui/checkbox.tsx';
 import { Label } from './ui/label.tsx';
 import { toast } from 'sonner';
