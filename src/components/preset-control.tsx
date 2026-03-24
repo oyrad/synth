@@ -5,10 +5,19 @@ import { useSynthStore } from '../stores/use-synth-store.ts';
 import { SavePresetDialog } from './save-preset-dialog.tsx';
 import { useMemo } from 'react';
 import { toast } from 'sonner';
+import { DEFAULT_OSCILLATOR } from '../consts/default-oscillator.ts';
+import { DEFAULT_ADSR } from '../consts/default-adsr.ts';
 
 export function PresetControl() {
-  const { nextPreset, previousPreset, activePreset, deletePreset, savePreset, saveNewPreset } =
-    usePresetStore();
+  const {
+    presets,
+    nextPreset,
+    previousPreset,
+    activePreset,
+    deletePreset,
+    savePreset,
+    saveNewPreset,
+  } = usePresetStore();
 
   const { oscillators, adsr, loadPreset } = useSynthStore();
 
@@ -35,6 +44,7 @@ export function PresetControl() {
     <div className="border border-gray-200 dark:border-gray-600 rounded-lg p-4 flex flex-col gap-3">
       <div className="flex gap-2 items-center">
         <Button
+          disabled={activePreset.id === presets[0].id}
           variant="outline"
           onClick={() => {
             handlePrevious();
@@ -44,6 +54,7 @@ export function PresetControl() {
         </Button>
 
         <Button
+          disabled={activePreset.id === presets[presets.length - 1].id}
           className="mr-2"
           variant="outline"
           onClick={() => {
@@ -56,6 +67,25 @@ export function PresetControl() {
       </div>
 
       <div className="flex gap-2">
+        <Button
+          variant="secondary"
+          onClick={() => {
+            const newPreset = saveNewPreset({
+              name: `Preset ${presets.length + 1}`,
+              data: {
+                oscillators: [{ ...DEFAULT_OSCILLATOR, id: crypto.randomUUID() }],
+                adsr: DEFAULT_ADSR,
+              },
+            });
+
+            loadPreset(newPreset);
+            toast('New preset created.');
+          }}
+        >
+          <Plus />
+          New
+        </Button>
+
         <Button
           variant="secondary"
           disabled={!isDirty}
@@ -101,7 +131,7 @@ export function PresetControl() {
                 adsr,
               },
             });
-            toast('Preset created');
+            toast('Preset created.');
           }}
         />
 

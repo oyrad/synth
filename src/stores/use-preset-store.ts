@@ -17,7 +17,7 @@ interface PresetStoreValues {
   presets: Array<Preset>;
   activePreset: Preset;
   savePreset: ({ id, data }: { id: string; data: Preset['data'] }) => void;
-  saveNewPreset: ({ name, data }: { name: string; data: Preset['data'] }) => void;
+  saveNewPreset: ({ name, data }: { name: string; data: Preset['data'] }) => Preset;
   deletePreset: (id: string) => void;
   setActivePreset: (id: string) => void;
   nextPreset: () => Preset | undefined;
@@ -47,6 +47,8 @@ export const usePresetStore = create<PresetStoreValues>()(
       saveNewPreset: ({ name, data }) => {
         const id = crypto.randomUUID();
 
+        const newPreset = { id, name, data };
+
         set((state) => ({
           presets: [
             ...state.presets,
@@ -56,7 +58,10 @@ export const usePresetStore = create<PresetStoreValues>()(
               data,
             },
           ],
+          activePreset: newPreset,
         }));
+
+        return newPreset;
       },
 
       deletePreset: (id) =>
