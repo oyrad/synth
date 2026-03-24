@@ -37,8 +37,8 @@ export function PresetsDialog() {
           {presets.map((preset) => (
             <div
               className={cn(
-                'flex justify-between items-center rounded-md cursor-pointer p-2 hover:bg-gray-100',
-                preset.id == selectedPresetId && 'bg-gray-200',
+                'flex justify-between items-center rounded-md cursor-pointer p-2 hover:bg-gray-100 dark:hover:bg-gray-600',
+                preset.id == selectedPresetId && 'bg-gray-200 dark:bg-gray-700',
               )}
               key={preset.id}
               onClick={() => setSelectedPresetId(preset.id)}

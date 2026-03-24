@@ -28,9 +28,8 @@ export default function App() {
 
   return (
     <main className="flex flex-col gap-4 pt-8 pb-16">
-      {showVisualizer && <WaveformVisualizer />}
-
-      <div className="px-8 md:px-44 xl:px-96 w-full flex flex-col gap-8">
+      <div className="px-8 md:px-20 xl:px-48 w-full flex flex-col gap-8">
+        {showVisualizer && <WaveformVisualizer />}
         <PresetControl />
         <Oscillators />
         <Adsr />

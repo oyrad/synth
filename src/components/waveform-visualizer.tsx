@@ -67,7 +67,12 @@ function WaveformVisualizerComponent() {
     return () => cancelAnimationFrame(frameId);
   }, [getAnalyser]);
 
-  return <canvas ref={canvasRef} className="w-full h-48" />;
+  return (
+    <canvas
+      ref={canvasRef}
+      className="w-full h-80 border border-gray-200 dark:border-gray-600 rounded-lg"
+    />
+  );
 }
 
 export const WaveformVisualizer = memo(WaveformVisualizerComponent);

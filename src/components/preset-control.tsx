@@ -33,9 +33,7 @@ export function PresetControl() {
 
   return (
     <div className="border border-gray-200 dark:border-gray-600 rounded-lg p-4 flex flex-col gap-3 w-fit">
-      <p className="font-mono text-3xl font-semibold uppercase">{activePreset.name}</p>
-
-      <div className="flex gap-2">
+      <div className="flex gap-2 items-center">
         <Button
           variant="outline"
           onClick={() => {
@@ -46,6 +44,7 @@ export function PresetControl() {
         </Button>
 
         <Button
+          className="mr-2"
           variant="outline"
           onClick={() => {
             handleNext();
@@ -53,7 +52,10 @@ export function PresetControl() {
         >
           <ArrowRight />
         </Button>
+        <p className="font-mono text-3xl font-semibold uppercase">{activePreset.name}</p>
+      </div>
 
+      <div className="flex gap-2">
         <Button
           variant="secondary"
           disabled={!isDirty}
@@ -70,6 +72,18 @@ export function PresetControl() {
         >
           <Save />
           Save
+        </Button>
+
+        <Button
+          disabled={!isDirty}
+          variant="secondary"
+          onClick={() => {
+            loadPreset(activePreset);
+            toast('Preset reloaded.');
+          }}
+        >
+          <RotateCcw />
+          Reload
         </Button>
 
         <SavePresetDialog
@@ -90,17 +104,6 @@ export function PresetControl() {
             toast('Preset created');
           }}
         />
-
-        <Button
-          variant="secondary"
-          onClick={() => {
-            loadPreset(activePreset);
-            toast('Preset reloaded.');
-          }}
-        >
-          <RotateCcw />
-          Reload
-        </Button>
 
         <Button
           variant="destructive"
