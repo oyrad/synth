@@ -10,6 +10,7 @@ import { useSynthStore } from './stores/use-synth-store.ts';
 import { PresetControl } from './components/preset-control.tsx';
 import { WaveformVisualizer } from './components/waveform-visualizer.tsx';
 import { MasterSettings } from './components/master-settings.tsx';
+import { LoadPresetOnInit } from './components/load-preset-on-init.tsx';
 
 export default function App() {
   const { oscillators, adsr } = useSynthStore();
@@ -42,6 +43,7 @@ export default function App() {
       <StatusBar midiInput={midiInput} isGranted={isGranted} />
 
       <StartAudioDialog />
+      <LoadPresetOnInit />
     </main>
   );
 }
