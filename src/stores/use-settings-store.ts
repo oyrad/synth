@@ -4,10 +4,12 @@ import { persist } from 'zustand/middleware';
 interface SettingsStoreValues {
   showVisualizer: boolean;
   velocitySensitive: boolean;
+  keyboardPlaying: boolean;
   masterVolume: number;
   masterTune: number;
   setShowVisualizer: (value: boolean) => void;
   setVelocitySensitive: (value: boolean) => void;
+  setKeyboardPlaying: (value: boolean) => void;
   setMasterVolume: (value: number) => void;
   setMasterTune: (value: number) => void;
 }
@@ -17,10 +19,12 @@ export const useSettingsStore = create<SettingsStoreValues>()(
     (set) => ({
       showVisualizer: true,
       velocitySensitive: true,
+      keyboardPlaying: false,
       masterVolume: 75,
       masterTune: 0,
       setShowVisualizer: (value) => set({ showVisualizer: value }),
       setVelocitySensitive: (value) => set({ velocitySensitive: value }),
+      setKeyboardPlaying: (value) => set({ keyboardPlaying: value }),
       setMasterVolume: (value) => set({ masterVolume: value }),
       setMasterTune: (value) => set({ masterTune: value }),
     }),

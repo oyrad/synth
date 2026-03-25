@@ -8,6 +8,7 @@ import { toast } from 'sonner';
 import { DEFAULT_OSCILLATOR } from '../consts/default-oscillator.ts';
 import { DEFAULT_ADSR } from '../consts/default-adsr.ts';
 import { Input } from './ui/input.tsx';
+import { useHotkeyStore } from '../stores/use-hotkey-store.ts';
 
 interface EditablePresetNameProps {
   onSubmit: (name: string) => void;
@@ -52,6 +53,8 @@ export function PresetControl() {
     usePresetStore();
 
   const { oscillators, adsr, loadPreset } = useSynthStore();
+
+  const setHotkeysEnabled = useHotkeyStore((s) => s.setEnabled);
 
   const isDirty = useMemo(
     () => JSON.stringify({ oscillators, adsr }) !== JSON.stringify(activePreset.data),
@@ -104,6 +107,7 @@ export function PresetControl() {
                 data: activePreset.data,
               });
               setIsNameEditing(false);
+              setHotkeysEnabled(true);
             }}
             defaultValue={activePreset.name}
           />
@@ -112,6 +116,7 @@ export function PresetControl() {
             className="font-mono text-3xl font-semibold uppercase"
             onClick={() => {
               setIsNameEditing(true);
+              setHotkeysEnabled(false);
             }}
           >
             {activePreset.name}

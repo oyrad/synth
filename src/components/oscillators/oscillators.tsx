@@ -14,6 +14,8 @@ import { Plus, X } from 'lucide-react';
 import { Toggle } from '../ui/toggle.tsx';
 import { useSynthStore } from '../../stores/use-synth-store.ts';
 
+const MAX_OSCILLATORS = 12;
+
 export interface OscillatorData {
   id: string;
   waveform: OscillatorType;
@@ -34,7 +36,7 @@ export function Oscillators() {
       <div className="flex items-center gap-3">
         <p className="font-mono text-2xl">Oscillators</p>
         <Button
-          disabled={oscillators.length >= 6}
+          disabled={oscillators.length >= MAX_OSCILLATORS}
           variant="outline"
           onClick={() => {
             addOscillator();
