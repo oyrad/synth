@@ -8,7 +8,7 @@ import { useSynthStore } from '../stores/use-synth-store.ts';
 import { toast } from 'sonner';
 
 export function PresetsDialog() {
-  const { presets, deletePreset, setActivePreset } = usePresetStore();
+  const { presets, activePreset, deletePreset, setActivePreset } = usePresetStore();
 
   const [selectedPresetId, setSelectedPresetId] = useState<string | null>(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -75,7 +75,14 @@ export function PresetsDialog() {
             onClick={() => {
               if (selectedPresetId) {
                 deletePreset(selectedPresetId);
+
+                if (selectedPresetId === activePreset.id) {
+                  setActivePreset(presets[0].id);
+                  loadPreset(presets[0]);
+                }
+
                 setSelectedPresetId(null);
+
                 toast('Preset deleted.');
               }
             }}

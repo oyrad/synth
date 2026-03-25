@@ -16,7 +16,7 @@ export interface Preset {
 interface PresetStoreValues {
   presets: Array<Preset>;
   activePreset: Preset;
-  savePreset: ({ id, name, data }: { id: string; name: string; data: Preset['data'] }) => void;
+  savePreset: (preset: Preset) => void;
   saveNewPreset: ({ name, data }: { name: string; data: Preset['data'] }) => Preset;
   deletePreset: (id: string) => void;
   setActivePreset: (id: string) => void;
