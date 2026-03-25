@@ -27,7 +27,7 @@ export function StatusBarComponent({ isGranted, midiInput }: StatusBarProps) {
       <StatusBarIndicator text="Audio ready" isActive={isAudioReady} />
       <StatusBarIndicator text="MIDI Access granted" isActive={isGranted} />
       <StatusBarIndicator
-        text={midiInput ? `Connected device: ${midiInput?.name}` : 'No MIDI input'}
+        text={midiInput ? (midiInput?.name ?? '') : 'No MIDI input'}
         isActive={!!midiInput}
       />
 
