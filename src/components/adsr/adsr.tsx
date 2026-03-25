@@ -68,7 +68,7 @@ export function Adsr() {
             </div>
             <Slider
               min={0}
-              max={1}
+              max={2}
               step={0.01}
               value={[adsr.release]}
               onValueChange={(value) => updateAdsr({ release: value[0] })}

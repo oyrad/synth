@@ -139,7 +139,7 @@ export const DEFAULT_PRESETS: Array<Preset> = [
           isMute: false,
         },
       ],
-      adsr: { attack: 0.8, decay: 0.4, sustain: 0.7, release: 1.0 },
+      adsr: { attack: 0.8, decay: 0.4, sustain: 0.7, release: 2.0 },
     },
   },
   {
