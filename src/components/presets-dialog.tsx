@@ -2,13 +2,13 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Button } from './ui/button.tsx';
 import { useState } from 'react';
 import { usePresetStore } from '../stores/use-preset-store.ts';
-import { SlidersHorizontal, Trash2 } from 'lucide-react';
+import { Download, FolderOpenDot, SlidersHorizontal, Trash2, Upload } from 'lucide-react';
 import { cn } from '../utils/cn.ts';
 import { useSynthStore } from '../stores/use-synth-store.ts';
 import { toast } from 'sonner';
 
 export function PresetsDialog() {
-  const { presets, activePreset, deletePreset, setActivePreset } = usePresetStore();
+  const { presets, activePreset, deletePreset, setActivePreset, saveNewPreset } = usePresetStore();
 
   const [selectedPresetId, setSelectedPresetId] = useState<string | null>(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -28,7 +28,7 @@ export function PresetsDialog() {
       <DialogTrigger asChild>
         <SlidersHorizontal className="cursor-pointer" />
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="sm:max-w-md">
         <DialogHeader className="gap-3">
           <DialogTitle className="font-semibold">Presets</DialogTitle>
         </DialogHeader>
@@ -66,7 +66,82 @@ export function PresetsDialog() {
               setIsOpen(false);
             }}
           >
+            <FolderOpenDot />
             Load
+          </Button>
+          <Button
+            disabled={!selectedPresetId}
+            className="flex-1"
+            variant="outline"
+            onClick={() => {
+              if (selectedPresetId) {
+                const preset = presets.find((preset) => preset.id === selectedPresetId);
+
+                if (preset) {
+                  const blob = new Blob([JSON.stringify(preset)], { type: 'application/json' });
+                  const url = URL.createObjectURL(blob);
+                  const a = document.createElement('a');
+                  a.href = url;
+                  a.download = `${preset.id}.json`;
+                  a.click();
+                  URL.revokeObjectURL(url);
+                }
+              }
+            }}
+          >
+            <Download />
+            Export
+          </Button>
+          <Button
+            className="flex-1"
+            variant="outline"
+            onClick={() => {
+              const input = document.createElement('input');
+              input.type = 'file';
+              input.accept = '.json,application/json';
+
+              input.onchange = (e) => {
+                const file = (e.target as HTMLInputElement).files?.[0];
+                if (!file) {
+                  return;
+                }
+
+                const reader = new FileReader();
+
+                reader.onload = (event) => {
+                  try {
+                    const result = event.target?.result;
+                    if (typeof result !== 'string') return;
+
+                    const preset = JSON.parse(result);
+
+                    if (preset.name && preset.data) {
+                      const newPreset = saveNewPreset({
+                        name: preset.name,
+                        data: preset.data,
+                      });
+
+                      setActivePreset(newPreset.id);
+                      loadPreset(preset);
+                      toast.success('Preset imported and loaded.');
+                    } else {
+                      toast.error('Invalid preset format: missing name or data.');
+                    }
+                  } catch {
+                    toast.error('Error parsing JSON file.');
+                  }
+                };
+
+                reader.onerror = () => toast.error('Failed to read the file.');
+                reader.readAsText(file);
+              };
+
+              // 3. Trigger the click
+              input.click();
+            }}
+          >
+            <Upload />
+            Import
           </Button>
           <Button
             disabled={!selectedPresetId}
