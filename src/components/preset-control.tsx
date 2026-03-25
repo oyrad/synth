@@ -1,5 +1,5 @@
 import { Button } from './ui/button.tsx';
-import { ArrowLeft, ArrowRight, Plus, RotateCcw, Save, Trash2 } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Plus, RotateCcw, Save } from 'lucide-react';
 import { usePresetStore } from '../stores/use-preset-store.ts';
 import { useSynthStore } from '../stores/use-synth-store.ts';
 import { SavePresetDialog } from './save-preset-dialog.tsx';
@@ -9,15 +9,8 @@ import { DEFAULT_OSCILLATOR } from '../consts/default-oscillator.ts';
 import { DEFAULT_ADSR } from '../consts/default-adsr.ts';
 
 export function PresetControl() {
-  const {
-    presets,
-    nextPreset,
-    previousPreset,
-    activePreset,
-    deletePreset,
-    savePreset,
-    saveNewPreset,
-  } = usePresetStore();
+  const { presets, nextPreset, previousPreset, activePreset, savePreset, saveNewPreset } =
+    usePresetStore();
 
   const { oscillators, adsr, loadPreset } = useSynthStore();
 
@@ -134,18 +127,6 @@ export function PresetControl() {
             toast('Preset created.');
           }}
         />
-
-        <Button
-          variant="destructive"
-          onClick={() => {
-            deletePreset(activePreset.id);
-            toast('Preset deleted.');
-            handleNext();
-          }}
-        >
-          <Trash2 />
-          Delete
-        </Button>
       </div>
     </div>
   );
