@@ -1,4 +1,4 @@
-export type MidiMessageType = 'noteOn' | 'noteOff' | 'cc' | 'unknown';
+export type MidiMessageType = 'note_on' | 'note_off' | 'cc' | 'unknown';
 
 export interface ParsedMidiMessage {
   type: MidiMessageType;
@@ -13,15 +13,15 @@ export function parseMidiMessage(data: Uint8Array): ParsedMidiMessage {
   const channel = (status & 0x0f) + 1;
 
   if (type === 0x90 && data2 > 0) {
-    return { type: 'noteOn', channel, data1, data2 };
+    return { type: 'note_on', channel, data1, data2 };
   }
 
   if (type === 0x80) {
-    return { type: 'noteOff', channel, data1, data2 };
+    return { type: 'note_off', channel, data1, data2 };
   }
 
   if (type === 0x90 && data2 === 0) {
-    return { type: 'noteOff', channel, data1, data2 };
+    return { type: 'note_off', channel, data1, data2 };
   }
 
   if (type === 0xb0) {

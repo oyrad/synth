@@ -13,6 +13,7 @@ import { MasterSettings } from './components/master-settings.tsx';
 import { LoadPresetOnInit } from './components/load-preset-on-init.tsx';
 import { useRequestMidiAccess } from './hooks/use-request-midi-access.ts';
 import { useMidiStore } from './stores/use-midi-store.tsx';
+import { useKeyboard } from './hooks/use-keyboard.ts';
 
 export default function App() {
   const { isGranted } = useRequestMidiAccess();
@@ -23,6 +24,11 @@ export default function App() {
   const { noteOn, noteOff, updateVoices } = useSynth({ adsr, oscillators });
 
   useMidi({
+    onNoteOn: noteOn,
+    onNoteOff: noteOff,
+  });
+
+  useKeyboard({
     onNoteOn: noteOn,
     onNoteOff: noteOff,
   });
