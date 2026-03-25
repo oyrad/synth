@@ -16,7 +16,7 @@ export interface Preset {
 interface PresetStoreValues {
   presets: Array<Preset>;
   activePreset: Preset;
-  savePreset: ({ id, data }: { id: string; data: Preset['data'] }) => void;
+  savePreset: ({ id, name, data }: { id: string; name: string; data: Preset['data'] }) => void;
   saveNewPreset: ({ name, data }: { name: string; data: Preset['data'] }) => Preset;
   deletePreset: (id: string) => void;
   setActivePreset: (id: string) => void;
@@ -30,12 +30,12 @@ export const usePresetStore = create<PresetStoreValues>()(
       presets: DEFAULT_PRESETS,
       activePreset: DEFAULT_PRESETS[0],
 
-      savePreset: ({ id, data }) => {
+      savePreset: ({ id, name, data }) => {
         set((state) => {
           const updatedPreset = state.presets.find((p) => p.id === id);
           if (!updatedPreset) return state;
 
-          const updated = { ...updatedPreset, data };
+          const updated = { ...updatedPreset, name, data };
 
           return {
             presets: state.presets.map((p) => (p.id === id ? updated : p)),

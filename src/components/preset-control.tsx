@@ -3,12 +3,51 @@ import { ArrowLeft, ArrowRight, Plus, RotateCcw, Save } from 'lucide-react';
 import { usePresetStore } from '../stores/use-preset-store.ts';
 import { useSynthStore } from '../stores/use-synth-store.ts';
 import { SavePresetDialog } from './save-preset-dialog.tsx';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import { DEFAULT_OSCILLATOR } from '../consts/default-oscillator.ts';
 import { DEFAULT_ADSR } from '../consts/default-adsr.ts';
+import { Input } from './ui/input.tsx';
+
+interface EditablePresetNameProps {
+  onSubmit: (name: string) => void;
+  defaultValue: string;
+}
+
+function EditablePresetName({ onSubmit, defaultValue }: EditablePresetNameProps) {
+  const [presetName, setPresetName] = useState(defaultValue);
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Enter') {
+        onSubmit(presetName);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [onSubmit, presetName]);
+
+  return (
+    <Input
+      className="my-0.5"
+      autoFocus
+      size={20}
+      value={presetName}
+      onChange={(e) => setPresetName(e.target.value)}
+      onBlur={() => {
+        onSubmit(presetName);
+      }}
+    />
+  );
+}
 
 export function PresetControl() {
+  const [isNameEditing, setIsNameEditing] = useState(false);
+
   const { presets, nextPreset, previousPreset, activePreset, savePreset, saveNewPreset } =
     usePresetStore();
 
@@ -56,7 +95,28 @@ export function PresetControl() {
         >
           <ArrowRight />
         </Button>
-        <p className="font-mono text-3xl font-semibold uppercase">{activePreset.name}</p>
+        {isNameEditing ? (
+          <EditablePresetName
+            onSubmit={(newName) => {
+              savePreset({
+                id: activePreset.id,
+                name: newName,
+                data: activePreset.data,
+              });
+              setIsNameEditing(false);
+            }}
+            defaultValue={activePreset.name}
+          />
+        ) : (
+          <p
+            className="font-mono text-3xl font-semibold uppercase"
+            onClick={() => {
+              setIsNameEditing(true);
+            }}
+          >
+            {activePreset.name}
+          </p>
+        )}
       </div>
 
       <div className="flex gap-2">
@@ -84,7 +144,8 @@ export function PresetControl() {
           disabled={!isDirty}
           onClick={() => {
             savePreset({
-              id: activePreset?.id || '',
+              id: activePreset.id,
+              name: activePreset.name,
               data: {
                 oscillators,
                 adsr,
