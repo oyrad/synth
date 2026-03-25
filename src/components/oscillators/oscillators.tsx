@@ -115,8 +115,8 @@ export function Oscillators() {
               </div>
               <Slider
                 value={[oscillator.detune]}
-                min={-100}
-                max={100}
+                min={-64}
+                max={64}
                 step={1}
                 onValueChange={(value) => updateOscillator(oscillator.id, { detune: value[0] })}
               />

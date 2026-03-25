@@ -31,8 +31,8 @@ export function MasterSettings() {
           <p className="text-sm">{masterTune}</p>
         </div>
         <Slider
-          min={-100}
-          max={100}
+          min={-64}
+          max={64}
           step={1}
           value={[masterTune]}
           onValueChange={(value) => setMasterTune(value[0])}
