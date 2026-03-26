@@ -5,10 +5,9 @@ import { useSynthStore } from '../stores/use-synth-store.ts';
 import { SavePresetDialog } from './save-preset-dialog.tsx';
 import { useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
-import { DEFAULT_OSCILLATOR } from '../consts/default-oscillator.ts';
-import { DEFAULT_ADSR } from '../consts/default-adsr.ts';
 import { Input } from './ui/input.tsx';
 import { useHotkeyStore } from '../stores/use-hotkey-store.ts';
+import { DEFAULT_PRESETS } from '../consts/default-presets.ts';
 
 interface EditablePresetNameProps {
   onSubmit: (name: string) => void;
@@ -52,7 +51,7 @@ export function PresetControl() {
   const { presets, nextPreset, previousPreset, activePreset, savePreset, saveNewPreset } =
     usePresetStore();
 
-  const { oscillators, adsr, loadSynthData } = useSynthStore();
+  const { oscillators, adsr, delay, loadSynthData } = useSynthStore();
 
   const setHotkeysEnabled = useHotkeyStore((s) => s.setEnabled);
 
@@ -131,8 +130,11 @@ export function PresetControl() {
             const newPreset = saveNewPreset({
               name: `Preset ${presets.length + 1}`,
               data: {
-                oscillators: [{ ...DEFAULT_OSCILLATOR, id: crypto.randomUUID() }],
-                adsr: DEFAULT_ADSR,
+                oscillators: [
+                  { ...DEFAULT_PRESETS[0].data.oscillators[0], id: crypto.randomUUID() },
+                ],
+                adsr: DEFAULT_PRESETS[0].data.adsr,
+                delay: DEFAULT_PRESETS[0].data.delay,
               },
             });
 
@@ -154,6 +156,7 @@ export function PresetControl() {
               data: {
                 oscillators,
                 adsr,
+                delay,
               },
             });
             toast('Preset saved.');
@@ -188,6 +191,7 @@ export function PresetControl() {
               data: {
                 oscillators,
                 adsr,
+                delay,
               },
             });
             toast('Preset created.');

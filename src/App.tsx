@@ -14,6 +14,7 @@ import { LoadPresetOnInit } from './components/load-preset-on-init.tsx';
 import { useRequestMidiAccess } from './hooks/use-request-midi-access.ts';
 import { useMidiStore } from './stores/use-midi-store.tsx';
 import { useKeyboard } from './hooks/use-keyboard.ts';
+import { Delay } from './components/effects/delay.tsx';
 
 export default function App() {
   const { isGranted } = useRequestMidiAccess();
@@ -49,6 +50,8 @@ export default function App() {
         </div>
         <Oscillators />
         <Adsr />
+
+        <Delay />
       </div>
 
       <StatusBar midiInput={midiInput} isGranted={isGranted} />

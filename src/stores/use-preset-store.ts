@@ -3,6 +3,7 @@ import { persist } from 'zustand/middleware';
 import { DEFAULT_PRESETS } from '../consts/default-presets.ts';
 import type { OscillatorData } from '../components/oscillators/oscillators.tsx';
 import type { AdsrEnvelope } from '../components/adsr/adsr.tsx';
+import type { DelayEffect } from '../components/effects/delay.tsx';
 
 export interface Preset {
   id: string;
@@ -10,6 +11,7 @@ export interface Preset {
   data: {
     oscillators: Array<OscillatorData>;
     adsr: AdsrEnvelope;
+    delay: DelayEffect;
   };
 }
 

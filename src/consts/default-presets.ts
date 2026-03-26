@@ -16,6 +16,7 @@ export const DEFAULT_PRESETS: Array<Preset> = [
         },
       ],
       adsr: { attack: 0.01, decay: 0.1, sustain: 0.8, release: 0.2 },
+      delay: { mix: 0, time: 1, feedback: 0 },
     },
   },
   {
@@ -49,6 +50,7 @@ export const DEFAULT_PRESETS: Array<Preset> = [
         },
       ],
       adsr: { attack: 0.02, decay: 0.2, sustain: 0.7, release: 0.3 },
+      delay: { mix: 0, time: 1, feedback: 0 },
     },
   },
   {
@@ -82,6 +84,7 @@ export const DEFAULT_PRESETS: Array<Preset> = [
         },
       ],
       adsr: { attack: 0.01, decay: 0.01, sustain: 1.0, release: 0.05 },
+      delay: { mix: 0, time: 1, feedback: 0 },
     },
   },
   {
@@ -107,6 +110,7 @@ export const DEFAULT_PRESETS: Array<Preset> = [
         },
       ],
       adsr: { attack: 0.01, decay: 0.3, sustain: 0.5, release: 0.15 },
+      delay: { mix: 0, time: 1, feedback: 0 },
     },
   },
   {
@@ -140,6 +144,7 @@ export const DEFAULT_PRESETS: Array<Preset> = [
         },
       ],
       adsr: { attack: 0.8, decay: 0.4, sustain: 0.7, release: 2.0 },
+      delay: { mix: 0, time: 1, feedback: 0 },
     },
   },
   {
@@ -173,6 +178,7 @@ export const DEFAULT_PRESETS: Array<Preset> = [
         },
       ],
       adsr: { attack: 0.01, decay: 0.15, sustain: 0.9, release: 0.3 },
+      delay: { mix: 0, time: 1, feedback: 0 },
     },
   },
   {
@@ -198,6 +204,7 @@ export const DEFAULT_PRESETS: Array<Preset> = [
         },
       ],
       adsr: { attack: 0.05, decay: 0.2, sustain: 0.6, release: 0.25 },
+      delay: { mix: 0, time: 1, feedback: 0 },
     },
   },
   {
@@ -223,6 +230,7 @@ export const DEFAULT_PRESETS: Array<Preset> = [
         },
       ],
       adsr: { attack: 0.01, decay: 0.05, sustain: 1.0, release: 0.1 },
+      delay: { mix: 0, time: 1, feedback: 0 },
     },
   },
   {
@@ -256,6 +264,7 @@ export const DEFAULT_PRESETS: Array<Preset> = [
         },
       ],
       adsr: { attack: 0.01, decay: 0.8, sustain: 0.0, release: 0.5 },
+      delay: { mix: 0, time: 1, feedback: 0 },
     },
   },
 ];
