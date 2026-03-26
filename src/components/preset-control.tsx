@@ -52,7 +52,7 @@ export function PresetControl() {
   const { presets, nextPreset, previousPreset, activePreset, savePreset, saveNewPreset } =
     usePresetStore();
 
-  const { oscillators, adsr, loadPreset } = useSynthStore();
+  const { oscillators, adsr, loadSynthData } = useSynthStore();
 
   const setHotkeysEnabled = useHotkeyStore((s) => s.setEnabled);
 
@@ -64,14 +64,14 @@ export function PresetControl() {
   const handleNext = () => {
     const preset = nextPreset();
     if (preset) {
-      loadPreset(preset);
+      loadSynthData(preset.data);
     }
   };
 
   const handlePrevious = () => {
     const preset = previousPreset();
     if (preset) {
-      loadPreset(preset);
+      loadSynthData(preset.data);
     }
   };
 
@@ -136,7 +136,7 @@ export function PresetControl() {
               },
             });
 
-            loadPreset(newPreset);
+            loadSynthData(newPreset.data);
             toast('New preset created.');
           }}
         >
@@ -167,7 +167,7 @@ export function PresetControl() {
           disabled={!isDirty}
           variant="secondary"
           onClick={() => {
-            loadPreset(activePreset);
+            loadSynthData(activePreset.data);
             toast('Preset reloaded.');
           }}
         >

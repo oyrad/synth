@@ -6,15 +6,15 @@ export function LoadPresetOnInit() {
   const firstRender = useRef(true);
 
   const activePreset = usePresetStore((s) => s.activePreset);
-  const { loadPreset } = useSynthStore();
+  const { loadSynthData } = useSynthStore();
 
   useEffect(() => {
     if (!firstRender.current) {
       return;
     }
 
-    loadPreset(activePreset);
+    loadSynthData(activePreset.data);
     firstRender.current = false;
-  }, [activePreset, loadPreset]);
+  }, [activePreset, loadSynthData]);
   return null;
 }

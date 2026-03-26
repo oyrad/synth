@@ -12,7 +12,7 @@ interface SynthStoreValues {
   removeOscillator: (id: string) => void;
   updateOscillator: (id: string, data: Partial<OscillatorData>) => void;
   updateAdsr: (data: Partial<AdsrEnvelope>) => void;
-  loadPreset: (preset: Preset) => void;
+  loadSynthData: (data: Preset['data']) => void;
 }
 
 export const useSynthStore = create<SynthStoreValues>()((set) => ({
@@ -39,9 +39,9 @@ export const useSynthStore = create<SynthStoreValues>()((set) => ({
       adsr: { ...state.adsr, ...data },
     })),
 
-  loadPreset: (preset) =>
+  loadSynthData: (data) =>
     set({
-      oscillators: preset.data.oscillators,
-      adsr: preset.data.adsr,
+      oscillators: data.oscillators,
+      adsr: data.adsr,
     }),
 }));
