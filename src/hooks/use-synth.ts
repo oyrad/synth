@@ -1,9 +1,10 @@
-import { useCallback, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { calculateVelocity, midiNoteToFrequency } from '../utils/audio.ts';
 import { useAudioCtx } from './use-audio-context.ts';
 import type { OscillatorData } from '../components/oscillators/oscillators.tsx';
 import type { AdsrEnvelope } from '../components/adsr/adsr.tsx';
 import { useSettingsStore } from '../stores/use-settings-store.ts';
+import type { DelayEffect } from '../components/effects/delay.tsx';
 
 interface Voice {
   masterGain: GainNode;
@@ -18,9 +19,10 @@ interface Voice {
 interface UseSynthParams {
   oscillators: Array<OscillatorData>;
   adsr: AdsrEnvelope;
+  delay: DelayEffect;
 }
 
-export function useSynth({ oscillators, adsr }: UseSynthParams) {
+export function useSynth({ oscillators, adsr, delay }: UseSynthParams) {
   const voices = useRef<Record<number, Voice>>({});
 
   const { getAudioContext, getAnalyser } = useAudioCtx();
@@ -29,6 +31,44 @@ export function useSynth({ oscillators, adsr }: UseSynthParams) {
 
   const masterVolume = useSettingsStore((s) => s.masterVolume);
   const masterTune = useSettingsStore((s) => s.masterTune);
+
+  const delayNode = useRef<DelayNode | null>(null);
+  const feedbackNode = useRef<GainNode | null>(null);
+  const wetGain = useRef<GainNode | null>(null);
+  const dryGain = useRef<GainNode | null>(null);
+
+  useEffect(() => {
+    const ctx = getAudioContext();
+    const analyser = getAnalyser();
+
+    delayNode.current = ctx.createDelay(5.0);
+    feedbackNode.current = ctx.createGain();
+    wetGain.current = ctx.createGain();
+    dryGain.current = ctx.createGain();
+
+    // Feedback Loop: Delay -> Feedback -> Delay
+    delayNode.current.connect(feedbackNode.current);
+    feedbackNode.current.connect(delayNode.current);
+
+    // Output Path
+    delayNode.current.connect(wetGain.current);
+    wetGain.current.connect(analyser);
+    dryGain.current.connect(analyser);
+  }, [getAudioContext, getAnalyser]);
+
+  useEffect(() => {
+    if (!delayNode.current || !feedbackNode.current || !wetGain.current || !dryGain.current) return;
+
+    const now = getAudioContext().currentTime;
+    const ramp = 0.05; // Prevents "zipper" noise/clicks during adjustments
+
+    delayNode.current.delayTime.linearRampToValueAtTime(delay.time, now + ramp);
+    feedbackNode.current.gain.linearRampToValueAtTime(delay.feedback, now + ramp);
+
+    // Constant Power or Linear Mix
+    dryGain.current.gain.linearRampToValueAtTime(1 - delay.mix, now + ramp);
+    wetGain.current.gain.linearRampToValueAtTime(delay.mix, now + ramp);
+  }, [delay, getAudioContext]);
 
   const noteOn = useCallback(
     (note: number, velocity: number) => {
@@ -84,7 +124,10 @@ export function useSynth({ oscillators, adsr }: UseSynthParams) {
         return { id: oscillatorData.id, oscillator: osc, gain: gainNode, velocity };
       });
 
-      masterGain.connect(analyser);
+      if (dryGain.current && delayNode.current) {
+        masterGain.connect(dryGain.current);
+        masterGain.connect(delayNode.current);
+      }
 
       analyser.connect(audioContext.destination);
       voices.current[note] = { masterGain, oscillators: noteVoices };

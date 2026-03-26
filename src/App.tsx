@@ -19,10 +19,10 @@ import { Delay } from './components/effects/delay.tsx';
 export default function App() {
   const { isGranted } = useRequestMidiAccess();
 
-  const { oscillators, adsr } = useSynthStore();
+  const { oscillators, adsr, delay } = useSynthStore();
   const { selectedInput: midiInput } = useMidiStore();
 
-  const { noteOn, noteOff, updateVoices } = useSynth({ adsr, oscillators });
+  const { noteOn, noteOff, updateVoices } = useSynth({ adsr, oscillators, delay });
 
   useMidi({
     onNoteOn: noteOn,
