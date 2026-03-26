@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useMidiStore } from '../stores/use-midi-store.tsx';
+import { useSettingsStore } from '../stores/use-settings-store.ts';
 
 export function useRequestMidiAccess() {
   const [isGranted, setIsGranted] = useState(false);
 
   const { setInputs, setSelectedInput } = useMidiStore();
+  const { setKeyboardPlaying } = useSettingsStore();
 
   useEffect(() => {
     if (navigator.requestMIDIAccess) {
@@ -14,6 +16,7 @@ export function useRequestMidiAccess() {
           setIsGranted(true);
 
           if (midiAccess.inputs.size === 0) {
+            setKeyboardPlaying(true);
             console.warn('No MIDI inputs found');
             return;
           }
@@ -27,7 +30,7 @@ export function useRequestMidiAccess() {
           console.error(err);
         });
     }
-  }, [isGranted, setInputs, setSelectedInput]);
+  }, [isGranted, setInputs, setKeyboardPlaying, setSelectedInput]);
 
   return { isGranted };
 }
