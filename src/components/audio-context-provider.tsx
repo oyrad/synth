@@ -21,7 +21,6 @@ export function AudioContextProvider({ children }: PropsWithChildren) {
     if (!analyserRef.current) {
       analyserRef.current = ctx.createAnalyser();
       analyserRef.current.fftSize = 2048;
-      analyserRef.current.connect(ctx.destination);
     }
     return analyserRef.current;
   }, [getAudioContext]);
@@ -34,6 +33,7 @@ export function AudioContextProvider({ children }: PropsWithChildren) {
   const getDelay = useCallback(() => {
     if (!delayNode.current || !feedbackGain.current || !wetGain.current || !dryGain.current) {
       const ctx = getAudioContext();
+      const analyser = getAnalyser();
 
       delayNode.current = ctx.createDelay(5);
       feedbackGain.current = ctx.createGain();
@@ -44,9 +44,11 @@ export function AudioContextProvider({ children }: PropsWithChildren) {
       feedbackGain.current.connect(delayNode.current);
 
       delayNode.current.connect(wetGain.current);
-      wetGain.current.connect(ctx.destination);
+      wetGain.current.connect(analyser);
 
-      dryGain.current.connect(ctx.destination);
+      dryGain.current.connect(analyser);
+
+      analyser.connect(ctx.destination);
     }
 
     return {

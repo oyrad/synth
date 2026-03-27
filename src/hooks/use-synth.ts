@@ -48,7 +48,6 @@ export function useSynth({ oscillators, adsr, delay }: UseSynthParams) {
   const noteOn = useCallback(
     (note: number, velocity: number) => {
       const audioContext = getAudioContext();
-      const analyser = getAnalyser();
       const { delayNode, dryGain } = getDelay();
 
       if (voices.current[note]) {
@@ -105,7 +104,6 @@ export function useSynth({ oscillators, adsr, delay }: UseSynthParams) {
         masterGain.connect(delayNode);
       }
 
-      analyser.connect(audioContext.destination);
       voices.current[note] = { masterGain, oscillators: noteVoices };
     },
     [

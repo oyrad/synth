@@ -56,8 +56,8 @@ export function PresetControl() {
   const setHotkeysEnabled = useHotkeyStore((s) => s.setEnabled);
 
   const isDirty = useMemo(
-    () => JSON.stringify({ oscillators, adsr }) !== JSON.stringify(activePreset.data),
-    [oscillators, adsr, activePreset],
+    () => JSON.stringify({ oscillators, adsr, delay }) !== JSON.stringify(activePreset.data),
+    [oscillators, adsr, activePreset, delay],
   );
 
   const handleNext = () => {
