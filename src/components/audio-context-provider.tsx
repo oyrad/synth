@@ -1,30 +1,60 @@
-import { type ReactNode, useCallback, useRef, useState } from 'react';
-import { AudioCtx } from '../audio-context.tsx';
+import { type PropsWithChildren, useCallback, useRef, useState } from 'react';
+import { AudioCtx } from '../audio-context';
 
-export function AudioContextProvider({ children }: { children: ReactNode }) {
-  const audioContext = useRef<AudioContext | null>(null);
-  const analyser = useRef<AnalyserNode | null>(null);
-  const [audioContextState, setAudioContextState] =
-    useState<AudioContextState>('suspended');
+export function AudioContextProvider({ children }: PropsWithChildren) {
+  const audioCtxRef = useRef<AudioContext | null>(null);
+  const analyserRef = useRef<AnalyserNode | null>(null);
+  const [audioContextState, setAudioContextState] = useState<AudioContextState>('suspended');
 
   const getAudioContext = useCallback(() => {
-    if (!audioContext.current) {
+    if (!audioCtxRef.current) {
       const ctx = new AudioContext();
       ctx.onstatechange = () => setAudioContextState(ctx.state);
-      audioContext.current = ctx;
+      audioCtxRef.current = ctx;
     }
 
-    return audioContext.current;
+    return audioCtxRef.current;
   }, []);
 
   const getAnalyser = useCallback(() => {
-    if (!analyser.current) {
+    const ctx = getAudioContext();
+    if (!analyserRef.current) {
+      analyserRef.current = ctx.createAnalyser();
+      analyserRef.current.fftSize = 2048;
+      analyserRef.current.connect(ctx.destination);
+    }
+    return analyserRef.current;
+  }, [getAudioContext]);
+
+  const delayNode = useRef<DelayNode | null>(null);
+  const feedbackGain = useRef<GainNode | null>(null);
+  const wetGain = useRef<GainNode | null>(null);
+  const dryGain = useRef<GainNode | null>(null);
+
+  const getDelay = useCallback(() => {
+    if (!delayNode.current || !feedbackGain.current || !wetGain.current || !dryGain.current) {
       const ctx = getAudioContext();
-      analyser.current = ctx.createAnalyser();
-      analyser.current.fftSize = 2048;
+
+      delayNode.current = ctx.createDelay(5);
+      feedbackGain.current = ctx.createGain();
+      wetGain.current = ctx.createGain();
+      dryGain.current = ctx.createGain();
+
+      delayNode.current.connect(feedbackGain.current);
+      feedbackGain.current.connect(delayNode.current);
+
+      delayNode.current.connect(wetGain.current);
+      wetGain.current.connect(ctx.destination);
+
+      dryGain.current.connect(ctx.destination);
     }
 
-    return analyser.current;
+    return {
+      delayNode: delayNode.current,
+      feedbackGain: feedbackGain.current,
+      wetGain: wetGain.current,
+      dryGain: dryGain.current,
+    };
   }, [getAudioContext]);
 
   return (
@@ -33,6 +63,7 @@ export function AudioContextProvider({ children }: { children: ReactNode }) {
         isAudioReady: audioContextState === 'running',
         getAudioContext,
         getAnalyser,
+        getDelay,
       }}
     >
       {children}

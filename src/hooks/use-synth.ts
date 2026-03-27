@@ -25,55 +25,31 @@ interface UseSynthParams {
 export function useSynth({ oscillators, adsr, delay }: UseSynthParams) {
   const voices = useRef<Record<number, Voice>>({});
 
-  const { getAudioContext, getAnalyser } = useAudioCtx();
+  const { getAudioContext, getAnalyser, getDelay } = useAudioCtx();
 
   const velocitySensitive = useSettingsStore((s) => s.velocitySensitive);
 
   const masterVolume = useSettingsStore((s) => s.masterVolume);
   const masterTune = useSettingsStore((s) => s.masterTune);
 
-  const delayNode = useRef<DelayNode | null>(null);
-  const feedbackNode = useRef<GainNode | null>(null);
-  const wetGain = useRef<GainNode | null>(null);
-  const dryGain = useRef<GainNode | null>(null);
-
   useEffect(() => {
-    const ctx = getAudioContext();
-    const analyser = getAnalyser();
-
-    delayNode.current = ctx.createDelay(5.0);
-    feedbackNode.current = ctx.createGain();
-    wetGain.current = ctx.createGain();
-    dryGain.current = ctx.createGain();
-
-    // Feedback Loop: Delay -> Feedback -> Delay
-    delayNode.current.connect(feedbackNode.current);
-    feedbackNode.current.connect(delayNode.current);
-
-    // Output Path
-    delayNode.current.connect(wetGain.current);
-    wetGain.current.connect(analyser);
-    dryGain.current.connect(analyser);
-  }, [getAudioContext, getAnalyser]);
-
-  useEffect(() => {
-    if (!delayNode.current || !feedbackNode.current || !wetGain.current || !dryGain.current) return;
+    const { delayNode, feedbackGain, dryGain, wetGain } = getDelay();
 
     const now = getAudioContext().currentTime;
-    const ramp = 0.05; // Prevents "zipper" noise/clicks during adjustments
+    const ramp = 0.05;
 
-    delayNode.current.delayTime.linearRampToValueAtTime(delay.time, now + ramp);
-    feedbackNode.current.gain.linearRampToValueAtTime(delay.feedback, now + ramp);
+    delayNode.delayTime.linearRampToValueAtTime(delay.time, now + ramp);
+    feedbackGain.gain.linearRampToValueAtTime(delay.feedback, now + ramp);
 
-    // Constant Power or Linear Mix
-    dryGain.current.gain.linearRampToValueAtTime(1 - delay.mix, now + ramp);
-    wetGain.current.gain.linearRampToValueAtTime(delay.mix, now + ramp);
-  }, [delay, getAudioContext]);
+    dryGain.gain.linearRampToValueAtTime(1 - delay.mix, now + ramp);
+    wetGain.gain.linearRampToValueAtTime(delay.mix, now + ramp);
+  }, [delay, getAudioContext, getDelay]);
 
   const noteOn = useCallback(
     (note: number, velocity: number) => {
       const audioContext = getAudioContext();
       const analyser = getAnalyser();
+      const { delayNode, dryGain } = getDelay();
 
       if (voices.current[note]) {
         return;
@@ -124,15 +100,24 @@ export function useSynth({ oscillators, adsr, delay }: UseSynthParams) {
         return { id: oscillatorData.id, oscillator: osc, gain: gainNode, velocity };
       });
 
-      if (dryGain.current && delayNode.current) {
-        masterGain.connect(dryGain.current);
-        masterGain.connect(delayNode.current);
+      if (dryGain && delayNode) {
+        masterGain.connect(dryGain);
+        masterGain.connect(delayNode);
       }
 
       analyser.connect(audioContext.destination);
       voices.current[note] = { masterGain, oscillators: noteVoices };
     },
-    [adsr, getAnalyser, getAudioContext, masterTune, masterVolume, oscillators, velocitySensitive],
+    [
+      adsr,
+      getAnalyser,
+      getAudioContext,
+      getDelay,
+      masterTune,
+      masterVolume,
+      oscillators,
+      velocitySensitive,
+    ],
   );
 
   const noteOff = useCallback(
