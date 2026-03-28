@@ -1,21 +1,21 @@
 import { create } from 'zustand/react';
 import { persist } from 'zustand/middleware';
 import { DEFAULT_PRESETS } from '../consts/default-presets.ts';
-import type { OscillatorData } from '../components/oscillators/oscillators.tsx';
-import type { AdsrEnvelope } from '../components/adsr/adsr.tsx';
-import type { DelayData } from '../components/effects/delay.tsx';
-import type { FilterData } from '../components/filter/filter.tsx';
-import type { NoiseData } from '../components/noise.tsx';
+import type { OscillatorParameters } from '../components/synth/oscillators.tsx';
+import type { EnvelopeParameters } from '../components/synth/envelope.tsx';
+import type { DelayParameters } from '../components/synth/delay.tsx';
+import type { FilterParameters } from '../components/synth/filter.tsx';
+import type { NoiseParameters } from '../components/noise.tsx';
 
 export interface Preset {
   id: string;
   name: string;
-  data: {
-    oscillators: Array<OscillatorData>;
-    adsr: AdsrEnvelope;
-    delay: DelayData;
-    filter: FilterData;
-    noise: NoiseData;
+  parameters: {
+    oscillators: Array<OscillatorParameters>;
+    envelope: EnvelopeParameters;
+    delay: DelayParameters;
+    filter: FilterParameters;
+    noise: NoiseParameters;
   };
 }
 
@@ -23,7 +23,13 @@ interface PresetStoreValues {
   presets: Array<Preset>;
   activePreset: Preset;
   savePreset: (preset: Preset) => void;
-  saveNewPreset: ({ name, data }: { name: string; data: Preset['data'] }) => Preset;
+  saveNewPreset: ({
+    name,
+    parameters,
+  }: {
+    name: string;
+    parameters: Preset['parameters'];
+  }) => Preset;
   deletePreset: (id: string) => void;
   setActivePreset: (id: string) => void;
   nextPreset: () => Preset | undefined;
@@ -36,12 +42,12 @@ export const usePresetStore = create<PresetStoreValues>()(
       presets: DEFAULT_PRESETS,
       activePreset: DEFAULT_PRESETS[0],
 
-      savePreset: ({ id, name, data }) => {
+      savePreset: ({ id, name, parameters }) => {
         set((state) => {
           const updatedPreset = state.presets.find((p) => p.id === id);
           if (!updatedPreset) return state;
 
-          const updated = { ...updatedPreset, name, data };
+          const updated = { ...updatedPreset, name, parameters };
 
           return {
             presets: state.presets.map((p) => (p.id === id ? updated : p)),
@@ -50,10 +56,10 @@ export const usePresetStore = create<PresetStoreValues>()(
         });
       },
 
-      saveNewPreset: ({ name, data }) => {
+      saveNewPreset: ({ name, parameters }) => {
         const id = crypto.randomUUID();
 
-        const newPreset = { id, name, data };
+        const newPreset = { id, name, parameters };
 
         set((state) => ({
           presets: [
@@ -61,7 +67,7 @@ export const usePresetStore = create<PresetStoreValues>()(
             {
               id,
               name,
-              data,
+              parameters,
             },
           ],
           activePreset: newPreset,

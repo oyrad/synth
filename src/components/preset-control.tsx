@@ -51,28 +51,26 @@ export function PresetControl() {
   const { presets, nextPreset, previousPreset, activePreset, savePreset, saveNewPreset } =
     usePresetStore();
 
-  const { oscillators, adsr, delay, filter, noise, loadSynthData } = useSynthStore();
+  const { parameters, loadSynthParameters } = useSynthStore();
 
   const setHotkeysEnabled = useHotkeyStore((s) => s.setEnabled);
 
   const isDirty = useMemo(
-    () =>
-      JSON.stringify({ oscillators, adsr, delay, filter, noise }) !==
-      JSON.stringify(activePreset.data),
-    [oscillators, adsr, activePreset, delay, filter, noise],
+    () => JSON.stringify(parameters) !== JSON.stringify(activePreset.parameters),
+    [activePreset.parameters, parameters],
   );
 
   const handleNext = () => {
     const preset = nextPreset();
     if (preset) {
-      loadSynthData(preset.data);
+      loadSynthParameters(preset.parameters);
     }
   };
 
   const handlePrevious = () => {
     const preset = previousPreset();
     if (preset) {
-      loadSynthData(preset.data);
+      loadSynthParameters(preset.parameters);
     }
   };
 
@@ -105,7 +103,7 @@ export function PresetControl() {
               savePreset({
                 id: activePreset.id,
                 name: newName,
-                data: activePreset.data,
+                parameters: activePreset.parameters,
               });
               setIsNameEditing(false);
               setHotkeysEnabled(true);
@@ -131,18 +129,18 @@ export function PresetControl() {
           onClick={() => {
             const newPreset = saveNewPreset({
               name: `Preset ${presets.length + 1}`,
-              data: {
+              parameters: {
                 oscillators: [
-                  { ...DEFAULT_PRESETS[0].data.oscillators[0], id: crypto.randomUUID() },
+                  { ...DEFAULT_PRESETS[0].parameters.oscillators[0], id: crypto.randomUUID() },
                 ],
-                adsr: DEFAULT_PRESETS[0].data.adsr,
-                delay: DEFAULT_PRESETS[0].data.delay,
-                filter: DEFAULT_PRESETS[0].data.filter,
-                noise: DEFAULT_PRESETS[0].data.noise,
+                envelope: DEFAULT_PRESETS[0].parameters.envelope,
+                delay: DEFAULT_PRESETS[0].parameters.delay,
+                filter: DEFAULT_PRESETS[0].parameters.filter,
+                noise: DEFAULT_PRESETS[0].parameters.noise,
               },
             });
 
-            loadSynthData(newPreset.data);
+            loadSynthParameters(newPreset.parameters);
             toast('New preset created.');
           }}
         >
@@ -157,13 +155,7 @@ export function PresetControl() {
             savePreset({
               id: activePreset.id,
               name: activePreset.name,
-              data: {
-                oscillators,
-                adsr,
-                delay,
-                filter,
-                noise,
-              },
+              parameters,
             });
             toast('Preset saved.');
           }}
@@ -176,7 +168,7 @@ export function PresetControl() {
           disabled={!isDirty}
           variant="secondary"
           onClick={() => {
-            loadSynthData(activePreset.data);
+            loadSynthParameters(activePreset.parameters);
             toast('Preset reloaded.');
           }}
         >
@@ -194,13 +186,7 @@ export function PresetControl() {
           onSave={(presetName) => {
             saveNewPreset({
               name: presetName,
-              data: {
-                oscillators,
-                adsr,
-                delay,
-                filter,
-                noise,
-              },
+              parameters,
             });
             toast('Preset created.');
           }}

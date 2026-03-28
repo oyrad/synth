@@ -1,18 +1,25 @@
 import { Label } from '../ui/label.tsx';
 import { Slider } from '../ui/slider.tsx';
 import { isFilterType } from '../../utils/midi.ts';
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '../ui/select.tsx';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '../ui/select.tsx';
 import { useSynthStore } from '../../stores/use-synth-store.ts';
 import { hzToLog, logToHz } from '../../utils/audio.ts';
 
-export interface FilterData {
+export interface FilterParameters {
   type: BiquadFilterType;
   frequency: number;
   resonance: number;
 }
 
 export function Filter() {
-  const filter = useSynthStore((s) => s.filter);
+  const filter = useSynthStore((s) => s.parameters.filter);
   const updateFilter = useSynthStore((s) => s.updateFilter);
 
   const { type, frequency, resonance } = filter;

@@ -11,7 +11,7 @@ interface ImportPresetButtonProps extends ComponentProps<'button'> {
 
 export function ImportPresetButton({ onImport, ...props }: ImportPresetButtonProps) {
   const { saveNewPreset, setActivePreset } = usePresetStore();
-  const { loadSynthData } = useSynthStore();
+  const { loadSynthParameters } = useSynthStore();
 
   return (
     <Button
@@ -40,11 +40,11 @@ export function ImportPresetButton({ onImport, ...props }: ImportPresetButtonPro
               if (preset.name && preset.data) {
                 const newPreset = saveNewPreset({
                   name: preset.name,
-                  data: preset.data,
+                  parameters: preset.parameters,
                 });
 
                 setActivePreset(newPreset.id);
-                loadSynthData(preset.data);
+                loadSynthParameters(preset.data);
                 toast('Preset imported and loaded.');
 
                 onImport?.();

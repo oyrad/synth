@@ -1,10 +1,10 @@
-import type { AdsrEnvelope } from './adsr.tsx';
+import type { EnvelopeParameters } from './envelope.tsx';
 
 interface AdsrVisualizerProps {
-  adsr: AdsrEnvelope;
+  envelope: EnvelopeParameters;
 }
 
-export function AdsrVisualizer({ adsr }: AdsrVisualizerProps) {
+export function EnvelopeVisualizer({ envelope }: AdsrVisualizerProps) {
   const width = 300;
   const height = 100;
   const sustainWidth = 80;
@@ -12,11 +12,11 @@ export function AdsrVisualizer({ adsr }: AdsrVisualizerProps) {
 
   const timeScale = (width - sustainWidth) / totalTime;
 
-  const attackX = adsr.attack * timeScale;
-  const decayX = attackX + adsr.decay * timeScale;
+  const attackX = envelope.attack * timeScale;
+  const decayX = attackX + envelope.decay * timeScale;
   const sustainX = decayX + sustainWidth;
-  const releaseX = sustainX + adsr.release * timeScale;
-  const sustainY = height - adsr.sustain * height;
+  const releaseX = sustainX + envelope.release * timeScale;
+  const sustainY = height - envelope.sustain * height;
 
   return (
     <div className="relative w-full h-auto border border-gray-200 dark:border-gray-600 rounded-lg">

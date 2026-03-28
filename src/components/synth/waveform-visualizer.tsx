@@ -1,5 +1,5 @@
 import { memo, useEffect, useRef } from 'react';
-import { useAudioCtx } from '../hooks/use-audio-context.ts';
+import { useAudioCtx } from '../../hooks/use-audio-context.ts';
 
 function WaveformVisualizerComponent() {
   const canvasRef = useRef<HTMLCanvasElement>(null);

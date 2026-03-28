@@ -16,7 +16,7 @@ import { useSynthStore } from '../../stores/use-synth-store.ts';
 
 const MAX_OSCILLATORS = 12;
 
-export interface OscillatorData {
+export interface OscillatorParameters {
   id: string;
   waveform: OscillatorType;
   isMute: boolean;
@@ -26,7 +26,7 @@ export interface OscillatorData {
 }
 
 export function Oscillators() {
-  const oscillators = useSynthStore((s) => s.oscillators);
+  const oscillators = useSynthStore((s) => s.parameters.oscillators);
   const updateOscillator = useSynthStore((s) => s.updateOscillator);
   const removeOscillator = useSynthStore((s) => s.removeOscillator);
   const addOscillator = useSynthStore((s) => s.addOscillator);

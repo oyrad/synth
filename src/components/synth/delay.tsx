@@ -2,14 +2,14 @@ import { Label } from '../ui/label.tsx';
 import { Slider } from '../ui/slider.tsx';
 import { useSynthStore } from '../../stores/use-synth-store.ts';
 
-export interface DelayData {
+export interface DelayParameters {
   mix: number;
   time: number;
   feedback: number;
 }
 
 export function Delay() {
-  const { mix, time, feedback } = useSynthStore((s) => s.delay);
+  const { mix, time, feedback } = useSynthStore((s) => s.parameters.delay);
   const updateDelay = useSynthStore((s) => s.updateDelay);
 
   return (

@@ -4,6 +4,7 @@ import { memo } from 'react';
 import { SettingsDialog } from './settings-dialog.tsx';
 import { PresetsDialog } from './presets-dialog.tsx';
 import { ThemeToggle } from './theme-toggle.tsx';
+import { useMidiStore } from '../stores/use-midi-store.tsx';
 
 function StatusBarIndicator({ text, isActive }: { text: string; isActive: boolean }) {
   return (
@@ -15,17 +16,17 @@ function StatusBarIndicator({ text, isActive }: { text: string; isActive: boolea
 }
 
 interface StatusBarProps {
-  isGranted: boolean;
-  midiInput: MIDIInput | null | undefined;
+  isMidiAccessGranted: boolean;
 }
 
-export function StatusBarComponent({ isGranted, midiInput }: StatusBarProps) {
+export function StatusBarComponent({ isMidiAccessGranted }: StatusBarProps) {
   const { isAudioReady } = useAudioCtx();
+  const { selectedInput: midiInput } = useMidiStore();
 
   return (
     <div className="fixed bottom-0 left-0 w-full bg-black text-white py-3 px-6 flex gap-6">
       <StatusBarIndicator text="Audio ready" isActive={isAudioReady} />
-      <StatusBarIndicator text="MIDI Access granted" isActive={isGranted} />
+      <StatusBarIndicator text="MIDI Access granted" isActive={isMidiAccessGranted} />
       <StatusBarIndicator
         text={midiInput ? (midiInput?.name ?? '') : 'No MIDI input'}
         isActive={!!midiInput}

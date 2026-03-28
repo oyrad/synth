@@ -1,12 +1,8 @@
 import { useCallback, useEffect, useRef } from 'react';
 import { calculateVelocity, MAX_VELOCITY, midiNoteToFrequency } from '../utils/audio.ts';
 import { useAudioCtx } from './use-audio-context.ts';
-import type { OscillatorData } from '../components/oscillators/oscillators.tsx';
-import type { AdsrEnvelope } from '../components/adsr/adsr.tsx';
 import { useSettingsStore } from '../stores/use-settings-store.ts';
-import type { DelayData } from '../components/effects/delay.tsx';
-import type { FilterData } from '../components/filter/filter.tsx';
-import type { NoiseData } from '../components/noise.tsx';
+import { useSynthStore } from '../stores/use-synth-store.ts';
 
 interface Voice {
   masterGain: GainNode;
@@ -22,18 +18,12 @@ interface Voice {
   noiseGain: GainNode;
 }
 
-interface UseSynthParams {
-  oscillators: Array<OscillatorData>;
-  adsr: AdsrEnvelope;
-  delay: DelayData;
-  filter: FilterData;
-  noise: NoiseData;
-}
-
-export function useSynth({ oscillators, adsr, delay, filter, noise }: UseSynthParams) {
+export function useSynth() {
   const voices = useRef<Record<number, Voice>>({});
 
   const { getAudioContext, getDelay, getNoiseBuffer } = useAudioCtx();
+
+  const { oscillators, filter, envelope, delay, noise } = useSynthStore((s) => s.parameters);
 
   const velocitySensitive = useSettingsStore((s) => s.velocitySensitive);
 
@@ -49,7 +39,7 @@ export function useSynth({ oscillators, adsr, delay, filter, noise }: UseSynthPa
         return;
       }
 
-      const { attack, decay, sustain } = adsr;
+      const { attack, decay, sustain } = envelope;
 
       const masterGain = audioContext.createGain();
       const now = audioContext.currentTime;
@@ -131,7 +121,7 @@ export function useSynth({ oscillators, adsr, delay, filter, noise }: UseSynthPa
       };
     },
     [
-      adsr,
+      envelope,
       filter,
       getAudioContext,
       getDelay,
@@ -156,7 +146,7 @@ export function useSynth({ oscillators, adsr, delay, filter, noise }: UseSynthPa
       const masterGain = voice.masterGain;
       const now = audioContext.currentTime;
 
-      const release = Math.max(adsr.release, 0.01);
+      const release = Math.max(envelope.release, 0.01);
 
       voice.noiseGain.gain.setValueAtTime(voice.noiseGain.gain.value, now);
       voice.noiseGain.gain.linearRampToValueAtTime(0, now + release);
@@ -178,7 +168,7 @@ export function useSynth({ oscillators, adsr, delay, filter, noise }: UseSynthPa
 
       delete voices.current[note];
     },
-    [adsr.release, getAudioContext],
+    [envelope.release, getAudioContext],
   );
 
   useEffect(() => {

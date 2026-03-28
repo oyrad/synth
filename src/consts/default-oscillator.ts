@@ -1,6 +1,6 @@
-import type { OscillatorData } from '../components/oscillators/oscillators.tsx';
+import type { OscillatorParameters } from '../components/synth/oscillators.tsx';
 
-export const DEFAULT_OSCILLATOR: Omit<OscillatorData, 'id'> = {
+export const DEFAULT_OSCILLATOR_PARAMETERS: Omit<OscillatorParameters, 'id'> = {
   waveform: 'sine',
   isMute: false,
   volume: 50,

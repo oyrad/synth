@@ -2,12 +2,12 @@ import { Slider } from './ui/slider.tsx';
 import { Label } from './ui/label.tsx';
 import { useSynthStore } from '../stores/use-synth-store.ts';
 
-export interface NoiseData {
+export interface NoiseParameters {
   volume: number;
 }
 
 export function Noise() {
-  const { volume } = useSynthStore((s) => s.noise);
+  const { volume } = useSynthStore((s) => s.parameters.noise);
   const updateNoise = useSynthStore((s) => s.updateNoise);
 
   return (

@@ -15,7 +15,7 @@ export function PresetsDialog() {
   const [selectedPresetId, setSelectedPresetId] = useState<string | null>(null);
   const [isOpen, setIsOpen] = useState(false);
 
-  const { loadSynthData } = useSynthStore();
+  const { loadSynthParameters } = useSynthStore();
 
   return (
     <Dialog
@@ -60,7 +60,7 @@ export function PresetsDialog() {
 
                 if (preset) {
                   setActivePreset(preset.id);
-                  loadSynthData(preset.data);
+                  loadSynthParameters(preset.parameters);
                   toast('Preset loaded.');
                 }
               }
@@ -83,7 +83,7 @@ export function PresetsDialog() {
 
                 if (selectedPresetId === activePreset.id) {
                   setActivePreset(presets[0].id);
-                  loadSynthData(presets[0].data);
+                  loadSynthParameters(presets[0].parameters);
                 }
 
                 setSelectedPresetId(null);

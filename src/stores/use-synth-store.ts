@@ -1,65 +1,86 @@
-import { create } from 'zustand/react';
+import { create } from 'zustand';
 import { DEFAULT_PRESETS } from '../consts/default-presets.ts';
-import { DEFAULT_OSCILLATOR } from '../consts/default-oscillator.ts';
+import { DEFAULT_OSCILLATOR_PARAMETERS } from '../consts/default-oscillator.ts';
 import type { Preset } from './use-preset-store.ts';
 
 interface SynthStoreValues {
-  oscillators: Preset['data']['oscillators'];
-  adsr: Preset['data']['adsr'];
-  delay: Preset['data']['delay'];
-  filter: Preset['data']['filter'];
-  noise: Preset['data']['noise'];
+  parameters: Preset['parameters'];
   addOscillator: VoidFunction;
   removeOscillator: (id: string) => void;
-  updateOscillator: (id: string, data: Partial<Preset['data']['oscillators']>) => void;
-  updateAdsr: (data: Partial<Preset['data']['adsr']>) => void;
-  updateDelay: (delay: Partial<Preset['data']['delay']>) => void;
-  updateFilter: (filter: Partial<Preset['data']['filter']>) => void;
-  updateNoise: (noise: Partial<Preset['data']['noise']>) => void;
-  loadSynthData: (data: Preset['data']) => void;
+  updateOscillator: (
+    id: string,
+    oscillator: Partial<Preset['parameters']['oscillators'][0]>,
+  ) => void;
+  updateEnvelope: (envelope: Partial<Preset['parameters']['envelope']>) => void;
+  updateDelay: (delay: Partial<Preset['parameters']['delay']>) => void;
+  updateFilter: (filter: Partial<Preset['parameters']['filter']>) => void;
+  updateNoise: (noise: Partial<Preset['parameters']['noise']>) => void;
+  loadSynthParameters: (parameters: Preset['parameters']) => void;
 }
 
 export const useSynthStore = create<SynthStoreValues>()((set) => ({
-  oscillators: DEFAULT_PRESETS[0].data.oscillators,
-  adsr: DEFAULT_PRESETS[0].data.adsr,
-  delay: DEFAULT_PRESETS[0].data.delay,
-  filter: DEFAULT_PRESETS[0].data.filter,
-  noise: DEFAULT_PRESETS[0].data.noise,
+  parameters: DEFAULT_PRESETS[0].parameters,
 
   addOscillator: () =>
     set((state) => ({
-      oscillators: [...state.oscillators, { ...DEFAULT_OSCILLATOR, id: crypto.randomUUID() }],
+      parameters: {
+        ...state.parameters,
+        oscillators: [
+          ...state.parameters.oscillators,
+          { ...DEFAULT_OSCILLATOR_PARAMETERS, id: crypto.randomUUID() },
+        ],
+      },
     })),
 
   removeOscillator: (id) =>
     set((state) => ({
-      oscillators: state.oscillators.filter((osc) => osc.id !== id),
+      parameters: {
+        ...state.parameters,
+        oscillators: state.parameters.oscillators.filter((osc) => osc.id !== id),
+      },
     })),
 
-  updateOscillator: (id, data) =>
+  updateOscillator: (id, oscillator) =>
     set((state) => ({
-      oscillators: state.oscillators.map((osc) => (osc.id === id ? { ...osc, ...data } : osc)),
+      parameters: {
+        ...state.parameters,
+        oscillators: state.parameters.oscillators.map((osc) =>
+          osc.id === id ? { ...osc, ...oscillator } : osc,
+        ),
+      },
     })),
 
-  updateAdsr: (data) =>
+  updateEnvelope: (envelope) =>
     set((state) => ({
-      adsr: { ...state.adsr, ...data },
+      parameters: {
+        ...state.parameters,
+        envelope: { ...state.parameters.envelope, ...envelope },
+      },
     })),
 
   updateDelay: (delay) =>
     set((state) => ({
-      delay: { ...state.delay, ...delay },
+      parameters: {
+        ...state.parameters,
+        delay: { ...state.parameters.delay, ...delay },
+      },
     })),
 
   updateFilter: (filter) =>
     set((state) => ({
-      filter: { ...state.filter, ...filter },
+      parameters: {
+        ...state.parameters,
+        filter: { ...state.parameters.filter, ...filter },
+      },
     })),
 
   updateNoise: (noise) =>
     set((state) => ({
-      noise: { ...state.noise, ...noise },
+      parameters: {
+        ...state.parameters,
+        noise: { ...state.parameters.noise, ...noise },
+      },
     })),
 
-  loadSynthData: (data) => set(data),
+  loadSynthParameters: (parameters) => set({ parameters }),
 }));
