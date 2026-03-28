@@ -15,14 +15,15 @@ import { useRequestMidiAccess } from './hooks/use-request-midi-access.ts';
 import { useMidiStore } from './stores/use-midi-store.tsx';
 import { useKeyboard } from './hooks/use-keyboard.ts';
 import { Delay } from './components/effects/delay.tsx';
+import { Filter } from './components/filter/filter.tsx';
 
 export default function App() {
   const { isGranted } = useRequestMidiAccess();
 
-  const { oscillators, adsr, delay } = useSynthStore();
+  const { oscillators, adsr, delay, filter } = useSynthStore();
   const { selectedInput: midiInput } = useMidiStore();
 
-  const { noteOn, noteOff, updateVoices } = useSynth({ adsr, oscillators, delay });
+  const { noteOn, noteOff, updateVoices } = useSynth({ adsr, oscillators, delay, filter });
 
   useMidi({
     onNoteOn: noteOn,
@@ -51,7 +52,10 @@ export default function App() {
         <Oscillators />
         <Adsr />
 
-        <Delay />
+        <div className="flex gap-4">
+          <Filter />
+          <Delay />
+        </div>
       </div>
 
       <StatusBar midiInput={midiInput} isGranted={isGranted} />

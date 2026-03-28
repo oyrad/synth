@@ -17,6 +17,11 @@ export const DEFAULT_PRESETS: Array<Preset> = [
       ],
       adsr: { attack: 0.01, decay: 0.1, sustain: 0.8, release: 0.2 },
       delay: { mix: 0, time: 1, feedback: 0 },
+      filter: {
+        type: 'lowpass',
+        frequency: 2000,
+        resonance: 2,
+      },
     },
   },
   {
@@ -51,6 +56,11 @@ export const DEFAULT_PRESETS: Array<Preset> = [
       ],
       adsr: { attack: 0.02, decay: 0.2, sustain: 0.7, release: 0.3 },
       delay: { mix: 0, time: 1, feedback: 0 },
+      filter: {
+        type: 'lowpass',
+        frequency: 800,
+        resonance: 4,
+      },
     },
   },
   {
@@ -85,6 +95,11 @@ export const DEFAULT_PRESETS: Array<Preset> = [
       ],
       adsr: { attack: 0.01, decay: 0.01, sustain: 1.0, release: 0.05 },
       delay: { mix: 0, time: 1, feedback: 0 },
+      filter: {
+        type: 'lowpass',
+        frequency: 12000,
+        resonance: 1,
+      },
     },
   },
   {
@@ -111,6 +126,11 @@ export const DEFAULT_PRESETS: Array<Preset> = [
       ],
       adsr: { attack: 0.01, decay: 0.3, sustain: 0.5, release: 0.15 },
       delay: { mix: 0, time: 1, feedback: 0 },
+      filter: {
+        type: 'lowpass',
+        frequency: 150,
+        resonance: 6,
+      },
     },
   },
   {
@@ -144,7 +164,12 @@ export const DEFAULT_PRESETS: Array<Preset> = [
         },
       ],
       adsr: { attack: 0.8, decay: 0.4, sustain: 0.7, release: 2.0 },
-      delay: { mix: 0, time: 1, feedback: 0 },
+      delay: { mix: 0.3, time: 0.4, feedback: 0.4 },
+      filter: {
+        type: 'lowpass',
+        frequency: 400,
+        resonance: 1,
+      },
     },
   },
   {
@@ -179,6 +204,11 @@ export const DEFAULT_PRESETS: Array<Preset> = [
       ],
       adsr: { attack: 0.01, decay: 0.15, sustain: 0.9, release: 0.3 },
       delay: { mix: 0, time: 1, feedback: 0 },
+      filter: {
+        type: 'lowpass',
+        frequency: 5000,
+        resonance: 1.5,
+      },
     },
   },
   {
@@ -205,6 +235,11 @@ export const DEFAULT_PRESETS: Array<Preset> = [
       ],
       adsr: { attack: 0.05, decay: 0.2, sustain: 0.6, release: 0.25 },
       delay: { mix: 0, time: 1, feedback: 0 },
+      filter: {
+        type: 'bandpass',
+        frequency: 1000,
+        resonance: 3,
+      },
     },
   },
   {
@@ -231,6 +266,11 @@ export const DEFAULT_PRESETS: Array<Preset> = [
       ],
       adsr: { attack: 0.01, decay: 0.05, sustain: 1.0, release: 0.1 },
       delay: { mix: 0, time: 1, feedback: 0 },
+      filter: {
+        type: 'lowpass',
+        frequency: 18000,
+        resonance: 10,
+      },
     },
   },
   {
@@ -264,7 +304,12 @@ export const DEFAULT_PRESETS: Array<Preset> = [
         },
       ],
       adsr: { attack: 0.01, decay: 0.8, sustain: 0.0, release: 0.5 },
-      delay: { mix: 0, time: 1, feedback: 0 },
+      delay: { mix: 0.4, time: 0.6, feedback: 0.5 },
+      filter: {
+        type: 'highpass',
+        frequency: 500,
+        resonance: 2,
+      },
     },
   },
 ];

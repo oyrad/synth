@@ -1,20 +1,19 @@
 import { create } from 'zustand/react';
 import { DEFAULT_PRESETS } from '../consts/default-presets.ts';
-import type { OscillatorData } from '../components/oscillators/oscillators.tsx';
-import type { AdsrEnvelope } from '../components/adsr/adsr.tsx';
 import { DEFAULT_OSCILLATOR } from '../consts/default-oscillator.ts';
 import type { Preset } from './use-preset-store.ts';
-import type { DelayEffect } from '../components/effects/delay.tsx';
 
 interface SynthStoreValues {
   oscillators: Preset['data']['oscillators'];
   adsr: Preset['data']['adsr'];
   delay: Preset['data']['delay'];
+  filter: Preset['data']['filter'];
   addOscillator: VoidFunction;
   removeOscillator: (id: string) => void;
-  updateOscillator: (id: string, data: Partial<OscillatorData>) => void;
-  updateAdsr: (data: Partial<AdsrEnvelope>) => void;
-  updateDelay: (delay: Partial<DelayEffect>) => void;
+  updateOscillator: (id: string, data: Partial<Preset['data']['oscillators']>) => void;
+  updateAdsr: (data: Partial<Preset['data']['adsr']>) => void;
+  updateDelay: (delay: Partial<Preset['data']['delay']>) => void;
+  updateFilter: (delay: Partial<Preset['data']['filter']>) => void;
   loadSynthData: (data: Preset['data']) => void;
 }
 
@@ -22,6 +21,7 @@ export const useSynthStore = create<SynthStoreValues>()((set) => ({
   oscillators: DEFAULT_PRESETS[0].data.oscillators,
   adsr: DEFAULT_PRESETS[0].data.adsr,
   delay: DEFAULT_PRESETS[0].data.delay,
+  filter: DEFAULT_PRESETS[0].data.filter,
 
   addOscillator: () =>
     set((state) => ({
@@ -48,10 +48,10 @@ export const useSynthStore = create<SynthStoreValues>()((set) => ({
       delay: { ...state.delay, ...delay },
     })),
 
-  loadSynthData: (data) =>
-    set({
-      oscillators: data.oscillators,
-      adsr: data.adsr,
-      delay: data.delay,
-    }),
+  updateFilter: (filter) =>
+    set((state) => ({
+      filter: { ...state.filter, ...filter },
+    })),
+
+  loadSynthData: (data) => set(data),
 }));

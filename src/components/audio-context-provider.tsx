@@ -35,7 +35,7 @@ export function AudioContextProvider({ children }: PropsWithChildren) {
       const ctx = getAudioContext();
       const analyser = getAnalyser();
 
-      delayNode.current = ctx.createDelay(5);
+      delayNode.current = ctx.createDelay(2);
       feedbackGain.current = ctx.createGain();
       wetGain.current = ctx.createGain();
       dryGain.current = ctx.createGain();
@@ -57,7 +57,7 @@ export function AudioContextProvider({ children }: PropsWithChildren) {
       wetGain: wetGain.current,
       dryGain: dryGain.current,
     };
-  }, [getAudioContext]);
+  }, [getAnalyser, getAudioContext]);
 
   return (
     <AudioCtx.Provider

@@ -51,13 +51,14 @@ export function PresetControl() {
   const { presets, nextPreset, previousPreset, activePreset, savePreset, saveNewPreset } =
     usePresetStore();
 
-  const { oscillators, adsr, delay, loadSynthData } = useSynthStore();
+  const { oscillators, adsr, delay, filter, loadSynthData } = useSynthStore();
 
   const setHotkeysEnabled = useHotkeyStore((s) => s.setEnabled);
 
   const isDirty = useMemo(
-    () => JSON.stringify({ oscillators, adsr, delay }) !== JSON.stringify(activePreset.data),
-    [oscillators, adsr, activePreset, delay],
+    () =>
+      JSON.stringify({ oscillators, adsr, delay, filter }) !== JSON.stringify(activePreset.data),
+    [oscillators, adsr, activePreset, delay, filter],
   );
 
   const handleNext = () => {
@@ -135,6 +136,7 @@ export function PresetControl() {
                 ],
                 adsr: DEFAULT_PRESETS[0].data.adsr,
                 delay: DEFAULT_PRESETS[0].data.delay,
+                filter: DEFAULT_PRESETS[0].data.filter,
               },
             });
 
@@ -157,6 +159,7 @@ export function PresetControl() {
                 oscillators,
                 adsr,
                 delay,
+                filter,
               },
             });
             toast('Preset saved.');
@@ -192,6 +195,7 @@ export function PresetControl() {
                 oscillators,
                 adsr,
                 delay,
+                filter,
               },
             });
             toast('Preset created.');

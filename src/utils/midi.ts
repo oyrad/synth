@@ -35,6 +35,10 @@ export function isOscillatorType(value: string): value is OscillatorType {
   return ['sine', 'square', 'triangle', 'sawtooth'].includes(value);
 }
 
+export function isFilterType(value: string): value is BiquadFilterType {
+  return ['highpass', 'lowpass', 'bandpass'].includes(value);
+}
+
 export function isMidiInput(value: MIDIInput | null): value is MIDIInput {
   return value !== null;
 }

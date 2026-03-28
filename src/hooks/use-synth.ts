@@ -4,7 +4,8 @@ import { useAudioCtx } from './use-audio-context.ts';
 import type { OscillatorData } from '../components/oscillators/oscillators.tsx';
 import type { AdsrEnvelope } from '../components/adsr/adsr.tsx';
 import { useSettingsStore } from '../stores/use-settings-store.ts';
-import type { DelayEffect } from '../components/effects/delay.tsx';
+import type { DelayData } from '../components/effects/delay.tsx';
+import type { FilterData } from '../components/filter/filter.tsx';
 
 interface Voice {
   masterGain: GainNode;
@@ -14,18 +15,20 @@ interface Voice {
     gain: GainNode | null;
     velocity: number;
   }>;
+  filterNode: BiquadFilterNode;
 }
 
 interface UseSynthParams {
   oscillators: Array<OscillatorData>;
   adsr: AdsrEnvelope;
-  delay: DelayEffect;
+  delay: DelayData;
+  filter: FilterData;
 }
 
-export function useSynth({ oscillators, adsr, delay }: UseSynthParams) {
+export function useSynth({ oscillators, adsr, delay, filter }: UseSynthParams) {
   const voices = useRef<Record<number, Voice>>({});
 
-  const { getAudioContext, getAnalyser, getDelay } = useAudioCtx();
+  const { getAudioContext, getDelay } = useAudioCtx();
 
   const velocitySensitive = useSettingsStore((s) => s.velocitySensitive);
 
@@ -45,6 +48,21 @@ export function useSynth({ oscillators, adsr, delay }: UseSynthParams) {
     wetGain.gain.linearRampToValueAtTime(delay.mix, now + ramp);
   }, [delay, getAudioContext, getDelay]);
 
+  useEffect(() => {
+    const audioContext = getAudioContext();
+    const now = audioContext.currentTime;
+    const ramp = 0.05;
+
+    Object.values(voices.current).forEach((voice) => {
+      voice.filterNode.type = filter.type;
+      voice.filterNode.frequency.exponentialRampToValueAtTime(
+        Math.max(20, filter.frequency),
+        now + ramp,
+      );
+      voice.filterNode.Q.linearRampToValueAtTime(filter.resonance, now + ramp);
+    });
+  }, [filter, getAudioContext]);
+
   const noteOn = useCallback(
     (note: number, velocity: number) => {
       const audioContext = getAudioContext();
@@ -58,6 +76,11 @@ export function useSynth({ oscillators, adsr, delay }: UseSynthParams) {
 
       const masterGain = audioContext.createGain();
       const now = audioContext.currentTime;
+
+      const filterNode = audioContext.createBiquadFilter();
+      filterNode.type = filter.type;
+      filterNode.frequency.value = filter.frequency;
+      filterNode.Q.value = filter.resonance;
 
       masterGain.gain.setValueAtTime(0, now);
 
@@ -93,7 +116,7 @@ export function useSynth({ oscillators, adsr, delay }: UseSynthParams) {
         });
 
         osc.connect(gainNode);
-        gainNode.connect(masterGain);
+        gainNode.connect(filterNode);
         osc.start();
 
         return { id: oscillatorData.id, oscillator: osc, gain: gainNode, velocity };
@@ -104,11 +127,13 @@ export function useSynth({ oscillators, adsr, delay }: UseSynthParams) {
         masterGain.connect(delayNode);
       }
 
-      voices.current[note] = { masterGain, oscillators: noteVoices };
+      filterNode.connect(masterGain);
+
+      voices.current[note] = { masterGain, oscillators: noteVoices, filterNode };
     },
     [
       adsr,
-      getAnalyser,
+      filter,
       getAudioContext,
       getDelay,
       masterTune,
@@ -138,7 +163,10 @@ export function useSynth({ oscillators, adsr, delay }: UseSynthParams) {
       voice.oscillators.forEach(({ oscillator }) => {
         if (oscillator) {
           oscillator.stop(now + release);
-          oscillator.addEventListener('ended', () => oscillator.disconnect());
+          oscillator.addEventListener('ended', () => {
+            oscillator.disconnect();
+            voice.filterNode.disconnect();
+          });
         }
       });
 

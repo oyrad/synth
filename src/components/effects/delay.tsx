@@ -2,7 +2,7 @@ import { Label } from '../ui/label.tsx';
 import { Slider } from '../ui/slider.tsx';
 import { useSynthStore } from '../../stores/use-synth-store.ts';
 
-export interface DelayEffect {
+export interface DelayData {
   mix: number;
   time: number;
   feedback: number;
@@ -35,7 +35,7 @@ export function Delay() {
         <Slider
           value={[time]}
           min={0}
-          max={5}
+          max={2}
           step={0.01}
           onValueChange={(value) => updateDelay({ time: value[0] })}
         />
