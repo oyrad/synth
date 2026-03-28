@@ -5,6 +5,7 @@ import type { OscillatorData } from '../components/oscillators/oscillators.tsx';
 import type { AdsrEnvelope } from '../components/adsr/adsr.tsx';
 import type { DelayData } from '../components/effects/delay.tsx';
 import type { FilterData } from '../components/filter/filter.tsx';
+import type { NoiseData } from '../components/noise.tsx';
 
 export interface Preset {
   id: string;
@@ -14,6 +15,7 @@ export interface Preset {
     adsr: AdsrEnvelope;
     delay: DelayData;
     filter: FilterData;
+    noise: NoiseData;
   };
 }
 

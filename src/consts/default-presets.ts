@@ -22,6 +22,9 @@ export const DEFAULT_PRESETS: Array<Preset> = [
         frequency: 2000,
         resonance: 2,
       },
+      noise: {
+        volume: 0,
+      },
     },
   },
   {
@@ -60,6 +63,9 @@ export const DEFAULT_PRESETS: Array<Preset> = [
         type: 'lowpass',
         frequency: 800,
         resonance: 4,
+      },
+      noise: {
+        volume: 0,
       },
     },
   },
@@ -100,6 +106,9 @@ export const DEFAULT_PRESETS: Array<Preset> = [
         frequency: 12000,
         resonance: 1,
       },
+      noise: {
+        volume: 0,
+      },
     },
   },
   {
@@ -130,6 +139,9 @@ export const DEFAULT_PRESETS: Array<Preset> = [
         type: 'lowpass',
         frequency: 150,
         resonance: 6,
+      },
+      noise: {
+        volume: 0,
       },
     },
   },
@@ -170,6 +182,9 @@ export const DEFAULT_PRESETS: Array<Preset> = [
         frequency: 400,
         resonance: 1,
       },
+      noise: {
+        volume: 0,
+      },
     },
   },
   {
@@ -209,6 +224,9 @@ export const DEFAULT_PRESETS: Array<Preset> = [
         frequency: 5000,
         resonance: 1.5,
       },
+      noise: {
+        volume: 0,
+      },
     },
   },
   {
@@ -240,6 +258,9 @@ export const DEFAULT_PRESETS: Array<Preset> = [
         frequency: 1000,
         resonance: 3,
       },
+      noise: {
+        volume: 0,
+      },
     },
   },
   {
@@ -270,6 +291,9 @@ export const DEFAULT_PRESETS: Array<Preset> = [
         type: 'lowpass',
         frequency: 18000,
         resonance: 10,
+      },
+      noise: {
+        volume: 0,
       },
     },
   },
@@ -309,6 +333,9 @@ export const DEFAULT_PRESETS: Array<Preset> = [
         type: 'highpass',
         frequency: 500,
         resonance: 2,
+      },
+      noise: {
+        volume: 0,
       },
     },
   },

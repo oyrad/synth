@@ -10,6 +10,7 @@ interface AudioContextValue {
     wetGain: GainNode;
     dryGain: GainNode;
   };
+  getNoiseBuffer: () => AudioBuffer;
 }
 
 export const AudioCtx = createContext<AudioContextValue | null>(null);

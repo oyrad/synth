@@ -8,12 +8,14 @@ interface SynthStoreValues {
   adsr: Preset['data']['adsr'];
   delay: Preset['data']['delay'];
   filter: Preset['data']['filter'];
+  noise: Preset['data']['noise'];
   addOscillator: VoidFunction;
   removeOscillator: (id: string) => void;
   updateOscillator: (id: string, data: Partial<Preset['data']['oscillators']>) => void;
   updateAdsr: (data: Partial<Preset['data']['adsr']>) => void;
   updateDelay: (delay: Partial<Preset['data']['delay']>) => void;
-  updateFilter: (delay: Partial<Preset['data']['filter']>) => void;
+  updateFilter: (filter: Partial<Preset['data']['filter']>) => void;
+  updateNoise: (noise: Partial<Preset['data']['noise']>) => void;
   loadSynthData: (data: Preset['data']) => void;
 }
 
@@ -22,6 +24,7 @@ export const useSynthStore = create<SynthStoreValues>()((set) => ({
   adsr: DEFAULT_PRESETS[0].data.adsr,
   delay: DEFAULT_PRESETS[0].data.delay,
   filter: DEFAULT_PRESETS[0].data.filter,
+  noise: DEFAULT_PRESETS[0].data.noise,
 
   addOscillator: () =>
     set((state) => ({
@@ -51,6 +54,11 @@ export const useSynthStore = create<SynthStoreValues>()((set) => ({
   updateFilter: (filter) =>
     set((state) => ({
       filter: { ...state.filter, ...filter },
+    })),
+
+  updateNoise: (noise) =>
+    set((state) => ({
+      noise: { ...state.noise, ...noise },
     })),
 
   loadSynthData: (data) => set(data),

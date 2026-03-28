@@ -1,7 +1,6 @@
 import { useSynth } from './hooks/use-synth.ts';
 import { useMidi } from './hooks/use-midi.ts';
 import { Oscillators } from './components/oscillators/oscillators.tsx';
-import { useEffect } from 'react';
 import { StatusBar } from './components/status-bar.tsx';
 import { StartAudioDialog } from './components/start-audio-dialog.tsx';
 import { Adsr } from './components/adsr/adsr.tsx';
@@ -16,14 +15,15 @@ import { useMidiStore } from './stores/use-midi-store.tsx';
 import { useKeyboard } from './hooks/use-keyboard.ts';
 import { Delay } from './components/effects/delay.tsx';
 import { Filter } from './components/filter/filter.tsx';
+import { Noise } from './components/noise.tsx';
 
 export default function App() {
   const { isGranted } = useRequestMidiAccess();
 
-  const { oscillators, adsr, delay, filter } = useSynthStore();
+  const { oscillators, adsr, delay, filter, noise } = useSynthStore();
   const { selectedInput: midiInput } = useMidiStore();
 
-  const { noteOn, noteOff, updateVoices } = useSynth({ adsr, oscillators, delay, filter });
+  const { noteOn, noteOff } = useSynth({ adsr, oscillators, delay, filter, noise });
 
   useMidi({
     onNoteOn: noteOn,
@@ -36,10 +36,6 @@ export default function App() {
   });
 
   const showVisualizer = useSettingsStore((s) => s.showVisualizer);
-
-  useEffect(() => {
-    updateVoices(oscillators);
-  }, [oscillators, updateVoices]);
 
   return (
     <main className="flex flex-col gap-4 pt-8 pb-16">
@@ -55,6 +51,7 @@ export default function App() {
         <div className="flex gap-4">
           <Filter />
           <Delay />
+          <Noise />
         </div>
       </div>
 

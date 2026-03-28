@@ -1,5 +1,6 @@
 import { type PropsWithChildren, useCallback, useRef, useState } from 'react';
 import { AudioCtx } from '../audio-context';
+import { createWhiteNoiseBuffer } from '../utils/audio.ts';
 
 export function AudioContextProvider({ children }: PropsWithChildren) {
   const audioCtxRef = useRef<AudioContext | null>(null);
@@ -22,6 +23,7 @@ export function AudioContextProvider({ children }: PropsWithChildren) {
       analyserRef.current = ctx.createAnalyser();
       analyserRef.current.fftSize = 2048;
     }
+
     return analyserRef.current;
   }, [getAudioContext]);
 
@@ -59,6 +61,17 @@ export function AudioContextProvider({ children }: PropsWithChildren) {
     };
   }, [getAnalyser, getAudioContext]);
 
+  const noiseBuffer = useRef<AudioBuffer | null>(null);
+
+  const getNoiseBuffer = useCallback(() => {
+    if (!noiseBuffer.current) {
+      const ctx = getAudioContext();
+      noiseBuffer.current = createWhiteNoiseBuffer(ctx);
+    }
+
+    return noiseBuffer.current;
+  }, [getAudioContext]);
+
   return (
     <AudioCtx.Provider
       value={{
@@ -66,6 +79,7 @@ export function AudioContextProvider({ children }: PropsWithChildren) {
         getAudioContext,
         getAnalyser,
         getDelay,
+        getNoiseBuffer,
       }}
     >
       {children}
