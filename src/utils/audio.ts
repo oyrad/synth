@@ -53,3 +53,22 @@ export function createDistortionCurve(amount: number) {
   }
   return curve;
 }
+
+export function createReverbBuffer(
+  audioContext: BaseAudioContext,
+  duration: number,
+  decay: number,
+) {
+  const sampleRate = audioContext.sampleRate;
+  const length = sampleRate * duration;
+  const buffer = audioContext.createBuffer(2, length, sampleRate);
+
+  for (let channel = 0; channel < 2; channel++) {
+    const channelData = buffer.getChannelData(channel);
+    for (let i = 0; i < length; i++) {
+      const noise = Math.random() * 2 - 1;
+      channelData[i] = noise * Math.pow(1 - i / length, decay);
+    }
+  }
+  return buffer;
+}

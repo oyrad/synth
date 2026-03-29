@@ -11,6 +11,7 @@ import { useSynth } from '../../hooks/use-synth.ts';
 import { useMidi } from '../../hooks/use-midi.ts';
 import { useKeyboard } from '../../hooks/use-keyboard.ts';
 import { Distortion } from './distortion.tsx';
+import { Reverb } from './reverb.tsx';
 
 export function Synth() {
   const showVisualizer = useSettingsStore((s) => s.showVisualizer);
@@ -42,6 +43,7 @@ export function Synth() {
         <Delay />
         <Noise />
         <Distortion />
+        <Reverb />
       </div>
     </div>
   );

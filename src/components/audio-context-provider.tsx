@@ -1,6 +1,6 @@
 import { type PropsWithChildren, useCallback, useRef, useState } from 'react';
 import { AudioCtx } from '../audio-context';
-import { createWhiteNoiseBuffer } from '../utils/audio.ts';
+import { createReverbBuffer, createWhiteNoiseBuffer } from '../utils/audio.ts';
 
 export function AudioContextProvider({ children }: PropsWithChildren) {
   const audioCtxRef = useRef<AudioContext | null>(null);
@@ -24,23 +24,46 @@ export function AudioContextProvider({ children }: PropsWithChildren) {
       analyserRef.current.fftSize = 2048;
     }
 
+    analyserRef.current.connect(ctx.destination);
+
     return analyserRef.current;
   }, [getAudioContext]);
+
+  const reverbNode = useRef<ConvolverNode | null>(null);
+  const reverbWetGain = useRef<GainNode | null>(null);
+
+  const getReverb = useCallback(() => {
+    if (!reverbNode.current || !reverbWetGain.current) {
+      const ctx = getAudioContext();
+      const analyser = getAnalyser();
+
+      reverbNode.current = ctx.createConvolver();
+      reverbWetGain.current = ctx.createGain();
+
+      reverbNode.current.buffer = createReverbBuffer(ctx, 2.0, 2.0);
+
+      reverbNode.current.connect(reverbWetGain.current);
+      reverbWetGain.current.connect(analyser);
+    }
+    return { reverbNode: reverbNode.current, reverbWetGain: reverbWetGain.current };
+  }, [getAudioContext, getAnalyser]);
 
   const distortionNode = useRef<WaveShaperNode | null>(null);
 
   const getDistortion = useCallback(() => {
     if (!distortionNode.current) {
       const ctx = getAudioContext();
+      const { reverbNode } = getReverb();
       const analyser = getAnalyser();
 
       distortionNode.current = ctx.createWaveShaper();
       distortionNode.current.oversample = '4x';
 
+      distortionNode.current.connect(reverbNode);
       distortionNode.current.connect(analyser);
     }
     return distortionNode.current;
-  }, [getAudioContext, getAnalyser]);
+  }, [getAnalyser, getAudioContext, getReverb]);
 
   const delayNode = useRef<DelayNode | null>(null);
   const feedbackGain = useRef<GainNode | null>(null);
@@ -50,7 +73,6 @@ export function AudioContextProvider({ children }: PropsWithChildren) {
   const getDelay = useCallback(() => {
     if (!delayNode.current || !feedbackGain.current || !wetGain.current || !dryGain.current) {
       const ctx = getAudioContext();
-      const analyser = getAnalyser();
       const distortion = getDistortion();
 
       delayNode.current = ctx.createDelay(2);
@@ -65,8 +87,6 @@ export function AudioContextProvider({ children }: PropsWithChildren) {
 
       wetGain.current.connect(distortion);
       dryGain.current.connect(distortion);
-
-      analyser.connect(ctx.destination);
     }
 
     return {
@@ -75,7 +95,7 @@ export function AudioContextProvider({ children }: PropsWithChildren) {
       wetGain: wetGain.current,
       dryGain: dryGain.current,
     };
-  }, [getAnalyser, getAudioContext, getDistortion]);
+  }, [getAudioContext, getDistortion]);
 
   const noiseBuffer = useRef<AudioBuffer | null>(null);
 
@@ -97,6 +117,7 @@ export function AudioContextProvider({ children }: PropsWithChildren) {
         getDelay,
         getNoiseBuffer,
         getDistortion,
+        getReverb,
       }}
     >
       {children}

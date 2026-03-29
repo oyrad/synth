@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef } from 'react';
 import {
   calculateVelocity,
   createDistortionCurve,
+  createReverbBuffer,
   MAX_VELOCITY,
   midiNoteToFrequency,
 } from '../utils/audio.ts';
@@ -26,9 +27,9 @@ interface Voice {
 export function useSynth() {
   const voices = useRef<Record<number, Voice>>({});
 
-  const { getAudioContext, getDelay, getNoiseBuffer, getDistortion } = useAudioCtx();
+  const { getAudioContext, getDelay, getNoiseBuffer, getDistortion, getReverb } = useAudioCtx();
 
-  const { oscillators, filter, envelope, delay, noise, distortion } = useSynthStore(
+  const { oscillators, filter, envelope, delay, noise, distortion, reverb } = useSynthStore(
     (s) => s.parameters,
   );
 
@@ -216,6 +217,16 @@ export function useSynth() {
 
     distortionNode.curve = createDistortionCurve(distortion.amount);
   }, [distortion, getDistortion]);
+
+  useEffect(() => {
+    const { reverbNode, reverbWetGain } = getReverb();
+    const ctx = getAudioContext();
+
+    const wetValue = reverb.mix;
+    reverbWetGain.gain.setTargetAtTime(wetValue, ctx.currentTime, 0.05);
+
+    reverbNode.buffer = createReverbBuffer(ctx, Math.max(0.1, reverb.time), 3);
+  }, [reverb.mix, reverb.time, getAudioContext, getReverb]);
 
   useEffect(() => {
     const audioContext = getAudioContext();

@@ -37,14 +37,14 @@ export function ImportPresetButton({ onImport, ...props }: ImportPresetButtonPro
 
               const preset = JSON.parse(result);
 
-              if (preset.name && preset.data) {
+              if (preset.name && preset.parameters) {
                 const newPreset = saveNewPreset({
                   name: preset.name,
                   parameters: preset.parameters,
                 });
 
                 setActivePreset(newPreset.id);
-                loadSynthParameters(preset.data);
+                loadSynthParameters(preset.parameters);
                 toast('Preset imported and loaded.');
 
                 onImport?.();

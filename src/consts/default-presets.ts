@@ -14,6 +14,7 @@ export const DEFAULT_PRESETS: Array<Preset> = [
       delay: { mix: 0.2, time: 0.3, feedback: 0.3 },
       noise: { volume: 0 },
       distortion: { amount: 0 },
+      reverb: { mix: 0.3, time: 1.5 },
     },
   },
   {
@@ -29,6 +30,7 @@ export const DEFAULT_PRESETS: Array<Preset> = [
       delay: { mix: 0.15, time: 0.25, feedback: 0.2 },
       noise: { volume: 0 },
       distortion: { amount: 0 },
+      reverb: { mix: 0.25, time: 1.2 },
     },
   },
   {
@@ -43,7 +45,8 @@ export const DEFAULT_PRESETS: Array<Preset> = [
       filter: { type: 'lowpass', frequency: 600, resonance: 6 },
       delay: { mix: 0.1, time: 0.2, feedback: 0.2 },
       noise: { volume: 0 },
-      distortion: { amount: 0 },
+      distortion: { amount: 20 },
+      reverb: { mix: 0.15, time: 0.8 },
     },
   },
   {
@@ -60,6 +63,7 @@ export const DEFAULT_PRESETS: Array<Preset> = [
       delay: { mix: 0.25, time: 0.375, feedback: 0.35 },
       noise: { volume: 0 },
       distortion: { amount: 0 },
+      reverb: { mix: 0.2, time: 1.0 },
     },
   },
   {
@@ -76,6 +80,7 @@ export const DEFAULT_PRESETS: Array<Preset> = [
       delay: { mix: 0.4, time: 0.5, feedback: 0.4 },
       noise: { volume: 5 },
       distortion: { amount: 0 },
+      reverb: { mix: 0.6, time: 3.0 },
     },
   },
   {
@@ -91,7 +96,8 @@ export const DEFAULT_PRESETS: Array<Preset> = [
       filter: { type: 'lowpass', frequency: 5000, resonance: 2 },
       delay: { mix: 0.15, time: 0.3, feedback: 0.25 },
       noise: { volume: 0 },
-      distortion: { amount: 0 },
+      distortion: { amount: 15 },
+      reverb: { mix: 0.2, time: 1.0 },
     },
   },
   {
@@ -106,7 +112,8 @@ export const DEFAULT_PRESETS: Array<Preset> = [
       filter: { type: 'lowpass', frequency: 1500, resonance: 4 },
       delay: { mix: 0.2, time: 0.25, feedback: 0.3 },
       noise: { volume: 0 },
-      distortion: { amount: 0 },
+      distortion: { amount: 10 },
+      reverb: { mix: 0.15, time: 0.8 },
     },
   },
   {
@@ -122,6 +129,7 @@ export const DEFAULT_PRESETS: Array<Preset> = [
       delay: { mix: 0.1, time: 0.15, feedback: 0.15 },
       noise: { volume: 0 },
       distortion: { amount: 0 },
+      reverb: { mix: 0.1, time: 0.5 },
     },
   },
   {
@@ -137,6 +145,7 @@ export const DEFAULT_PRESETS: Array<Preset> = [
       delay: { mix: 0.2, time: 0.35, feedback: 0.3 },
       noise: { volume: 0 },
       distortion: { amount: 0 },
+      reverb: { mix: 0.2, time: 1.0 },
     },
   },
   {
@@ -151,11 +160,12 @@ export const DEFAULT_PRESETS: Array<Preset> = [
       filter: { type: 'lowpass', frequency: 500, resonance: 8 },
       delay: { mix: 0.1, time: 0.2, feedback: 0.2 },
       noise: { volume: 0 },
-      distortion: { amount: 0 },
+      distortion: { amount: 35 },
+      reverb: { mix: 0.1, time: 0.6 },
     },
   },
   {
-    id: 'preset-aint-no-sunshine-synth',
+    id: 'preset-superstition',
     name: 'Superstition',
     parameters: {
       oscillators: [
@@ -168,6 +178,7 @@ export const DEFAULT_PRESETS: Array<Preset> = [
       delay: { mix: 0.0, time: 0.2, feedback: 0.2 },
       noise: { volume: 0 },
       distortion: { amount: 0 },
+      reverb: { mix: 0.05, time: 0.4 },
     },
   },
   {
@@ -189,7 +200,8 @@ export const DEFAULT_PRESETS: Array<Preset> = [
       filter: { type: 'lowpass', frequency: 2000, resonance: 5 },
       delay: { mix: 0.35, time: 0.4, feedback: 0.5 },
       noise: { volume: 8 },
-      distortion: { amount: 0 },
+      distortion: { amount: 25 },
+      reverb: { mix: 0.25, time: 1.2 },
     },
   },
   {
@@ -206,6 +218,7 @@ export const DEFAULT_PRESETS: Array<Preset> = [
       delay: { mix: 0.2, time: 0.4, feedback: 0.3 },
       noise: { volume: 0 },
       distortion: { amount: 0 },
+      reverb: { mix: 0.35, time: 2.0 },
     },
   },
   {
@@ -222,6 +235,7 @@ export const DEFAULT_PRESETS: Array<Preset> = [
       delay: { mix: 0.3, time: 0.375, feedback: 0.4 },
       noise: { volume: 0 },
       distortion: { amount: 0 },
+      reverb: { mix: 0.2, time: 1.0 },
     },
   },
   {
@@ -237,6 +251,7 @@ export const DEFAULT_PRESETS: Array<Preset> = [
       delay: { mix: 0.15, time: 0.2, feedback: 0.2 },
       noise: { volume: 0 },
       distortion: { amount: 0 },
+      reverb: { mix: 0.1, time: 0.6 },
     },
   },
   {
@@ -253,6 +268,7 @@ export const DEFAULT_PRESETS: Array<Preset> = [
       delay: { mix: 0.5, time: 0.6, feedback: 0.45 },
       noise: { volume: 3 },
       distortion: { amount: 0 },
+      reverb: { mix: 0.7, time: 4.0 },
     },
   },
   {
@@ -268,6 +284,7 @@ export const DEFAULT_PRESETS: Array<Preset> = [
       delay: { mix: 0.2, time: 0.3, feedback: 0.25 },
       noise: { volume: 0 },
       distortion: { amount: 0 },
+      reverb: { mix: 0.15, time: 0.8 },
     },
   },
   {
@@ -284,6 +301,7 @@ export const DEFAULT_PRESETS: Array<Preset> = [
       delay: { mix: 0.2, time: 0.25, feedback: 0.3 },
       noise: { volume: 0 },
       distortion: { amount: 0 },
+      reverb: { mix: 0.2, time: 1.0 },
     },
   },
   {
@@ -299,6 +317,7 @@ export const DEFAULT_PRESETS: Array<Preset> = [
       delay: { mix: 0.25, time: 0.35, feedback: 0.3 },
       noise: { volume: 0 },
       distortion: { amount: 0 },
+      reverb: { mix: 0.2, time: 1.0 },
     },
   },
   {
@@ -314,6 +333,7 @@ export const DEFAULT_PRESETS: Array<Preset> = [
       delay: { mix: 0.15, time: 0.3, feedback: 0.25 },
       noise: { volume: 0 },
       distortion: { amount: 0 },
+      reverb: { mix: 0.1, time: 0.6 },
     },
   },
 ];

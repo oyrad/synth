@@ -12,6 +12,10 @@ interface AudioContextValue {
   };
   getNoiseBuffer: () => AudioBuffer;
   getDistortion: () => WaveShaperNode;
+  getReverb: () => {
+    reverbNode: ConvolverNode;
+    reverbWetGain: GainNode;
+  };
 }
 
 export const AudioCtx = createContext<AudioContextValue | null>(null);
