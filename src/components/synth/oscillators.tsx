@@ -1,20 +1,13 @@
 import { Button } from '../ui/button.tsx';
 import { Label } from '../ui/label.tsx';
 import { Slider } from '../ui/slider.tsx';
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '../ui/select.tsx';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '../ui/select.tsx';
 import { isOscillatorType } from '../../utils/midi.ts';
 import { Plus, X } from 'lucide-react';
 import { Toggle } from '../ui/toggle.tsx';
 import { useSynthStore } from '../../stores/use-synth-store.ts';
 
-const MAX_OSCILLATORS = 12;
+const MAX_OSCILLATORS = 4;
 
 export interface OscillatorParameters {
   id: string;
@@ -47,7 +40,7 @@ export function Oscillators() {
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-4 gap-4">
         {oscillators.map((oscillator) => (
           <div
             className="flex flex-col gap-4 rounded-xl border border-gray-200 dark:border-gray-600 p-4"

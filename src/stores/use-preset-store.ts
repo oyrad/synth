@@ -5,7 +5,8 @@ import type { OscillatorParameters } from '../components/synth/oscillators.tsx';
 import type { EnvelopeParameters } from '../components/synth/envelope.tsx';
 import type { DelayParameters } from '../components/synth/delay.tsx';
 import type { FilterParameters } from '../components/synth/filter.tsx';
-import type { NoiseParameters } from '../components/noise.tsx';
+import type { NoiseParameters } from '../components/synth/noise.tsx';
+import type { DistortionParameters } from '../components/synth/distortion.tsx';
 
 export interface Preset {
   id: string;
@@ -16,6 +17,7 @@ export interface Preset {
     delay: DelayParameters;
     filter: FilterParameters;
     noise: NoiseParameters;
+    distortion: DistortionParameters;
   };
 }
 

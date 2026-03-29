@@ -11,6 +11,7 @@ interface AudioContextValue {
     dryGain: GainNode;
   };
   getNoiseBuffer: () => AudioBuffer;
+  getDistortion: () => WaveShaperNode;
 }
 
 export const AudioCtx = createContext<AudioContextValue | null>(null);

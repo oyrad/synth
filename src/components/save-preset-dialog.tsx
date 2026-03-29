@@ -2,6 +2,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Button } from './ui/button.tsx';
 import { Input } from './ui/input.tsx';
 import { type ReactNode, useState } from 'react';
+import { useHotkeyStore } from '../stores/use-hotkey-store.ts';
 
 interface SavePresetDialogProps {
   trigger: ReactNode;
@@ -12,8 +13,16 @@ export function SavePresetDialog({ trigger, onSave }: SavePresetDialogProps) {
   const [presetName, setPresetName] = useState('');
   const [isOpen, setIsOpen] = useState(false);
 
+  const { setEnabled: setHotkeysEnabled } = useHotkeyStore();
+
   return (
-    <Dialog open={isOpen} onOpenChange={(open) => setIsOpen(open)}>
+    <Dialog
+      open={isOpen}
+      onOpenChange={(open) => {
+        setHotkeysEnabled(!open);
+        setIsOpen(open);
+      }}
+    >
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent>
         <DialogHeader className="gap-3">
@@ -41,6 +50,7 @@ export function SavePresetDialog({ trigger, onSave }: SavePresetDialogProps) {
 
                 setPresetName('');
                 setIsOpen(false);
+                setHotkeysEnabled(true);
               }}
             >
               Save

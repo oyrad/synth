@@ -5,11 +5,12 @@ import { Oscillators } from './oscillators.tsx';
 import { Envelope } from './envelope.tsx';
 import { Filter } from './filter.tsx';
 import { Delay } from './delay.tsx';
-import { Noise } from '../noise.tsx';
+import { Noise } from './noise.tsx';
 import { useSettingsStore } from '../../stores/use-settings-store.ts';
 import { useSynth } from '../../hooks/use-synth.ts';
 import { useMidi } from '../../hooks/use-midi.ts';
 import { useKeyboard } from '../../hooks/use-keyboard.ts';
+import { Distortion } from './distortion.tsx';
 
 export function Synth() {
   const showVisualizer = useSettingsStore((s) => s.showVisualizer);
@@ -36,10 +37,11 @@ export function Synth() {
       <Oscillators />
       <Envelope />
 
-      <div className="flex gap-4">
+      <div className="grid grid-cols-4 gap-4">
         <Filter />
         <Delay />
         <Noise />
+        <Distortion />
       </div>
     </div>
   );

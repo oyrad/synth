@@ -15,6 +15,7 @@ interface SynthStoreValues {
   updateDelay: (delay: Partial<Preset['parameters']['delay']>) => void;
   updateFilter: (filter: Partial<Preset['parameters']['filter']>) => void;
   updateNoise: (noise: Partial<Preset['parameters']['noise']>) => void;
+  updateDistortion: (distortion: Partial<Preset['parameters']['distortion']>) => void;
   loadSynthParameters: (parameters: Preset['parameters']) => void;
 }
 
@@ -79,6 +80,14 @@ export const useSynthStore = create<SynthStoreValues>()((set) => ({
       parameters: {
         ...state.parameters,
         noise: { ...state.parameters.noise, ...noise },
+      },
+    })),
+
+  updateDistortion: (distortion) =>
+    set((state) => ({
+      parameters: {
+        ...state.parameters,
+        distortion: { ...state.parameters.distortion, ...distortion },
       },
     })),
 

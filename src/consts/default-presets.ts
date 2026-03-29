@@ -13,6 +13,7 @@ export const DEFAULT_PRESETS: Array<Preset> = [
       filter: { type: 'lowpass', frequency: 800, resonance: 8 },
       delay: { mix: 0.2, time: 0.3, feedback: 0.3 },
       noise: { volume: 0 },
+      distortion: { amount: 0 },
     },
   },
   {
@@ -27,6 +28,7 @@ export const DEFAULT_PRESETS: Array<Preset> = [
       filter: { type: 'lowpass', frequency: 2000, resonance: 2 },
       delay: { mix: 0.15, time: 0.25, feedback: 0.2 },
       noise: { volume: 0 },
+      distortion: { amount: 0 },
     },
   },
   {
@@ -41,6 +43,7 @@ export const DEFAULT_PRESETS: Array<Preset> = [
       filter: { type: 'lowpass', frequency: 600, resonance: 6 },
       delay: { mix: 0.1, time: 0.2, feedback: 0.2 },
       noise: { volume: 0 },
+      distortion: { amount: 0 },
     },
   },
   {
@@ -56,6 +59,7 @@ export const DEFAULT_PRESETS: Array<Preset> = [
       filter: { type: 'lowpass', frequency: 3000, resonance: 3 },
       delay: { mix: 0.25, time: 0.375, feedback: 0.35 },
       noise: { volume: 0 },
+      distortion: { amount: 0 },
     },
   },
   {
@@ -71,6 +75,7 @@ export const DEFAULT_PRESETS: Array<Preset> = [
       filter: { type: 'lowpass', frequency: 1200, resonance: 2 },
       delay: { mix: 0.4, time: 0.5, feedback: 0.4 },
       noise: { volume: 5 },
+      distortion: { amount: 0 },
     },
   },
   {
@@ -86,6 +91,7 @@ export const DEFAULT_PRESETS: Array<Preset> = [
       filter: { type: 'lowpass', frequency: 5000, resonance: 2 },
       delay: { mix: 0.15, time: 0.3, feedback: 0.25 },
       noise: { volume: 0 },
+      distortion: { amount: 0 },
     },
   },
   {
@@ -100,6 +106,7 @@ export const DEFAULT_PRESETS: Array<Preset> = [
       filter: { type: 'lowpass', frequency: 1500, resonance: 4 },
       delay: { mix: 0.2, time: 0.25, feedback: 0.3 },
       noise: { volume: 0 },
+      distortion: { amount: 0 },
     },
   },
   {
@@ -114,6 +121,7 @@ export const DEFAULT_PRESETS: Array<Preset> = [
       filter: { type: 'lowpass', frequency: 3000, resonance: 3 },
       delay: { mix: 0.1, time: 0.15, feedback: 0.15 },
       noise: { volume: 0 },
+      distortion: { amount: 0 },
     },
   },
   {
@@ -128,6 +136,7 @@ export const DEFAULT_PRESETS: Array<Preset> = [
       filter: { type: 'lowpass', frequency: 2500, resonance: 3 },
       delay: { mix: 0.2, time: 0.35, feedback: 0.3 },
       noise: { volume: 0 },
+      distortion: { amount: 0 },
     },
   },
   {
@@ -142,6 +151,7 @@ export const DEFAULT_PRESETS: Array<Preset> = [
       filter: { type: 'lowpass', frequency: 500, resonance: 8 },
       delay: { mix: 0.1, time: 0.2, feedback: 0.2 },
       noise: { volume: 0 },
+      distortion: { amount: 0 },
     },
   },
   {
@@ -157,6 +167,7 @@ export const DEFAULT_PRESETS: Array<Preset> = [
       filter: { type: 'lowpass', frequency: 4000, resonance: 2 },
       delay: { mix: 0.0, time: 0.2, feedback: 0.2 },
       noise: { volume: 0 },
+      distortion: { amount: 0 },
     },
   },
   {
@@ -178,6 +189,7 @@ export const DEFAULT_PRESETS: Array<Preset> = [
       filter: { type: 'lowpass', frequency: 2000, resonance: 5 },
       delay: { mix: 0.35, time: 0.4, feedback: 0.5 },
       noise: { volume: 8 },
+      distortion: { amount: 0 },
     },
   },
   {
@@ -193,6 +205,7 @@ export const DEFAULT_PRESETS: Array<Preset> = [
       filter: { type: 'lowpass', frequency: 1800, resonance: 6 },
       delay: { mix: 0.2, time: 0.4, feedback: 0.3 },
       noise: { volume: 0 },
+      distortion: { amount: 0 },
     },
   },
   {
@@ -208,6 +221,7 @@ export const DEFAULT_PRESETS: Array<Preset> = [
       filter: { type: 'lowpass', frequency: 1200, resonance: 5 },
       delay: { mix: 0.3, time: 0.375, feedback: 0.4 },
       noise: { volume: 0 },
+      distortion: { amount: 0 },
     },
   },
   {
@@ -222,6 +236,7 @@ export const DEFAULT_PRESETS: Array<Preset> = [
       filter: { type: 'lowpass', frequency: 3500, resonance: 3 },
       delay: { mix: 0.15, time: 0.2, feedback: 0.2 },
       noise: { volume: 0 },
+      distortion: { amount: 0 },
     },
   },
   {
@@ -237,6 +252,7 @@ export const DEFAULT_PRESETS: Array<Preset> = [
       filter: { type: 'lowpass', frequency: 800, resonance: 2 },
       delay: { mix: 0.5, time: 0.6, feedback: 0.45 },
       noise: { volume: 3 },
+      distortion: { amount: 0 },
     },
   },
   {
@@ -251,6 +267,7 @@ export const DEFAULT_PRESETS: Array<Preset> = [
       filter: { type: 'lowpass', frequency: 1000, resonance: 4 },
       delay: { mix: 0.2, time: 0.3, feedback: 0.25 },
       noise: { volume: 0 },
+      distortion: { amount: 0 },
     },
   },
   {
@@ -266,6 +283,7 @@ export const DEFAULT_PRESETS: Array<Preset> = [
       filter: { type: 'lowpass', frequency: 4000, resonance: 3 },
       delay: { mix: 0.2, time: 0.25, feedback: 0.3 },
       noise: { volume: 0 },
+      distortion: { amount: 0 },
     },
   },
   {
@@ -280,6 +298,7 @@ export const DEFAULT_PRESETS: Array<Preset> = [
       filter: { type: 'lowpass', frequency: 2000, resonance: 3 },
       delay: { mix: 0.25, time: 0.35, feedback: 0.3 },
       noise: { volume: 0 },
+      distortion: { amount: 0 },
     },
   },
   {
@@ -294,6 +313,7 @@ export const DEFAULT_PRESETS: Array<Preset> = [
       filter: { type: 'lowpass', frequency: 3000, resonance: 4 },
       delay: { mix: 0.15, time: 0.3, feedback: 0.25 },
       noise: { volume: 0 },
+      distortion: { amount: 0 },
     },
   },
 ];

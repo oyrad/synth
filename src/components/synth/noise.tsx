@@ -1,6 +1,6 @@
-import { Slider } from './ui/slider.tsx';
-import { Label } from './ui/label.tsx';
-import { useSynthStore } from '../stores/use-synth-store.ts';
+import { Slider } from '../ui/slider.tsx';
+import { Label } from '../ui/label.tsx';
+import { useSynthStore } from '../../stores/use-synth-store.ts';
 
 export interface NoiseParameters {
   volume: number;
@@ -13,7 +13,7 @@ export function Noise() {
   return (
     <div className="flex flex-col gap-4">
       <p className="font-mono text-2xl">Noise</p>
-      <div className="flex flex-col gap-4 border rounded-lg border-gray-200 dark:border-gray-600 p-4 w-sm">
+      <div className="flex flex-col gap-4 border rounded-lg border-gray-200 dark:border-gray-600 p-4">
         <div className="flex justify-between items-center">
           <Label>Volume</Label>
           <p className="text-sm">{volume}</p>

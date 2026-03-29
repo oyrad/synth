@@ -129,15 +129,7 @@ export function PresetControl() {
           onClick={() => {
             const newPreset = saveNewPreset({
               name: `Preset ${presets.length + 1}`,
-              parameters: {
-                oscillators: [
-                  { ...DEFAULT_PRESETS[0].parameters.oscillators[0], id: crypto.randomUUID() },
-                ],
-                envelope: DEFAULT_PRESETS[0].parameters.envelope,
-                delay: DEFAULT_PRESETS[0].parameters.delay,
-                filter: DEFAULT_PRESETS[0].parameters.filter,
-                noise: DEFAULT_PRESETS[0].parameters.noise,
-              },
+              parameters: DEFAULT_PRESETS[0].parameters,
             });
 
             loadSynthParameters(newPreset.parameters);

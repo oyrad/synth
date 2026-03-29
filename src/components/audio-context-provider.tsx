@@ -27,6 +27,21 @@ export function AudioContextProvider({ children }: PropsWithChildren) {
     return analyserRef.current;
   }, [getAudioContext]);
 
+  const distortionNode = useRef<WaveShaperNode | null>(null);
+
+  const getDistortion = useCallback(() => {
+    if (!distortionNode.current) {
+      const ctx = getAudioContext();
+      const analyser = getAnalyser();
+
+      distortionNode.current = ctx.createWaveShaper();
+      distortionNode.current.oversample = '4x';
+
+      distortionNode.current.connect(analyser);
+    }
+    return distortionNode.current;
+  }, [getAudioContext, getAnalyser]);
+
   const delayNode = useRef<DelayNode | null>(null);
   const feedbackGain = useRef<GainNode | null>(null);
   const wetGain = useRef<GainNode | null>(null);
@@ -36,6 +51,7 @@ export function AudioContextProvider({ children }: PropsWithChildren) {
     if (!delayNode.current || !feedbackGain.current || !wetGain.current || !dryGain.current) {
       const ctx = getAudioContext();
       const analyser = getAnalyser();
+      const distortion = getDistortion();
 
       delayNode.current = ctx.createDelay(2);
       feedbackGain.current = ctx.createGain();
@@ -46,9 +62,9 @@ export function AudioContextProvider({ children }: PropsWithChildren) {
       feedbackGain.current.connect(delayNode.current);
 
       delayNode.current.connect(wetGain.current);
-      wetGain.current.connect(analyser);
 
-      dryGain.current.connect(analyser);
+      wetGain.current.connect(distortion);
+      dryGain.current.connect(distortion);
 
       analyser.connect(ctx.destination);
     }
@@ -59,7 +75,7 @@ export function AudioContextProvider({ children }: PropsWithChildren) {
       wetGain: wetGain.current,
       dryGain: dryGain.current,
     };
-  }, [getAnalyser, getAudioContext]);
+  }, [getAnalyser, getAudioContext, getDistortion]);
 
   const noiseBuffer = useRef<AudioBuffer | null>(null);
 
@@ -80,6 +96,7 @@ export function AudioContextProvider({ children }: PropsWithChildren) {
         getAnalyser,
         getDelay,
         getNoiseBuffer,
+        getDistortion,
       }}
     >
       {children}

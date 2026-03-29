@@ -1,5 +1,10 @@
 import { useCallback, useEffect, useRef } from 'react';
-import { calculateVelocity, MAX_VELOCITY, midiNoteToFrequency } from '../utils/audio.ts';
+import {
+  calculateVelocity,
+  createDistortionCurve,
+  MAX_VELOCITY,
+  midiNoteToFrequency,
+} from '../utils/audio.ts';
 import { useAudioCtx } from './use-audio-context.ts';
 import { useSettingsStore } from '../stores/use-settings-store.ts';
 import { useSynthStore } from '../stores/use-synth-store.ts';
@@ -21,9 +26,11 @@ interface Voice {
 export function useSynth() {
   const voices = useRef<Record<number, Voice>>({});
 
-  const { getAudioContext, getDelay, getNoiseBuffer } = useAudioCtx();
+  const { getAudioContext, getDelay, getNoiseBuffer, getDistortion } = useAudioCtx();
 
-  const { oscillators, filter, envelope, delay, noise } = useSynthStore((s) => s.parameters);
+  const { oscillators, filter, envelope, delay, noise, distortion } = useSynthStore(
+    (s) => s.parameters,
+  );
 
   const velocitySensitive = useSettingsStore((s) => s.velocitySensitive);
 
@@ -34,6 +41,7 @@ export function useSynth() {
     (note: number, velocity: number) => {
       const audioContext = getAudioContext();
       const { delayNode, dryGain } = getDelay();
+      const distortionNode = getDistortion();
 
       if (voices.current[note]) {
         return;
@@ -62,6 +70,8 @@ export function useSynth() {
       });
       noiseSource.connect(noiseGainNode);
       noiseSource.start();
+
+      distortionNode.curve = createDistortionCurve(distortion.amount);
 
       masterGain.gain.setValueAtTime(0, now);
 
@@ -103,13 +113,13 @@ export function useSynth() {
         return { id: oscillatorData.id, oscillator: osc, gain: gainNode, velocity };
       });
 
+      noiseGainNode.connect(filterNode);
+      filterNode.connect(masterGain);
+
       if (dryGain && delayNode) {
         masterGain.connect(dryGain);
         masterGain.connect(delayNode);
       }
-
-      noiseGainNode.connect(filterNode);
-      filterNode.connect(masterGain);
 
       voices.current[note] = {
         masterGain,
@@ -121,11 +131,13 @@ export function useSynth() {
       };
     },
     [
+      distortion,
       envelope,
       filter,
       getAudioContext,
       getDelay,
       getNoiseBuffer,
+      getDistortion,
       masterTune,
       masterVolume,
       noise,
@@ -198,6 +210,12 @@ export function useSynth() {
       voice.filterNode.Q.linearRampToValueAtTime(filter.resonance, now + ramp);
     });
   }, [filter, getAudioContext]);
+
+  useEffect(() => {
+    const distortionNode = getDistortion();
+
+    distortionNode.curve = createDistortionCurve(distortion.amount);
+  }, [distortion, getDistortion]);
 
   useEffect(() => {
     const audioContext = getAudioContext();
