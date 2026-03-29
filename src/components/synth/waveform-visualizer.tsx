@@ -1,7 +1,11 @@
-import { memo, useEffect, useRef } from 'react';
+import { type CanvasHTMLAttributes, useEffect, useRef } from 'react';
 import { useAudioCtx } from '../../hooks/use-audio-context.ts';
+import { cn } from '../../utils/cn.ts';
 
-function WaveformVisualizerComponent() {
+export function WaveformVisualizer({
+  className,
+  ...rest
+}: CanvasHTMLAttributes<HTMLCanvasElement>) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const { getAnalyser } = useAudioCtx();
@@ -68,11 +72,12 @@ function WaveformVisualizerComponent() {
   }, [getAnalyser]);
 
   return (
-    <canvas
-      ref={canvasRef}
-      className="w-full h-80 border border-gray-200 dark:border-gray-600 rounded-lg"
-    />
+    <div className={cn('relative min-h-28', className)}>
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0 w-full h-full border border-gray-200 dark:border-gray-600 rounded-lg"
+        {...rest}
+      />
+    </div>
   );
 }
-
-export const WaveformVisualizer = memo(WaveformVisualizerComponent);

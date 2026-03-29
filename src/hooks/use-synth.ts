@@ -29,7 +29,7 @@ export function useSynth() {
 
   const { getAudioContext, getDelay, getNoiseBuffer, getDistortion, getReverb } = useAudioCtx();
 
-  const { oscillators, filter, envelope, delay, noise, distortion, reverb } = useSynthStore(
+  const { oscillators, filter, amplitude, delay, noise, distortion, reverb } = useSynthStore(
     (s) => s.parameters,
   );
 
@@ -48,7 +48,7 @@ export function useSynth() {
         return;
       }
 
-      const { attack, decay, sustain } = envelope;
+      const { attack, decay, sustain } = amplitude;
 
       const masterGain = audioContext.createGain();
       const now = audioContext.currentTime;
@@ -133,7 +133,7 @@ export function useSynth() {
     },
     [
       distortion,
-      envelope,
+      amplitude,
       filter,
       getAudioContext,
       getDelay,
@@ -159,7 +159,7 @@ export function useSynth() {
       const masterGain = voice.masterGain;
       const now = audioContext.currentTime;
 
-      const release = Math.max(envelope.release, 0.01);
+      const release = Math.max(amplitude.release, 0.01);
 
       voice.noiseGain.gain.setValueAtTime(voice.noiseGain.gain.value, now);
       voice.noiseGain.gain.linearRampToValueAtTime(0, now + release);
@@ -181,7 +181,7 @@ export function useSynth() {
 
       delete voices.current[note];
     },
-    [envelope.release, getAudioContext],
+    [amplitude.release, getAudioContext],
   );
 
   useEffect(() => {

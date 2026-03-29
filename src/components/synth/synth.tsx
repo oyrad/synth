@@ -1,21 +1,18 @@
-import { WaveformVisualizer } from './waveform-visualizer.tsx';
 import { PresetControl } from '../preset-control.tsx';
 import { MasterSettings } from '../master-settings.tsx';
 import { Oscillators } from './oscillators.tsx';
-import { Envelope } from './envelope.tsx';
+import { Amplitude } from './amplitude.tsx';
 import { Filter } from './filter.tsx';
 import { Delay } from './delay.tsx';
 import { Noise } from './noise.tsx';
-import { useSettingsStore } from '../../stores/use-settings-store.ts';
 import { useSynth } from '../../hooks/use-synth.ts';
 import { useMidi } from '../../hooks/use-midi.ts';
 import { useKeyboard } from '../../hooks/use-keyboard.ts';
 import { Distortion } from './distortion.tsx';
 import { Reverb } from './reverb.tsx';
+import { WaveformVisualizer } from './waveform-visualizer.tsx';
 
 export function Synth() {
-  const showVisualizer = useSettingsStore((s) => s.showVisualizer);
-
   const { noteOn, noteOff } = useSynth();
 
   useMidi({
@@ -29,21 +26,20 @@ export function Synth() {
   });
 
   return (
-    <div className="px-8 md:px-20 xl:px-48 w-full flex flex-col gap-8">
-      {showVisualizer && <WaveformVisualizer />}
-      <div className="flex gap-4">
+    <div className="w-full flex flex-col gap-8">
+      <div className="flex flex-col lg:flex-row gap-4 items-stretch">
         <PresetControl />
-        <MasterSettings />
+        <MasterSettings className="w-full lg:w-sm" />
+        <WaveformVisualizer className="lg:flex-1" />
       </div>
       <Oscillators />
-      <Envelope />
-
-      <div className="grid grid-cols-4 gap-4">
+      <Amplitude />
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Filter />
         <Delay />
-        <Noise />
-        <Distortion />
         <Reverb />
+        <Distortion />
+        <Noise />
       </div>
     </div>
   );

@@ -1,10 +1,10 @@
-import type { EnvelopeParameters } from './envelope.tsx';
+import type { AmplitudeParameters } from './amplitude.tsx';
 
 interface AdsrVisualizerProps {
-  envelope: EnvelopeParameters;
+  amplitude: AmplitudeParameters;
 }
 
-export function EnvelopeVisualizer({ envelope }: AdsrVisualizerProps) {
+export function AmplitudeVisualizer({ amplitude }: AdsrVisualizerProps) {
   const width = 300;
   const height = 100;
   const sustainWidth = 80;
@@ -12,14 +12,14 @@ export function EnvelopeVisualizer({ envelope }: AdsrVisualizerProps) {
 
   const timeScale = (width - sustainWidth) / totalTime;
 
-  const attackX = envelope.attack * timeScale;
-  const decayX = attackX + envelope.decay * timeScale;
+  const attackX = amplitude.attack * timeScale;
+  const decayX = attackX + amplitude.decay * timeScale;
   const sustainX = decayX + sustainWidth;
-  const releaseX = sustainX + envelope.release * timeScale;
-  const sustainY = height - envelope.sustain * height;
+  const releaseX = sustainX + amplitude.release * timeScale;
+  const sustainY = height - amplitude.sustain * height;
 
   return (
-    <div className="relative w-full h-auto border border-gray-200 dark:border-gray-600 rounded-lg">
+    <div className="relative w-full min-h-48 h-auto border border-gray-200 dark:border-gray-600 rounded-lg">
       <svg
         width="100%"
         height="100%"

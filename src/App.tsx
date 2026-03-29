@@ -8,7 +8,7 @@ export default function App() {
   const { isGranted } = useRequestMidiAccess();
 
   return (
-    <main className="flex flex-col gap-4 pt-8 pb-16">
+    <main className="p-8 pb-16">
       <Synth />
 
       <StatusBar isMidiAccessGranted={isGranted} />

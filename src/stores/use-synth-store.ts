@@ -11,7 +11,7 @@ interface SynthStoreValues {
     id: string,
     oscillator: Partial<Preset['parameters']['oscillators'][0]>,
   ) => void;
-  updateEnvelope: (envelope: Partial<Preset['parameters']['envelope']>) => void;
+  updateAmplitude: (amplitude: Partial<Preset['parameters']['amplitude']>) => void;
   updateDelay: (delay: Partial<Preset['parameters']['delay']>) => void;
   updateFilter: (filter: Partial<Preset['parameters']['filter']>) => void;
   updateNoise: (noise: Partial<Preset['parameters']['noise']>) => void;
@@ -52,11 +52,11 @@ export const useSynthStore = create<SynthStoreValues>()((set) => ({
       },
     })),
 
-  updateEnvelope: (envelope) =>
+  updateAmplitude: (amplitude) =>
     set((state) => ({
       parameters: {
         ...state.parameters,
-        envelope: { ...state.parameters.envelope, ...envelope },
+        amplitude: { ...state.parameters.amplitude, ...amplitude },
       },
     })),
 

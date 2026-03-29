@@ -1,8 +1,10 @@
 import { Slider } from './ui/slider.tsx';
 import { useSettingsStore } from '../stores/use-settings-store.ts';
 import { Label } from './ui/label.tsx';
+import type { HTMLAttributes } from 'react';
+import { cn } from '../utils/cn.ts';
 
-export function MasterSettings() {
+export function MasterSettings({ className, ...rest }: HTMLAttributes<HTMLDivElement>) {
   const masterVolume = useSettingsStore((s) => s.masterVolume);
   const setMasterVolume = useSettingsStore((s) => s.setMasterVolume);
 
@@ -10,7 +12,13 @@ export function MasterSettings() {
   const setMasterTune = useSettingsStore((s) => s.setMasterTune);
 
   return (
-    <div className="border border-gray-200 dark:border-gray-600 rounded-lg p-4 flex flex-col gap-3 w-xs">
+    <div
+      className={cn(
+        'border border-gray-200 dark:border-gray-600 rounded-lg p-4 flex flex-col gap-3 w-xs',
+        className,
+      )}
+      {...rest}
+    >
       <div className="flex flex-col gap-2">
         <div className="flex justify-between items-center">
           <Label>Volume</Label>

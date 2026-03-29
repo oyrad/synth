@@ -2,7 +2,7 @@ import { create } from 'zustand/react';
 import { persist } from 'zustand/middleware';
 import { DEFAULT_PRESETS } from '../consts/default-presets.ts';
 import type { OscillatorParameters } from '../components/synth/oscillators.tsx';
-import type { EnvelopeParameters } from '../components/synth/envelope.tsx';
+import type { EnvelopeParameters } from '../components/synth/amplitude.tsx';
 import type { DelayParameters } from '../components/synth/delay.tsx';
 import type { FilterParameters } from '../components/synth/filter.tsx';
 import type { NoiseParameters } from '../components/synth/noise.tsx';
@@ -14,7 +14,7 @@ export interface Preset {
   name: string;
   parameters: {
     oscillators: Array<OscillatorParameters>;
-    envelope: EnvelopeParameters;
+    amplitude: EnvelopeParameters;
     reverb: ReverbParameters;
     delay: DelayParameters;
     filter: FilterParameters;
