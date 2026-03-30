@@ -11,6 +11,7 @@ import { useKeyboard } from '../../hooks/use-keyboard.ts';
 import { Distortion } from './distortion.tsx';
 import { Reverb } from './reverb.tsx';
 import { WaveformVisualizer } from './waveform-visualizer.tsx';
+import { WaveformVisualizerDialog } from './waveform-visualizer-dialog.tsx';
 
 export function Synth() {
   const { noteOn, noteOff } = useSynth();
@@ -30,11 +31,11 @@ export function Synth() {
       <div className="flex flex-col lg:flex-row gap-4 items-stretch">
         <PresetControl />
         <MasterSettings className="w-full lg:w-sm" />
-        <WaveformVisualizer className="lg:flex-1" />
+        <WaveformVisualizerDialog trigger={<WaveformVisualizer />} />
       </div>
       <Oscillators />
       <Amplitude />
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4">
         <Filter />
         <Delay />
         <Reverb />

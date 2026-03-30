@@ -263,7 +263,7 @@ export const DEFAULT_PRESETS: Array<Preset> = [
         { id: 'osc-2', waveform: 'sine', isMute: false, volume: 70, detune: 2, transpose: 0 },
         { id: 'osc-3', waveform: 'triangle', isMute: false, volume: 50, detune: -2, transpose: 12 },
       ],
-      amplitude: { attack: 1.5, decay: 0.8, sustain: 0.6, release: 2.5 },
+      amplitude: { attack: 1.0, decay: 0.8, sustain: 0.6, release: 2.0 },
       filter: { type: 'lowpass', frequency: 800, resonance: 2 },
       delay: { mix: 0.5, time: 0.6, feedback: 0.45 },
       noise: { volume: 3 },
