@@ -78,7 +78,7 @@ export function PresetControl({ className, ...rest }: HTMLAttributes<HTMLDivElem
   return (
     <div
       className={cn(
-        'border border-gray-200 dark:border-gray-600 rounded-lg p-4 flex flex-col gap-3',
+        'border border-gray-200 dark:border-neutral-800 rounded-lg p-4 flex flex-col gap-3',
         className,
       )}
       {...rest}

@@ -12,8 +12,8 @@ export function Distortion() {
 
   return (
     <div className="flex flex-col gap-4">
-      <p className="font-mono text-2xl">Distortion</p>
-      <div className="flex flex-col gap-4 border rounded-lg border-gray-200 dark:border-gray-600 p-4">
+      <div className="flex flex-col gap-4 border rounded-lg bg-red-400 dark:bg-rose-700 border-red-500 dark:border-rose-900 p-4">
+        <p className="font-mono text-xl font-bold uppercase">distortion</p>
         <div className="flex justify-between items-center">
           <Label>Amount</Label>
           <p className="text-sm">{amount}</p>

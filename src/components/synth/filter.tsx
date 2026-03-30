@@ -26,8 +26,8 @@ export function Filter() {
 
   return (
     <div className="flex flex-col gap-4">
-      <p className="font-mono text-2xl">Filter</p>
-      <div className="flex flex-col gap-4 border rounded-lg border-gray-200 dark:border-gray-600 p-4">
+      <div className="flex flex-col gap-4 border rounded-lg bg-emerald-500 dark:bg-emerald-800 border-emerald-600 dark:border-emerald-900 p-4">
+        <p className="font-mono text-xl font-bold uppercase">filter</p>
         <Select
           value={type}
           onValueChange={(value) => {

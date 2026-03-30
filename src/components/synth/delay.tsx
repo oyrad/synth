@@ -14,8 +14,9 @@ export function Delay() {
 
   return (
     <div className="flex flex-col gap-4">
-      <p className="font-mono text-2xl">Delay</p>
-      <div className="flex flex-col gap-4 border rounded-lg border-gray-200 dark:border-gray-600 p-4">
+      <div className="flex flex-col gap-4 border rounded-lg bg-fuchsia-400 dark:bg-fuchsia-700 border-fuchsia-500 dark:border-fuchsia-900  p-4">
+        <p className="font-mono text-xl uppercase font-bold">delay</p>
+
         <div className="flex justify-between items-center">
           <Label>Dry</Label>
           <Label>Wet</Label>

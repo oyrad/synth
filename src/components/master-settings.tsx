@@ -14,7 +14,7 @@ export function MasterSettings({ className, ...rest }: HTMLAttributes<HTMLDivEle
   return (
     <div
       className={cn(
-        'border border-gray-200 dark:border-gray-600 rounded-lg p-4 flex flex-col gap-3 w-xs',
+        'border border-gray-200 dark:border-neutral-800 rounded-lg p-4 flex flex-col gap-3 w-xs',
         className,
       )}
       {...rest}

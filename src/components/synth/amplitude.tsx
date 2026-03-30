@@ -19,7 +19,7 @@ export function Amplitude() {
       <p className="font-mono text-2xl">Amplitude</p>
 
       <div className="flex flex-col md:flex-row gap-4 items-stretch">
-        <div className="flex flex-col gap-6 border border-gray-200 dark:border-gray-600 rounded-lg p-4 w-full md:w-sm">
+        <div className="flex flex-col gap-6 border border-gray-200 dark:border-neutral-800 rounded-lg p-4 w-full md:w-sm">
           <div className="flex flex-col gap-2">
             <div className="flex justify-between items-center">
               <Label>Attack</Label>

@@ -19,7 +19,7 @@ export function AmplitudeVisualizer({ amplitude }: AdsrVisualizerProps) {
   const sustainY = height - amplitude.sustain * height;
 
   return (
-    <div className="relative w-full min-h-48 h-auto border border-gray-200 dark:border-gray-600 rounded-lg">
+    <div className="relative w-full min-h-48 h-auto border border-gray-200 dark:border-neutral-800 rounded-lg">
       <svg
         width="100%"
         height="100%"

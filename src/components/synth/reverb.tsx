@@ -13,8 +13,8 @@ export function Reverb() {
 
   return (
     <div className="flex flex-col gap-4">
-      <p className="font-mono text-2xl">Reverb</p>
-      <div className="flex flex-col gap-4 border rounded-lg border-gray-200 dark:border-gray-600 p-4">
+      <div className="flex flex-col gap-4 border rounded-lg bg-blue-400 dark:bg-sky-700 border-blue-500 dark:border-sky-900 p-4">
+        <p className="font-mono text-xl font-bold uppercase">reverb</p>
         <div className="flex justify-between items-center">
           <Label>Dry</Label>
           <Label>Wet</Label>

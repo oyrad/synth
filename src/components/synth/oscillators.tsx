@@ -43,7 +43,7 @@ export function Oscillators() {
       <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-4 gap-4">
         {oscillators.map((oscillator) => (
           <div
-            className="flex flex-col gap-4 rounded-xl border border-gray-200 dark:border-gray-600 p-4"
+            className="flex flex-col gap-4 rounded-xl border border-gray-200 dark:border-neutral-800 p-4"
             key={oscillator.id}
           >
             <div className="flex gap-2">
