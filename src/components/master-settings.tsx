@@ -1,8 +1,8 @@
-import { Slider } from './ui/slider.tsx';
 import { useSettingsStore } from '../stores/use-settings-store.ts';
-import { Label } from './ui/label.tsx';
 import type { HTMLAttributes } from 'react';
 import { cn } from '../utils/cn.ts';
+import { Card } from './atoms/card.tsx';
+import { SliderParam } from './atoms/slider-param.tsx';
 
 export function MasterSettings({ className, ...rest }: HTMLAttributes<HTMLDivElement>) {
   const masterVolume = useSettingsStore((s) => s.masterVolume);
@@ -12,40 +12,24 @@ export function MasterSettings({ className, ...rest }: HTMLAttributes<HTMLDivEle
   const setMasterTune = useSettingsStore((s) => s.setMasterTune);
 
   return (
-    <div
-      className={cn(
-        'border border-gray-200 dark:border-neutral-800 rounded-lg p-4 flex flex-col gap-3 w-xs',
-        className,
-      )}
-      {...rest}
-    >
-      <div className="flex flex-col gap-2">
-        <div className="flex justify-between items-center">
-          <Label>Volume</Label>
-          <p className="text-sm">{masterVolume}</p>
-        </div>
-        <Slider
-          min={0}
-          max={100}
-          step={1}
-          value={[masterVolume]}
-          onValueChange={(value) => setMasterVolume(value[0])}
-        />
-      </div>
+    <Card className={cn('', className)} {...rest}>
+      <SliderParam
+        labelLeft="Volume"
+        value={masterVolume}
+        min={0}
+        max={100}
+        step={1}
+        onChange={(value) => setMasterVolume(value[0])}
+      />
 
-      <div className="flex flex-col gap-2">
-        <div className="flex justify-between items-center">
-          <Label>Tune</Label>
-          <p className="text-sm">{masterTune}</p>
-        </div>
-        <Slider
-          min={-64}
-          max={64}
-          step={1}
-          value={[masterTune]}
-          onValueChange={(value) => setMasterTune(value[0])}
-        />
-      </div>
-    </div>
+      <SliderParam
+        labelLeft="Tune"
+        value={masterTune}
+        min={-64}
+        max={64}
+        step={1}
+        onChange={(value) => setMasterTune(value[0])}
+      />
+    </Card>
   );
 }

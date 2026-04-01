@@ -9,6 +9,7 @@ import { Input } from './ui/input.tsx';
 import { useHotkeyStore } from '../stores/use-hotkey-store.ts';
 import { DEFAULT_PRESETS } from '../consts/default-presets.ts';
 import { cn } from '../utils/cn.ts';
+import { Card } from './atoms/card.tsx';
 
 interface EditablePresetNameProps {
   onSubmit: (name: string) => void;
@@ -76,13 +77,7 @@ export function PresetControl({ className, ...rest }: HTMLAttributes<HTMLDivElem
   };
 
   return (
-    <div
-      className={cn(
-        'border border-gray-200 dark:border-neutral-800 rounded-lg p-4 flex flex-col gap-3',
-        className,
-      )}
-      {...rest}
-    >
+    <Card className={cn('gap-3', className)} {...rest}>
       <div className="flex gap-2 items-center">
         {isNameEditing ? (
           <EditablePresetName
@@ -194,6 +189,6 @@ export function PresetControl({ className, ...rest }: HTMLAttributes<HTMLDivElem
           }}
         />
       </div>
-    </div>
+    </Card>
   );
 }

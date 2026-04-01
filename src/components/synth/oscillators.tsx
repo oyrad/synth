@@ -1,5 +1,3 @@
-import { Label } from '../ui/label.tsx';
-import { Slider } from '../ui/slider.tsx';
 import {
   Select,
   SelectContent,
@@ -12,6 +10,9 @@ import { isOscillatorType } from '../../utils/midi.ts';
 import { useSynthStore } from '../../stores/use-synth-store.ts';
 import { Switch } from '../ui/switch.tsx';
 import { cn } from '../../utils/cn.ts';
+import { SliderParam } from '../atoms/slider-param.tsx';
+import { Title } from '../atoms/title.tsx';
+import { Card } from '../atoms/card.tsx';
 
 export interface OscillatorParameters {
   id: string;
@@ -29,9 +30,8 @@ export function Oscillators() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-4 gap-4">
       {oscillators.map((oscillator, index) => (
-        <div
+        <Card
           className={cn(
-            'flex flex-col gap-4 rounded-xl border border-gray-200 dark:border-neutral-800 p-4',
             index === 0 &&
               'bg-blue-600/50 border-blue-600/80 dark:bg-blue-600/30 dark:border-blue-600/60',
             index === 1 &&
@@ -46,7 +46,7 @@ export function Oscillators() {
           key={oscillator.id}
         >
           <div className="flex justify-between items-center">
-            <p className="font-mono text-xl font-bold uppercase">oscillator {index + 1}</p>
+            <Title>oscillator {index + 1}</Title>
             <Switch
               className="pointer-events-auto"
               checked={oscillator.isActive}
@@ -75,48 +75,33 @@ export function Oscillators() {
             </SelectContent>
           </Select>
 
-          <div className="flex flex-col gap-3">
-            <div className="flex justify-between items-center">
-              <Label>Volume</Label>
-              <p className="text-sm">{oscillator.volume}</p>
-            </div>
-            <Slider
-              value={[oscillator.volume]}
-              min={0}
-              max={100}
-              step={1}
-              onValueChange={(value) => updateOscillator(oscillator.id, { volume: value[0] })}
-            />
-          </div>
+          <SliderParam
+            labelLeft="Volume"
+            value={oscillator.volume}
+            min={0}
+            max={100}
+            step={1}
+            onChange={(value) => updateOscillator(oscillator.id, { volume: value[0] })}
+          />
 
-          <div className="flex flex-col gap-3">
-            <div className="flex justify-between items-center">
-              <Label>Detune</Label>
-              <p className="text-sm">{oscillator.detune}</p>
-            </div>
-            <Slider
-              value={[oscillator.detune]}
-              min={-64}
-              max={64}
-              step={1}
-              onValueChange={(value) => updateOscillator(oscillator.id, { detune: value[0] })}
-            />
-          </div>
+          <SliderParam
+            labelLeft="Detune"
+            value={oscillator.detune}
+            min={-64}
+            max={64}
+            step={1}
+            onChange={(value) => updateOscillator(oscillator.id, { detune: value[0] })}
+          />
 
-          <div className="flex flex-col gap-3">
-            <div className="flex justify-between items-center">
-              <Label>Transpose</Label>
-              <p className="text-sm">{oscillator.transpose}</p>
-            </div>
-            <Slider
-              value={[oscillator.transpose]}
-              min={-24}
-              max={24}
-              step={1}
-              onValueChange={(value) => updateOscillator(oscillator.id, { transpose: value[0] })}
-            />
-          </div>
-        </div>
+          <SliderParam
+            labelLeft="Transpose"
+            value={oscillator.transpose}
+            min={-24}
+            max={24}
+            step={1}
+            onChange={(value) => updateOscillator(oscillator.id, { transpose: value[0] })}
+          />
+        </Card>
       ))}
     </div>
   );

@@ -1,7 +1,5 @@
-import { cn } from '../../utils/cn.ts';
 import { Switch } from '../ui/switch.tsx';
 import { Label } from '../ui/label.tsx';
-import { Slider } from '../ui/slider.tsx';
 import { useSynthStore } from '../../stores/use-synth-store.ts';
 import type { HTMLAttributes } from 'react';
 import {
@@ -13,6 +11,10 @@ import {
   SelectValue,
 } from '../ui/select.tsx';
 import { isOscillatorType } from '../../utils/midi.ts';
+import { SliderParam } from '../atoms/slider-param.tsx';
+import { Card } from '../atoms/card.tsx';
+import { cn } from '../../utils/cn.ts';
+import { Title } from '../atoms/title.tsx';
 
 type LFOTarget = 'pitch' | 'volume' | 'filter';
 
@@ -33,17 +35,16 @@ export function LFO({ className, ...rest }: HTMLAttributes<HTMLDivElement>) {
   const updateLFO = useSynthStore((s) => s.updateLFO);
 
   return (
-    <div
+    <Card
       className={cn(
-        'flex flex-col gap-4 border rounded-lg p-4 bg-teal-500/20 border-teal-500/60 dark:bg-teal-500/30 dark:border-teal-500/60',
-        !isActive &&
-          'opacity-50 pointer-events-none border-neutral-600/50 dark:border-neutral-600/50 bg-neutral-700/20 dark:bg-neutral-700/30',
+        'bg-teal-500/20 border-teal-500/60 dark:bg-teal-500/30 dark:border-teal-500/60',
         className,
       )}
+      isActive={isActive}
       {...rest}
     >
       <div className="flex justify-between items-center">
-        <p className="font-mono text-xl font-bold uppercase">lfo</p>
+        <Title>lfo</Title>
         <Switch
           className="pointer-events-auto"
           checked={isActive}
@@ -100,33 +101,23 @@ export function LFO({ className, ...rest }: HTMLAttributes<HTMLDivElement>) {
         </div>
       </div>
 
-      <div className="flex flex-col gap-3">
-        <div className="flex justify-between items-center">
-          <Label>Frequency</Label>
-          <p className="text-sm">{frequency}</p>
-        </div>
-        <Slider
-          value={[frequency]}
-          min={0}
-          max={20}
-          step={0.1}
-          onValueChange={(value) => updateLFO({ frequency: value[0] })}
-        />
-      </div>
+      <SliderParam
+        labelLeft="Frequency"
+        value={frequency}
+        min={0}
+        max={20}
+        step={0.01}
+        onChange={(value) => updateLFO({ frequency: value[0] })}
+      />
 
-      <div className="flex flex-col gap-3 mb-2">
-        <div className="flex justify-between items-center">
-          <Label>Depth</Label>
-          <p className="text-sm">{depth}</p>
-        </div>
-        <Slider
-          value={[depth]}
-          min={0}
-          max={1000}
-          step={10}
-          onValueChange={(value) => updateLFO({ depth: value[0] })}
-        />
-      </div>
-    </div>
+      <SliderParam
+        labelLeft="Depth"
+        value={depth}
+        min={0}
+        max={1000}
+        step={10}
+        onChange={(value) => updateLFO({ depth: value[0] })}
+      />
+    </Card>
   );
 }

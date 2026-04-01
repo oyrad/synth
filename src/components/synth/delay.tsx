@@ -1,9 +1,10 @@
-import { Label } from '../ui/label.tsx';
-import { Slider } from '../ui/slider.tsx';
 import { useSynthStore } from '../../stores/use-synth-store.ts';
 import { Switch } from '../ui/switch.tsx';
 import { cn } from '../../utils/cn.ts';
 import type { HTMLAttributes } from 'react';
+import { Title } from '../atoms/title.tsx';
+import { Card } from '../atoms/card.tsx';
+import { SliderParam } from '../atoms/slider-param.tsx';
 
 export interface DelayParameters {
   isActive: boolean;
@@ -17,18 +18,17 @@ export function Delay({ className, ...rest }: HTMLAttributes<HTMLDivElement>) {
   const updateDelay = useSynthStore((s) => s.updateDelay);
 
   return (
-    <div
+    <Card
       className={cn(
-        'flex flex-col gap-4 border rounded-lg p-4 bg-fuchsia-500/20 border-fuchsia-500/60 dark:bg-fuchsia-500/30 dark:border-fuchsia-500/60',
-        !isActive &&
-          'opacity-50 pointer-events-none border-neutral-600/50 dark:border-neutral-600/50 bg-neutral-700/20 dark:bg-neutral-700/30',
+        'bg-fuchsia-500/20 border-fuchsia-500/60 dark:bg-fuchsia-500/30 dark:border-fuchsia-500/60',
         className,
       )}
+      isActive={isActive}
       {...rest}
     >
       <div className="flex flex-col gap-3">
         <div className="flex justify-between items-center">
-          <p className="font-mono text-xl font-bold uppercase">delay</p>
+          <Title>Delay</Title>
           <Switch
             className="pointer-events-auto"
             checked={isActive}
@@ -37,47 +37,33 @@ export function Delay({ className, ...rest }: HTMLAttributes<HTMLDivElement>) {
         </div>
       </div>
 
-      <div className="flex flex-col gap-3">
-        <div className="flex justify-between items-center">
-          <Label>Dry</Label>
-          <Label>Wet</Label>
-        </div>
-        <Slider
-          value={[mix]}
-          min={0}
-          max={1}
-          step={0.01}
-          onValueChange={(value) => updateDelay({ mix: value[0] })}
-        />
-      </div>
+      <SliderParam
+        labelLeft="Dry"
+        labelRight="Wet"
+        value={mix}
+        min={0}
+        max={1}
+        step={0.01}
+        onChange={(value) => updateDelay({ mix: value[0] })}
+      />
 
-      <div className="flex flex-col gap-3">
-        <div className="flex justify-between items-center">
-          <Label>Time</Label>
-          <p className="text-sm">{time}</p>
-        </div>
-        <Slider
-          value={[time]}
-          min={0}
-          max={2}
-          step={0.01}
-          onValueChange={(value) => updateDelay({ time: value[0] })}
-        />
-      </div>
+      <SliderParam
+        labelLeft="Time"
+        value={time}
+        min={0}
+        max={5}
+        step={0.01}
+        onChange={(value) => updateDelay({ time: value[0] })}
+      />
 
-      <div className="flex flex-col gap-3">
-        <div className="flex justify-between items-center">
-          <Label>Feedback</Label>
-          <p className="text-sm">{feedback}</p>
-        </div>
-        <Slider
-          value={[feedback]}
-          min={0}
-          max={1}
-          step={0.01}
-          onValueChange={(value) => updateDelay({ feedback: value[0] })}
-        />
-      </div>
-    </div>
+      <SliderParam
+        labelLeft="Feedback"
+        value={feedback}
+        min={0}
+        max={1}
+        step={0.01}
+        onChange={(value) => updateDelay({ time: value[0] })}
+      />
+    </Card>
   );
 }

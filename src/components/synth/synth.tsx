@@ -44,11 +44,11 @@ export function Synth() {
           <LFO />
         </div>
         <div className="flex flex-col gap-4 h-fit">
-          <div className="flex gap-4">
+          <div className="flex flex-col md:flex-row gap-4">
             <Delay className="flex-1" />
             <Reverb className="flex-1" />
           </div>
-          <div className="flex gap-4">
+          <div className="flex flex-col md:flex-row gap-4">
             <Noise className="flex-1" />
             <Distortion className="flex-1" />
           </div>

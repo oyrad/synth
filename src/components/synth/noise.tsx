@@ -1,9 +1,10 @@
-import { Slider } from '../ui/slider.tsx';
-import { Label } from '../ui/label.tsx';
 import { useSynthStore } from '../../stores/use-synth-store.ts';
 import { Switch } from '../ui/switch.tsx';
 import { cn } from '../../utils/cn.ts';
 import type { HTMLAttributes } from 'react';
+import { Card } from '../atoms/card.tsx';
+import { Title } from '../atoms/title.tsx';
+import { SliderParam } from '../atoms/slider-param.tsx';
 
 export interface NoiseParameters {
   isActive: boolean;
@@ -15,17 +16,16 @@ export function Noise({ className, ...rest }: HTMLAttributes<HTMLDivElement>) {
   const updateNoise = useSynthStore((s) => s.updateNoise);
 
   return (
-    <div
+    <Card
       className={cn(
-        'flex flex-col gap-4 border rounded-lg p-4 bg-slate-500/20 border-slate-500/60 dark:bg-slate-500/30 dark:border-slate-500/60',
-        !isActive &&
-          'opacity-50 pointer-events-none border-neutral-600/50 dark:border-neutral-600/50 bg-neutral-700/20 dark:bg-neutral-700/30',
+        'bg-slate-500/20 border-slate-500/60 dark:bg-slate-500/30 dark:border-slate-500/60',
         className,
       )}
+      isActive={isActive}
       {...rest}
     >
       <div className="flex justify-between items-center">
-        <p className="font-mono text-xl font-bold uppercase">noise</p>
+        <Title>noise</Title>
         <Switch
           className="pointer-events-auto"
           checked={isActive}
@@ -33,17 +33,14 @@ export function Noise({ className, ...rest }: HTMLAttributes<HTMLDivElement>) {
         />
       </div>
 
-      <div className="flex justify-between items-center">
-        <Label>Volume</Label>
-        <p className="text-sm">{volume}</p>
-      </div>
-      <Slider
-        value={[volume]}
+      <SliderParam
+        labelLeft="Volume"
+        value={volume}
         min={0}
         max={100}
         step={1}
-        onValueChange={(value) => updateNoise({ volume: value[0] })}
+        onChange={(value) => updateNoise({ volume: value[0] })}
       />
-    </div>
+    </Card>
   );
 }
