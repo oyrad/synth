@@ -9,7 +9,7 @@ interface WaveformVisualizerDialogProps {
 export function WaveformVisualizerDialog({ trigger }: WaveformVisualizerDialogProps) {
   return (
     <Dialog>
-      <DialogTrigger className="lg:flex-1 cursor-pointer hover:opacity-85" tabIndex={-1}>
+      <DialogTrigger className="lg:flex-1 cursor-pointer hover:opacity-85 outline-none">
         {trigger}
       </DialogTrigger>
 

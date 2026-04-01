@@ -4,27 +4,14 @@ import { useSettingsStore } from '../stores/use-settings-store.ts';
 import { Checkbox } from './ui/checkbox.tsx';
 import { Label } from './ui/label.tsx';
 import { toast } from 'sonner';
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from './ui/select.tsx';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from './ui/select.tsx';
 import { useMidiStore } from '../stores/use-midi-store.tsx';
 import { isMidiInput } from '../utils/midi.ts';
 import { Kbd } from './ui/kbd.tsx';
 
 export function SettingsDialog() {
-  const {
-    showVisualizer,
-    velocitySensitive,
-    keyboardPlaying,
-    setShowVisualizer,
-    setVelocitySensitive,
-    setKeyboardPlaying,
-  } = useSettingsStore();
+  const { velocitySensitive, keyboardPlaying, setVelocitySensitive, setKeyboardPlaying } =
+    useSettingsStore();
 
   const { inputs, selectedInput, setSelectedInput } = useMidiStore();
 
@@ -72,19 +59,6 @@ export function SettingsDialog() {
           ) : (
             <p className="text-red-500 font-medium">No MIDI inputs</p>
           )}
-        </div>
-
-        <div className="flex items-center justify-between">
-          <Label htmlFor="velocity-sensitive" className="flex items-center gap-2">
-            Show visualizer
-          </Label>
-          <Checkbox
-            checked={showVisualizer}
-            onCheckedChange={(checked) => {
-              setShowVisualizer(!!checked);
-              toast(`Visualizer ${checked ? 'enabled' : 'disabled'}.`);
-            }}
-          />
         </div>
 
         <div className="flex items-center justify-between">

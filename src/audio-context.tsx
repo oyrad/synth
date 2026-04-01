@@ -1,6 +1,6 @@
 import { createContext } from 'react';
 
-interface AudioContextValue {
+export interface AudioContextValue {
   isAudioReady: boolean;
   getAudioContext: () => AudioContext;
   getAnalyser: () => AnalyserNode;

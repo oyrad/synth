@@ -38,7 +38,6 @@ export function WaveformVisualizer({
     const draw = () => {
       frameId = requestAnimationFrame(draw);
 
-      // 2. Use the Float version of the data
       analyser.getFloatTimeDomainData(buffer);
 
       const width = canvas.offsetWidth;
@@ -46,10 +45,9 @@ export function WaveformVisualizer({
 
       ctx2d.clearRect(0, 0, width, height);
       ctx2d.strokeStyle = getComputedStyle(canvas).color || '#000';
-      ctx2d.lineWidth = 1;
+      ctx2d.lineWidth = 1.5;
       ctx2d.lineJoin = 'round';
 
-      // 3. Simple Trigger (Finds where the wave crosses 0 going up)
       let startIndex = 0;
       for (let i = 1; i < buffer.length / 2; i++) {
         if (buffer[i - 1] <= 0 && buffer[i] > 0) {
@@ -65,7 +63,7 @@ export function WaveformVisualizer({
         const sample = buffer[startIndex + i] || 0;
 
         const x = (i / (drawLength - 1)) * width;
-        const y = (0.5 - sample * 2) * height;
+        const y = (0.5 - sample * 0.3) * height;
 
         if (i === 0) {
           ctx2d.moveTo(x, y);

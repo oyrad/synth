@@ -26,8 +26,10 @@ export function calculateVelocity({
 export const MIN_FREQ = 20;
 export const MAX_FREQ = 20000;
 
-export const hzToLog = (hz: number) => Math.log(hz / MIN_FREQ) / Math.log(MAX_FREQ / MIN_FREQ);
-export const logToHz = (pos: number) => Math.round(MIN_FREQ * Math.pow(MAX_FREQ / MIN_FREQ, pos));
+export const hzToLog = (hz: number, min: number, max: number) =>
+  Math.log(hz / min) / Math.log(max / min);
+export const logToHz = (pos: number, min: number, max: number) =>
+  Math.round(min * Math.pow(max / min, pos));
 
 export function createWhiteNoiseBuffer(ctx: AudioContext) {
   const bufferSize = ctx.sampleRate * 2;
@@ -42,18 +44,27 @@ export function createWhiteNoiseBuffer(ctx: AudioContext) {
 }
 
 export function createDistortionCurve(amount: number) {
-  const k = amount;
-  const n_samples = 4096;
+  const n_samples = 44100;
   const curve = new Float32Array(n_samples);
-  const deg = Math.PI / 180;
+
+  // We use a fixed high-intensity distortion formula for the "Wet" sound
+  const k = 50;
 
   for (let i = 0; i < n_samples; ++i) {
     const x = (i * 2) / n_samples - 1;
-    curve[i] = ((3 + k) * x * 20 * deg) / (Math.PI + k * Math.abs(x));
+
+    // 1. Calculate the "Wet" (Distorted) value
+    const wet = ((3 + k) * x) / (3 + k * Math.abs(x));
+
+    // 2. Linear Interpolation (lerp)
+    // amount is 0 to 100, so 't' is 0.0 to 1.0
+    const t = amount / 100;
+
+    // This blends between the clean signal (x) and distorted signal (wet)
+    curve[i] = (1 - t) * x + t * wet;
   }
   return curve;
 }
-
 export function createReverbBuffer(
   audioContext: BaseAudioContext,
   duration: number,

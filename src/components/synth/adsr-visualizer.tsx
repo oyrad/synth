@@ -1,10 +1,21 @@
-import type { AmplitudeParameters } from './amplitude.tsx';
+import type { HTMLAttributes } from 'react';
+import { cn } from '../../utils/cn.ts';
 
-interface AdsrVisualizerProps {
-  amplitude: AmplitudeParameters;
+interface AdsrVisualizerProps extends HTMLAttributes<HTMLDivElement> {
+  attack: number;
+  decay: number;
+  sustain: number;
+  release: number;
 }
 
-export function AmplitudeVisualizer({ amplitude }: AdsrVisualizerProps) {
+export function AdsrVisualizer({
+  attack,
+  decay,
+  sustain,
+  release,
+  className,
+  ...rest
+}: AdsrVisualizerProps) {
   const width = 300;
   const height = 100;
   const sustainWidth = 80;
@@ -12,14 +23,20 @@ export function AmplitudeVisualizer({ amplitude }: AdsrVisualizerProps) {
 
   const timeScale = (width - sustainWidth) / totalTime;
 
-  const attackX = amplitude.attack * timeScale;
-  const decayX = attackX + amplitude.decay * timeScale;
+  const attackX = attack * timeScale;
+  const decayX = attackX + decay * timeScale;
   const sustainX = decayX + sustainWidth;
-  const releaseX = sustainX + amplitude.release * timeScale;
-  const sustainY = height - amplitude.sustain * height;
+  const releaseX = sustainX + release * timeScale;
+  const sustainY = height - sustain * height;
 
   return (
-    <div className="relative w-full min-h-48 h-auto border border-gray-200 dark:border-neutral-800 rounded-lg">
+    <div
+      className={cn(
+        'relative w-full min-h-48 h-auto border border-gray-200 dark:border-neutral-800 rounded-lg',
+        className,
+      )}
+      {...rest}
+    >
       <svg
         width="100%"
         height="100%"

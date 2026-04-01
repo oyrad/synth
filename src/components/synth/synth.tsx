@@ -27,16 +27,21 @@ export function Synth() {
   });
 
   return (
-    <div className="w-full flex flex-col gap-8">
+    <div className="w-full flex flex-col gap-4">
       <div className="flex flex-col lg:flex-row gap-4 items-stretch">
         <PresetControl />
         <MasterSettings className="w-full lg:w-sm" />
         <WaveformVisualizerDialog trigger={<WaveformVisualizer />} />
       </div>
+
       <Oscillators />
-      <Amplitude />
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-        <Filter />
+
+      <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-4">
+        <Filter className="h-fit" />
+        <Amplitude className="h-fit" />
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         <Delay />
         <Reverb />
         <Distortion />
