@@ -8,6 +8,7 @@ import type { FilterParameters } from '../components/synth/filter.tsx';
 import type { NoiseParameters } from '../components/synth/noise.tsx';
 import type { DistortionParameters } from '../components/synth/distortion.tsx';
 import type { ReverbParameters } from '../components/synth/reverb.tsx';
+import type { LFOParameters } from '../components/synth/lfo.tsx';
 
 export interface Preset {
   id: string;
@@ -20,6 +21,7 @@ export interface Preset {
     filter: FilterParameters;
     noise: NoiseParameters;
     distortion: DistortionParameters;
+    lfo: LFOParameters;
   };
 }
 

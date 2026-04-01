@@ -16,6 +16,10 @@ export interface AudioContextValue {
     reverbNode: ConvolverNode;
     reverbWetGain: GainNode;
   };
+  getLFO: () => {
+    oscillator: OscillatorNode;
+    gain: GainNode;
+  };
 }
 
 export const AudioCtx = createContext<AudioContextValue | null>(null);

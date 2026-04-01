@@ -108,6 +108,22 @@ export function AudioContextProvider({ children }: PropsWithChildren) {
     return noiseBuffer.current;
   }, [getAudioContext]);
 
+  const lfoOscillatorNode = useRef<OscillatorNode | null>(null);
+  const lfoGainNode = useRef<GainNode | null>(null);
+
+  const getLFO = useCallback(() => {
+    if (!lfoOscillatorNode.current || !lfoGainNode.current) {
+      const ctx = getAudioContext();
+      lfoOscillatorNode.current = ctx.createOscillator();
+      lfoGainNode.current = ctx.createGain();
+
+      lfoOscillatorNode.current.connect(lfoGainNode.current);
+      lfoOscillatorNode.current.start();
+    }
+
+    return { oscillator: lfoOscillatorNode.current, gain: lfoGainNode.current };
+  }, [getAudioContext]);
+
   return (
     <AudioCtx.Provider
       value={{
@@ -118,6 +134,7 @@ export function AudioContextProvider({ children }: PropsWithChildren) {
         getNoiseBuffer,
         getDistortion,
         getReverb,
+        getLFO,
       }}
     >
       {children}

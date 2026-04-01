@@ -14,6 +14,7 @@ interface SynthStoreValues {
   updateNoise: (noise: Partial<Preset['parameters']['noise']>) => void;
   updateDistortion: (distortion: Partial<Preset['parameters']['distortion']>) => void;
   updateReverb: (reverb: Partial<Preset['parameters']['reverb']>) => void;
+  updateLFO: (lfo: Partial<Preset['parameters']['lfo']>) => void;
   loadSynthParameters: (parameters: Preset['parameters']) => void;
 }
 
@@ -75,6 +76,14 @@ export const useSynthStore = create<SynthStoreValues>()((set) => ({
       parameters: {
         ...state.parameters,
         reverb: { ...state.parameters.reverb, ...reverb },
+      },
+    })),
+
+  updateLFO: (lfo) =>
+    set((state) => ({
+      parameters: {
+        ...state.parameters,
+        lfo: { ...state.parameters.lfo, ...lfo },
       },
     })),
 

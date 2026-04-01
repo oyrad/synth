@@ -34,6 +34,13 @@ export const DEFAULT_PRESETS: Array<Preset> = [
       reverb: { isActive: true, mix: 0.3, time: 1.5 },
       distortion: { isActive: false, amount: 0 },
       noise: { isActive: false, volume: 0 },
+      lfo: {
+        isActive: false,
+        waveform: 'sine',
+        frequency: 5,
+        depth: 0,
+        target: 'volume',
+      },
     },
   },
   {
@@ -62,6 +69,13 @@ export const DEFAULT_PRESETS: Array<Preset> = [
       noise: { isActive: false, volume: 0 },
       distortion: { isActive: false, amount: 0 },
       reverb: { isActive: false, mix: 0.25, time: 1.2 },
+      lfo: {
+        isActive: false,
+        waveform: 'sine',
+        frequency: 5,
+        depth: 0,
+        target: 'volume',
+      },
     },
   },
 ];

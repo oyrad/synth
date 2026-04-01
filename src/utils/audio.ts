@@ -17,7 +17,7 @@ export function calculateVelocity({
 }) {
   return (
     (velocity / MAX_VELOCITY) *
-    (0.25 / Math.sqrt(numOscillators)) *
+    (0.15 / Math.sqrt(numOscillators)) *
     (oscVolume / 100) *
     (masterVolume / 100)
   );

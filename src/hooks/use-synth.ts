@@ -12,8 +12,9 @@ import {
   updateDelay,
   updateDistortion,
   updateFilter,
+  updateLFO,
   updateReverb,
-} from '../utils/synth-updaters.ts';
+} from '../utils/synth/updaters.ts';
 
 export interface Voice {
   masterGain: GainNode;
@@ -32,9 +33,10 @@ export interface Voice {
 export function useSynth() {
   const voices = useRef<Record<number, Voice>>({});
 
-  const { getAudioContext, getDelay, getNoiseBuffer, getDistortion, getReverb } = useAudioCtx();
+  const { getAudioContext, getDelay, getNoiseBuffer, getDistortion, getReverb, getLFO } =
+    useAudioCtx();
 
-  const { oscillators, filter, amplitude, delay, noise, distortion, reverb } = useSynthStore(
+  const { oscillators, filter, amplitude, delay, noise, distortion, reverb, lfo } = useSynthStore(
     (s) => s.parameters,
   );
 
@@ -48,6 +50,7 @@ export function useSynth() {
       const audioContext = getAudioContext();
       const { delayNode, dryGain } = getDelay();
       const distortionNode = getDistortion();
+      const { gain: lfoGainNode } = getLFO();
 
       if (voices.current[note]) {
         return;
@@ -62,8 +65,12 @@ export function useSynth() {
       filterNode.type = filter.isActive ? filter.type : 'lowpass';
       filterNode.Q.value = filter.isActive ? filter.resonance : 0;
 
-      const baseFreq = Math.max(20, filter.frequency);
-      const depth = filter.depth || 0;
+      let baseFreq = Math.max(20, filter.frequency);
+      if (lfo.isActive && lfo.target === 'filter') {
+        baseFreq = Math.max(baseFreq, lfo.depth + 20);
+      }
+
+      const depth = filter.depth;
       const peakFreq = Math.min(19000, baseFreq + depth);
       const sustainFreq = Math.min(19000, baseFreq + depth * filter.sustain);
 
@@ -143,6 +150,23 @@ export function useSynth() {
         return { id: oscillatorData.id, oscillator: osc, gain: gainNode, velocity };
       });
 
+      if (lfo.isActive) {
+        if (lfo.target === 'filter') {
+          lfoGainNode.connect(filterNode.frequency);
+        } else if (lfo.target === 'volume') {
+          const volumeLfoGain = audioContext.createGain();
+          volumeLfoGain.gain.value = 0.001;
+          lfoGainNode.connect(volumeLfoGain);
+          volumeLfoGain.connect(masterGain.gain);
+        } else if (lfo.target === 'pitch') {
+          noteVoices.forEach((voice) => {
+            if (voice.oscillator) {
+              lfoGainNode.connect(voice.oscillator.detune);
+            }
+          });
+        }
+      }
+
       noiseGainNode.connect(filterNode);
       filterNode.connect(masterGain);
 
@@ -161,18 +185,22 @@ export function useSynth() {
       };
     },
     [
-      distortion,
-      amplitude,
-      filter,
       getAudioContext,
       getDelay,
-      getNoiseBuffer,
       getDistortion,
-      masterTune,
-      masterVolume,
+      getLFO,
+      amplitude,
+      filter,
+      getNoiseBuffer,
       noise,
-      oscillators,
       velocitySensitive,
+      oscillators,
+      masterVolume,
+      distortion,
+      lfo.target,
+      lfo.isActive,
+      lfo.depth,
+      masterTune,
     ],
   );
 
@@ -203,7 +231,12 @@ export function useSynth() {
       );
 
       masterGain.gain.setValueAtTime(masterGain.gain.value, now);
-      masterGain.gain.exponentialRampToValueAtTime(0.0001, now + release);
+
+      if (release > 0) {
+        masterGain.gain.exponentialRampToValueAtTime(0.0001, now + release);
+      } else {
+        masterGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.05);
+      }
 
       voice.oscillators.forEach(({ oscillator }) => {
         if (oscillator) {
@@ -221,12 +254,29 @@ export function useSynth() {
   );
 
   useEffect(() => {
+    const { oscillator: lfoOscillatorNode, gain: lfoGainNode } = getLFO();
+    const now = getAudioContext().currentTime;
+
+    lfoOscillatorNode.type = lfo.waveform;
+    lfoOscillatorNode.frequency.setTargetAtTime(lfo.frequency, now, 0.05);
+    lfoGainNode.gain.setTargetAtTime(lfo.depth, now, 0.05);
+
+    if (!lfo.isActive) {
+      lfoGainNode.gain.setTargetAtTime(0, now, 0.05);
+    }
+  }, [lfo, getAudioContext, getLFO]);
+
+  useEffect(() => {
+    updateLFO({ getAudioContext, getLFO, lfo, voices: voices.current });
+  }, [getLFO, getAudioContext, lfo]);
+
+  useEffect(() => {
     updateDelay({ delay, getAudioContext, getDelay });
   }, [delay, getAudioContext, getDelay]);
 
   useEffect(() => {
-    updateFilter({ filter, getAudioContext, voices: voices.current });
-  }, [filter, getAudioContext]);
+    updateFilter({ filter, getAudioContext, voices: voices.current, lfo });
+  }, [filter, getAudioContext, lfo]);
 
   useEffect(() => {
     updateDistortion({ distortion, getDistortion });

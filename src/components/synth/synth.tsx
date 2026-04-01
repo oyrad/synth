@@ -12,6 +12,7 @@ import { Distortion } from './distortion.tsx';
 import { Reverb } from './reverb.tsx';
 import { WaveformVisualizer } from './waveform-visualizer.tsx';
 import { WaveformVisualizerDialog } from './waveform-visualizer-dialog.tsx';
+import { LFO } from './lfo.tsx';
 
 export function Synth() {
   const { noteOn, noteOff } = useSynth();
@@ -38,14 +39,20 @@ export function Synth() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-4">
         <Filter className="h-fit" />
-        <Amplitude className="h-fit" />
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-        <Delay />
-        <Reverb />
-        <Distortion />
-        <Noise />
+        <div className="flex flex-col gap-4 h-fit">
+          <Amplitude />
+          <LFO />
+        </div>
+        <div className="flex flex-col gap-4 h-fit">
+          <div className="flex gap-4">
+            <Delay className="flex-1" />
+            <Reverb className="flex-1" />
+          </div>
+          <div className="flex gap-4">
+            <Noise className="flex-1" />
+            <Distortion className="flex-1" />
+          </div>
+        </div>
       </div>
     </div>
   );
