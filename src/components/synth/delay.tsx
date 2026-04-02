@@ -62,7 +62,7 @@ export function Delay({ className, ...rest }: HTMLAttributes<HTMLDivElement>) {
         min={0}
         max={1}
         step={0.01}
-        onChange={(value) => updateDelay({ time: value[0] })}
+        onChange={(value) => updateDelay({ feedback: value[0] })}
       />
     </Card>
   );
