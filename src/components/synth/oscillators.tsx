@@ -96,7 +96,7 @@ export function Oscillators() {
 
           <SliderParam
             labelLeft="Transpose"
-            labelRight={`${transpose} semitones`}
+            labelRight={`${transpose} st`}
             value={transpose}
             min={-24}
             max={24}

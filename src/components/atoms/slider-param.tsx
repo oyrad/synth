@@ -28,7 +28,7 @@ export function SliderParam({
     <div className={cn('flex flex-col gap-3.5', className)} {...rest}>
       <div className="flex justify-between items-center">
         <Label>{labelLeft}</Label>
-        <Label>{labelRight}</Label>
+        <p className="text-xs">{labelRight}</p>
       </div>
       <Slider value={[value]} min={min} max={max} step={step} onValueChange={onChange} />
     </div>

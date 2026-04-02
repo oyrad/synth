@@ -162,8 +162,8 @@ export function PresetControl({ className, ...rest }: HTMLAttributes<HTMLDivElem
         </Button>
 
         <Button
-          disabled={!isDirty}
           variant="secondary"
+          disabled={!isDirty}
           onClick={() => {
             loadSynthParameters(activePreset.parameters);
             toast('Preset reloaded.');

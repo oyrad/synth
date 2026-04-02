@@ -15,6 +15,7 @@ export function MasterSettings({ className, ...rest }: HTMLAttributes<HTMLDivEle
     <Card className={cn('', className)} {...rest}>
       <SliderParam
         labelLeft="Volume"
+        labelRight={`${masterVolume}%`}
         value={masterVolume}
         min={0}
         max={100}
@@ -24,6 +25,7 @@ export function MasterSettings({ className, ...rest }: HTMLAttributes<HTMLDivEle
 
       <SliderParam
         labelLeft="Tune"
+        labelRight={`${masterTune} cents`}
         value={masterTune}
         min={-64}
         max={64}

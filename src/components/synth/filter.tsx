@@ -70,6 +70,7 @@ export function Filter({ className, ...rest }: HTMLAttributes<HTMLDivElement>) {
 
       <SliderParam
         labelLeft="Cutoff"
+        labelRight={`${frequency} Hz`}
         value={hzToLog(frequency, MIN_FREQ, MAX_FREQ)}
         min={0}
         max={1}
@@ -88,9 +89,10 @@ export function Filter({ className, ...rest }: HTMLAttributes<HTMLDivElement>) {
 
       <SliderParam
         labelLeft="Depth"
+        labelRight={`${depth} Hz`}
         value={depth}
         min={0}
-        max={5000}
+        max={10000}
         step={20}
         onChange={(value) => updateFilter({ depth: value[0] })}
       />

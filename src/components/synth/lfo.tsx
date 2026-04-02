@@ -22,6 +22,22 @@ function isLFOTargetType(value: string): value is LFOTarget {
   return ['pitch', 'volume', 'filter'].includes(value);
 }
 
+const getDepthLabel = (value: number, target: string) => {
+  switch (target) {
+    case 'pitch':
+      return `${(value / 100).toFixed(2)} st`;
+
+    case 'filter':
+      return `${value} Hz`;
+
+    case 'volume':
+      return `${(value / 10).toFixed(0)}%`;
+
+    default:
+      return value.toString();
+  }
+};
+
 export interface LFOParameters {
   isActive: boolean;
   waveform: OscillatorType;
@@ -103,6 +119,7 @@ export function LFO({ className, ...rest }: HTMLAttributes<HTMLDivElement>) {
 
       <SliderParam
         labelLeft="Frequency"
+        labelRight={`${frequency} Hz`}
         value={frequency}
         min={0}
         max={20}
@@ -112,6 +129,7 @@ export function LFO({ className, ...rest }: HTMLAttributes<HTMLDivElement>) {
 
       <SliderParam
         labelLeft="Depth"
+        labelRight={getDepthLabel(depth, target)}
         value={depth}
         min={0}
         max={1000}
