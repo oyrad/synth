@@ -120,6 +120,7 @@ export function Filter({ className, ...rest }: HTMLAttributes<HTMLDivElement>) {
 
         <SliderParam
           labelLeft="Sustain"
+          labelRight={`${sustain * 100}%`}
           value={sustain}
           min={0}
           max={1}

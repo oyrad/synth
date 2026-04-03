@@ -1,4 +1,3 @@
-import { PresetControl } from '../preset-control.tsx';
 import { MasterSettings } from '../master-settings.tsx';
 import { Oscillators } from './oscillators.tsx';
 import { Amplitude } from './amplitude.tsx';
@@ -13,7 +12,7 @@ import { Reverb } from './reverb.tsx';
 import { WaveformVisualizer } from './waveform-visualizer.tsx';
 import { WaveformVisualizerDialog } from './waveform-visualizer-dialog.tsx';
 import { LFO } from './lfo.tsx';
-import { usePresetHotkeys } from '../../hooks/use-preset-hotkeys.ts';
+import { PresetControl } from '../preset-control.tsx';
 
 export function Synth() {
   const { noteOn, noteOff } = useSynth();
@@ -28,7 +27,7 @@ export function Synth() {
     onNoteOff: noteOff,
   });
 
-  usePresetHotkeys();
+  // usePresetHotkeys();
 
   return (
     <div className="w-full flex flex-col gap-4">

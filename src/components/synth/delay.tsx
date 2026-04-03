@@ -59,6 +59,7 @@ export function Delay({ className, ...rest }: HTMLAttributes<HTMLDivElement>) {
 
       <SliderParam
         labelLeft="Feedback"
+        labelRight={`${feedback}`}
         value={feedback}
         min={0}
         max={1}

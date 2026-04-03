@@ -35,6 +35,7 @@ export function Distortion({ className, ...rest }: HTMLAttributes<HTMLDivElement
 
       <SliderParam
         labelLeft="Amount"
+        labelRight={`${amount}`}
         value={amount}
         min={0}
         max={20}

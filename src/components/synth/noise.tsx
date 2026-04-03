@@ -35,6 +35,7 @@ export function Noise({ className, ...rest }: HTMLAttributes<HTMLDivElement>) {
 
       <SliderParam
         labelLeft="Volume"
+        labelRight={`${volume}`}
         value={volume}
         min={0}
         max={100}

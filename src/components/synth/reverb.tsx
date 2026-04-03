@@ -19,7 +19,7 @@ export function Reverb({ className, ...rest }: HTMLAttributes<HTMLDivElement>) {
   return (
     <Card
       className={cn(
-        'bg-sky-500/20 border-sky-500/60 dark:bg-sky-500/30 dark:border-sky-500/60 ',
+        'bg-sky-500/20 border-sky-500/60 dark:bg-sky-500/30 dark:border-sky-500/60',
         className,
       )}
       isActive={isActive}
@@ -46,6 +46,7 @@ export function Reverb({ className, ...rest }: HTMLAttributes<HTMLDivElement>) {
 
       <SliderParam
         labelLeft="Time"
+        labelRight={`${time}s`}
         value={time}
         min={0}
         max={5}
