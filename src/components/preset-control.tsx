@@ -3,13 +3,13 @@ import { ArrowLeft, ArrowRight, Plus, RotateCcw, Save } from 'lucide-react';
 import { usePresetStore } from '../stores/use-preset-store.ts';
 import { useSynthStore } from '../stores/use-synth-store.ts';
 import { SavePresetDialog } from './save-preset-dialog.tsx';
-import { type HTMLAttributes, useEffect, useMemo, useState } from 'react';
+import { type HTMLAttributes, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import { Input } from './ui/input.tsx';
 import { useHotkeyStore } from '../stores/use-hotkey-store.ts';
-import { DEFAULT_PRESETS } from '../consts/default-presets.ts';
 import { cn } from '../utils/cn.ts';
 import { Card } from './atoms/card.tsx';
+import { NEW_PRESET_PARAMETERS } from '../consts/new-preset.ts';
 
 interface EditablePresetNameProps {
   onSubmit: (name: string) => void;
@@ -19,31 +19,25 @@ interface EditablePresetNameProps {
 function EditablePresetName({ onSubmit, defaultValue }: EditablePresetNameProps) {
   const [presetName, setPresetName] = useState(defaultValue);
 
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Enter') {
-        onSubmit(presetName);
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [onSubmit, presetName]);
-
   return (
-    <Input
-      className="my-0.5"
-      autoFocus
-      size={20}
-      value={presetName}
-      onChange={(e) => setPresetName(e.target.value)}
-      onBlur={() => {
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
         onSubmit(presetName);
       }}
-    />
+      className="w-full"
+    >
+      <Input
+        className="my-0.5"
+        autoFocus
+        size={20}
+        value={presetName}
+        onChange={(e) => setPresetName(e.target.value)}
+        onBlur={() => {
+          onSubmit(presetName);
+        }}
+      />
+    </form>
   );
 }
 
@@ -78,32 +72,30 @@ export function PresetControl({ className, ...rest }: HTMLAttributes<HTMLDivElem
 
   return (
     <Card className={cn('gap-3', className)} {...rest}>
-      <div className="flex gap-2 items-center">
-        {isNameEditing ? (
-          <EditablePresetName
-            onSubmit={(newName) => {
-              savePreset({
-                id: activePreset.id,
-                name: newName,
-                parameters: activePreset.parameters,
-              });
-              setIsNameEditing(false);
-              setHotkeysEnabled(true);
-            }}
-            defaultValue={activePreset.name}
-          />
-        ) : (
-          <p
-            className="font-mono text-2xl sm:text-3xl font-semibold uppercase"
-            onClick={() => {
-              setIsNameEditing(true);
-              setHotkeysEnabled(false);
-            }}
-          >
-            {activePreset.name}
-          </p>
-        )}
-      </div>
+      {isNameEditing ? (
+        <EditablePresetName
+          onSubmit={(newName) => {
+            savePreset({
+              id: activePreset.id,
+              name: newName,
+              parameters: activePreset.parameters,
+            });
+            setIsNameEditing(false);
+            setHotkeysEnabled(true);
+          }}
+          defaultValue={activePreset.name}
+        />
+      ) : (
+        <p
+          className="font-mono text-2xl sm:text-3xl font-semibold uppercase"
+          onClick={() => {
+            setIsNameEditing(true);
+            setHotkeysEnabled(false);
+          }}
+        >
+          {activePreset.name}
+        </p>
+      )}
 
       <div className="flex flex-col sm:flex-row gap-2">
         <div className="flex gap-2">
@@ -134,7 +126,7 @@ export function PresetControl({ className, ...rest }: HTMLAttributes<HTMLDivElem
           onClick={() => {
             const newPreset = saveNewPreset({
               name: `Preset ${presets.length + 1}`,
-              parameters: DEFAULT_PRESETS[0].parameters,
+              parameters: NEW_PRESET_PARAMETERS,
             });
 
             loadSynthParameters(newPreset.parameters);

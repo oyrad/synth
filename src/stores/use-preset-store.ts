@@ -95,17 +95,27 @@ export const usePresetStore = create<PresetStoreValues>()(
       nextPreset: () => {
         const { presets, activePreset } = get();
         const index = presets.findIndex((p) => p.id === activePreset.id);
-        const next = presets[(index + 1) % presets.length];
-        set({ activePreset: next });
-        return next;
+
+        if (index === presets.length - 1) {
+          return;
+        }
+
+        const nextPreset = presets[index + 1];
+        set({ activePreset: nextPreset });
+        return nextPreset;
       },
 
       previousPreset: () => {
         const { presets, activePreset } = get();
         const index = presets.findIndex((p) => p.id === activePreset.id);
-        const prev = presets[(index - 1 + presets.length) % presets.length];
-        set({ activePreset: prev });
-        return prev;
+
+        if (index === 0) {
+          return;
+        }
+
+        const previousPreset = presets[index - 1];
+        set({ activePreset: previousPreset });
+        return previousPreset;
       },
     }),
     {

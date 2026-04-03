@@ -13,6 +13,7 @@ import { Reverb } from './reverb.tsx';
 import { WaveformVisualizer } from './waveform-visualizer.tsx';
 import { WaveformVisualizerDialog } from './waveform-visualizer-dialog.tsx';
 import { LFO } from './lfo.tsx';
+import { usePresetHotkeys } from '../../hooks/use-preset-hotkeys.ts';
 
 export function Synth() {
   const { noteOn, noteOff } = useSynth();
@@ -26,6 +27,8 @@ export function Synth() {
     onNoteOn: noteOn,
     onNoteOff: noteOff,
   });
+
+  usePresetHotkeys();
 
   return (
     <div className="w-full flex flex-col gap-4">

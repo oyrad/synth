@@ -28,7 +28,21 @@ export function SavePresetDialog({ trigger, onSave }: SavePresetDialogProps) {
         <DialogHeader className="gap-3">
           <DialogTitle>New preset</DialogTitle>
 
-          <div className="flex gap-2">
+          <form
+            className="flex gap-2"
+            onSubmit={(e) => {
+              e.preventDefault();
+              if (!presetName.trim()) {
+                return;
+              }
+
+              onSave(presetName);
+
+              setPresetName('');
+              setIsOpen(false);
+              setHotkeysEnabled(true);
+            }}
+          >
             <Input
               id="preset-name"
               type="text"
@@ -39,23 +53,8 @@ export function SavePresetDialog({ trigger, onSave }: SavePresetDialogProps) {
               }}
             />
 
-            <Button
-              disabled={!presetName.trim()}
-              onClick={() => {
-                if (!presetName.trim()) {
-                  return;
-                }
-
-                onSave(presetName);
-
-                setPresetName('');
-                setIsOpen(false);
-                setHotkeysEnabled(true);
-              }}
-            >
-              Save
-            </Button>
-          </div>
+            <Button disabled={!presetName.trim()}>Save</Button>
+          </form>
         </DialogHeader>
       </DialogContent>
     </Dialog>
