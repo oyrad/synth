@@ -38,8 +38,8 @@ export function Distortion({ className, ...rest }: HTMLAttributes<HTMLDivElement
         labelRight={`${amount}`}
         value={amount}
         min={0}
-        max={20}
-        step={0.01}
+        max={100}
+        step={0.1}
         onChange={(value) => updateDistortion({ amount: value[0] })}
       />
     </Card>

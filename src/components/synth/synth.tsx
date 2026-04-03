@@ -41,20 +41,16 @@ export function Synth() {
       <Oscillators />
 
       <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-4">
-        <Filter className="h-fit" />
         <div className="flex flex-col gap-4 h-fit">
           <Amplitude />
           <LFO />
         </div>
+        <Filter className="h-fit" />
         <div className="flex flex-col gap-4 h-fit">
-          <div className="flex flex-col md:flex-row gap-4">
-            <Delay className="flex-1" />
-            <Reverb className="flex-1" />
-          </div>
-          <div className="flex flex-col md:flex-row gap-4">
-            <Noise className="flex-1" />
-            <Distortion className="flex-1" />
-          </div>
+          <Reverb className="flex-1" />
+          <Delay className="flex-1" />
+          <Noise className="flex-1" />
+          <Distortion className="flex-1" />
         </div>
       </div>
     </div>

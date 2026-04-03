@@ -1,21 +1,14 @@
 import { isFilterType } from '../../utils/midi.ts';
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '../ui/select.tsx';
 import { useSynthStore } from '../../stores/use-synth-store.ts';
 import { hzToLog, logToHz, MAX_FREQ, MIN_FREQ } from '../../utils/audio.ts';
 import { Switch } from '../ui/switch.tsx';
 import { cn } from '../../utils/cn.ts';
-import type { HTMLAttributes } from 'react';
+import { type HTMLAttributes } from 'react';
 import { AdsrVisualizer } from './adsr-visualizer.tsx';
 import { SliderParam } from '../atoms/slider-param.tsx';
 import { Title } from '../atoms/title.tsx';
 import { Card } from '../atoms/card.tsx';
+import { Tabs, TabsList, TabsTrigger } from '../ui/tabs.tsx';
 
 export interface FilterParameters {
   isActive: boolean;
@@ -29,6 +22,60 @@ export interface FilterParameters {
   release: number;
 }
 
+interface FilterSelectProps {
+  value: BiquadFilterType;
+  onChange: (value: string) => void;
+  className?: string;
+}
+
+function FilterSelect({ value, onChange, className = '' }: FilterSelectProps) {
+  return (
+    <Tabs value={value} onValueChange={onChange} className={className}>
+      <TabsList className="grid w-full grid-cols-3 border border-black/20 dark:border-white/20 bg-transparent">
+        <TabsTrigger value="lowpass" title="Lowpass">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M2 8h10c4 0 8 2 10 12" />
+          </svg>
+        </TabsTrigger>
+        <TabsTrigger value="highpass" title="Highpass">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M2 20c2-10 6-12 10-12h10" />
+          </svg>
+        </TabsTrigger>
+        <TabsTrigger value="bandpass" title="Bandpass">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M2 20c4 0 7-16 10-16s6 16 10 16" />
+          </svg>
+        </TabsTrigger>
+      </TabsList>
+    </Tabs>
+  );
+}
+
 export function Filter({ className, ...rest }: HTMLAttributes<HTMLDivElement>) {
   const { isActive, type, frequency, resonance, depth, ...adsr } = useSynthStore(
     (s) => s.parameters.filter,
@@ -38,7 +85,14 @@ export function Filter({ className, ...rest }: HTMLAttributes<HTMLDivElement>) {
   const updateFilter = useSynthStore((s) => s.updateFilter);
 
   return (
-    <Card className={cn('', className)} isActive={isActive} {...rest}>
+    <Card
+      className={cn(
+        'bg-violet-500/20 border-violet-500/60 dark:bg-violet-500/30 dark:border-violet-500/60',
+        className,
+      )}
+      isActive={isActive}
+      {...rest}
+    >
       <div className="flex justify-between items-center">
         <Title>Filter</Title>
         <Switch
@@ -48,25 +102,14 @@ export function Filter({ className, ...rest }: HTMLAttributes<HTMLDivElement>) {
         />
       </div>
 
-      <Select
+      <FilterSelect
         value={type}
-        onValueChange={(value) => {
+        onChange={(value) => {
           if (isFilterType(value)) {
             updateFilter({ type: value });
           }
         }}
-      >
-        <SelectTrigger className="w-full">
-          <SelectValue placeholder="Select waveform" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectGroup>
-            <SelectItem value="lowpass">Lowpass</SelectItem>
-            <SelectItem value="highpass">Highpass</SelectItem>
-            <SelectItem value="bandpass">Bandpass</SelectItem>
-          </SelectGroup>
-        </SelectContent>
-      </Select>
+      />
 
       <SliderParam
         labelLeft="Cutoff"
@@ -120,7 +163,7 @@ export function Filter({ className, ...rest }: HTMLAttributes<HTMLDivElement>) {
 
         <SliderParam
           labelLeft="Sustain"
-          labelRight={`${sustain * 100}%`}
+          labelRight={`${Math.floor(sustain * 100)}%`}
           value={sustain}
           min={0}
           max={1}
@@ -139,7 +182,13 @@ export function Filter({ className, ...rest }: HTMLAttributes<HTMLDivElement>) {
         />
       </div>
 
-      <AdsrVisualizer {...adsr} />
+      <AdsrVisualizer
+        className={cn(
+          'bg-white/60  dark:bg-black/60 border border-violet-500/20',
+          !isActive && 'bg-transparent',
+        )}
+        {...adsr}
+      />
     </Card>
   );
 }

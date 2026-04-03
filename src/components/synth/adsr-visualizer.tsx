@@ -32,7 +32,7 @@ export function AdsrVisualizer({
   return (
     <div
       className={cn(
-        'relative w-full min-h-48 h-auto border border-gray-200 dark:border-neutral-800 rounded-lg',
+        'relative w-full min-h-48 h-auto border border-gray-200 dark:border-neutral-800 rounded-lg overflow-hidden',
         className,
       )}
       {...rest}

@@ -15,6 +15,7 @@ import { SliderParam } from '../atoms/slider-param.tsx';
 import { Card } from '../atoms/card.tsx';
 import { cn } from '../../utils/cn.ts';
 import { Title } from '../atoms/title.tsx';
+import { WaveformSelect } from './waveform-select.tsx';
 
 type LFOTarget = 'pitch' | 'volume' | 'filter';
 
@@ -71,26 +72,14 @@ export function LFO({ className, ...rest }: HTMLAttributes<HTMLDivElement>) {
       <div className="flex gap-4">
         <div className="flex flex-col gap-3 flex-1">
           <Label>Waveform</Label>
-          <Select
+          <WaveformSelect
             value={waveform}
-            onValueChange={(value) => {
+            onChange={(value) => {
               if (isOscillatorType(value)) {
                 updateLFO({ waveform: value });
               }
             }}
-          >
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select waveform" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectItem value="sine">Sine</SelectItem>
-                <SelectItem value="triangle">Triangle</SelectItem>
-                <SelectItem value="square">Square</SelectItem>
-                <SelectItem value="sawtooth">Sawtooth</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+          />
         </div>
 
         <div className="flex flex-col gap-3 flex-1">

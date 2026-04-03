@@ -1,11 +1,3 @@
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '../ui/select.tsx';
 import { isOscillatorType } from '../../utils/midi.ts';
 import { useSynthStore } from '../../stores/use-synth-store.ts';
 import { Switch } from '../ui/switch.tsx';
@@ -13,6 +5,7 @@ import { cn } from '../../utils/cn.ts';
 import { SliderParam } from '../atoms/slider-param.tsx';
 import { Title } from '../atoms/title.tsx';
 import { Card } from '../atoms/card.tsx';
+import { WaveformSelect } from './waveform-select.tsx';
 
 export interface OscillatorParameters {
   id: string;
@@ -53,30 +46,18 @@ export function Oscillators() {
             />
           </div>
 
-          <Select
+          <WaveformSelect
             value={waveform}
-            onValueChange={(value) => {
+            onChange={(value) => {
               if (isOscillatorType(value)) {
                 updateOscillator(id, { waveform: value });
               }
             }}
-          >
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select waveform" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectItem value="sine">Sine</SelectItem>
-                <SelectItem value="triangle">Triangle</SelectItem>
-                <SelectItem value="square">Square</SelectItem>
-                <SelectItem value="sawtooth">Sawtooth</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+          />
 
           <SliderParam
             labelLeft="Volume"
-            labelRight={`${volume}%`}
+            labelRight={`${volume}`}
             value={volume}
             min={0}
             max={100}
