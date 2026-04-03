@@ -1,0 +1,61 @@
+import type { Preset } from '../stores/use-preset-store.ts';
+
+export const NEW_PRESET_PARAMETERS: Preset['parameters'] = {
+  oscillators: [
+    {
+      id: 'osc-1',
+      isActive: true,
+      waveform: 'sine',
+      volume: 100,
+      detune: 0,
+      transpose: 0,
+    },
+    {
+      id: 'osc-2',
+      waveform: 'sine',
+      isActive: false,
+      volume: 90,
+      detune: 0,
+      transpose: 0,
+    },
+    {
+      id: 'osc-3',
+      waveform: 'sine',
+      isActive: false,
+      volume: 90,
+      detune: 0,
+      transpose: 0,
+    },
+    {
+      id: 'osc-4',
+      waveform: 'sine',
+      isActive: false,
+      volume: 90,
+      detune: 0,
+      transpose: 0,
+    },
+  ],
+  amplitude: { attack: 0, decay: 0, sustain: 1, release: 0 },
+  filter: {
+    isActive: false,
+    type: 'lowpass',
+    frequency: 800,
+    resonance: 0,
+    depth: 1,
+    attack: 0,
+    decay: 0,
+    sustain: 1,
+    release: 0,
+  },
+  delay: { isActive: false, mix: 0.5, time: 0.3, feedback: 0.3 },
+  reverb: { isActive: false, mix: 0.3, time: 1.5 },
+  distortion: { isActive: false, amount: 0 },
+  noise: { isActive: false, volume: 0 },
+  lfo: {
+    isActive: false,
+    waveform: 'sine',
+    frequency: 5,
+    depth: 0,
+    target: 'volume',
+  },
+};
