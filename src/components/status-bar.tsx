@@ -29,7 +29,7 @@ export function StatusBarComponent({ isMidiAccessGranted }: StatusBarProps) {
   const { selectedInput: midiInput } = useMidiStore();
 
   return (
-    <div className="fixed bottom-0 left-0 w-full bg-black text-white py-3 px-6 flex gap-6">
+    <div className="fixed bottom-0 left-0 w-full bg-neutral-200 dark:bg-neutral-900 py-3 px-6 flex gap-6">
       <StatusBarIndicator text="Audio ready" isActive={isAudioReady} className="hidden sm:flex" />
       <StatusBarIndicator
         text="MIDI Access granted"
