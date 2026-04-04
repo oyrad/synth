@@ -1,5 +1,4 @@
 import { Switch } from '../ui/switch.tsx';
-import { Label } from '../ui/label.tsx';
 import { useSynthStore } from '../../stores/use-synth-store.ts';
 import type { HTMLAttributes } from 'react';
 import {
@@ -16,6 +15,7 @@ import { Card } from '../atoms/card.tsx';
 import { cn } from '../../utils/cn.ts';
 import { Title } from '../atoms/title.tsx';
 import { WaveformSelect } from './waveform-select.tsx';
+import { ArrowRight } from 'lucide-react';
 
 type LFOTarget = 'pitch' | 'volume' | 'filter';
 
@@ -69,41 +69,37 @@ export function LFO({ className, ...rest }: HTMLAttributes<HTMLDivElement>) {
         />
       </div>
 
-      <div className="flex gap-4">
-        <div className="flex flex-col gap-3 flex-1">
-          <Label>Waveform</Label>
-          <WaveformSelect
-            value={waveform}
-            onChange={(value) => {
-              if (isOscillatorType(value)) {
-                updateLFO({ waveform: value });
-              }
-            }}
-          />
-        </div>
+      <div className="flex items-center gap-4">
+        <WaveformSelect
+          value={waveform}
+          onChange={(value) => {
+            if (isOscillatorType(value)) {
+              updateLFO({ waveform: value });
+            }
+          }}
+        />
 
-        <div className="flex flex-col gap-3 flex-1">
-          <Label>Target</Label>
-          <Select
-            value={target}
-            onValueChange={(value) => {
-              if (isLFOTargetType(value)) {
-                updateLFO({ target: value });
-              }
-            }}
-          >
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select waveform" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectItem value="pitch">Pitch</SelectItem>
-                <SelectItem value="volume">Volume</SelectItem>
-                <SelectItem value="filter">Filter</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-        </div>
+        <ArrowRight className="size-12" />
+
+        <Select
+          value={target}
+          onValueChange={(value) => {
+            if (isLFOTargetType(value)) {
+              updateLFO({ target: value });
+            }
+          }}
+        >
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Select waveform" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectItem value="pitch">Pitch</SelectItem>
+              <SelectItem value="volume">Volume</SelectItem>
+              <SelectItem value="filter">Filter</SelectItem>
+            </SelectGroup>
+          </SelectContent>
+        </Select>
       </div>
 
       <SliderParam
@@ -121,7 +117,7 @@ export function LFO({ className, ...rest }: HTMLAttributes<HTMLDivElement>) {
         labelRight={getDepthLabel(depth, target)}
         value={depth}
         min={0}
-        max={1000}
+        max={1200}
         step={10}
         onChange={(value) => updateLFO({ depth: value[0] })}
       />
