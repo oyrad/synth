@@ -1,4 +1,6 @@
-export const DEFAULT_PRESETS = [
+import type { Preset } from '../stores/use-preset-store.ts';
+
+export const DEFAULT_PRESETS: Array<Preset> = [
   {
     id: 'preset-jump',
     name: 'Jump',
