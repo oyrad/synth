@@ -27,6 +27,7 @@ export function useRequestMidiAccess() {
           setSelectedInput(inputs[0]);
         })
         .catch((err) => {
+          setKeyboardPlaying(true);
           console.error(err);
         });
     }
