@@ -15,9 +15,9 @@ export function WaveformSelect({ value, onChange }: WaveformSelectProps) {
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            stroke-width="2.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           >
             <path d="M2 12c3-9 7-9 10 0s7 9 10 0" />
           </svg>
@@ -28,9 +28,9 @@ export function WaveformSelect({ value, onChange }: WaveformSelectProps) {
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            stroke-width="2.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           >
             <path d="M2 12l5-8 10 16 5-8" />
           </svg>
@@ -41,9 +41,9 @@ export function WaveformSelect({ value, onChange }: WaveformSelectProps) {
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            stroke-width="2.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           >
             <path d="M2 12h0v-8h10v16h10v-8h0" />
           </svg>
@@ -54,9 +54,9 @@ export function WaveformSelect({ value, onChange }: WaveformSelectProps) {
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            stroke-width="2.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           >
             <path d="M2 15l15-8v8.7l-8" />
           </svg>
