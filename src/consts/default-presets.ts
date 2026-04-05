@@ -58,6 +58,8 @@ export const DEFAULT_PRESETS: Array<Preset> = [
           transpose: 0,
         },
         { id: 'osc-2', isActive: true, waveform: 'sawtooth', volume: 90, detune: 7, transpose: 0 },
+        { id: 'osc-3', isActive: false, waveform: 'sine', volume: 100, detune: 0, transpose: 0 },
+        { id: 'osc-4', isActive: false, waveform: 'sine', volume: 100, detune: 0, transpose: 0 },
       ],
       amplitude: { attack: 0.01, decay: 0.3, sustain: 0.6, release: 0.4 },
       filter: {
@@ -92,6 +94,8 @@ export const DEFAULT_PRESETS: Array<Preset> = [
           detune: 0,
           transpose: -12,
         },
+        { id: 'osc-3', isActive: false, waveform: 'sine', volume: 100, detune: 0, transpose: 0 },
+        { id: 'osc-4', isActive: false, waveform: 'sine', volume: 100, detune: 0, transpose: 0 },
       ],
       amplitude: { attack: 0.01, decay: 0.15, sustain: 0.8, release: 0.15 },
       filter: {
@@ -120,6 +124,7 @@ export const DEFAULT_PRESETS: Array<Preset> = [
         { id: 'osc-1', isActive: true, waveform: 'sawtooth', volume: 100, detune: 0, transpose: 0 },
         { id: 'osc-2', isActive: true, waveform: 'sawtooth', volume: 90, detune: -7, transpose: 0 },
         { id: 'osc-3', isActive: true, waveform: 'sawtooth', volume: 90, detune: 7, transpose: 0 },
+        { id: 'osc-4', isActive: false, waveform: 'sine', volume: 100, detune: 0, transpose: 0 },
       ],
       amplitude: { attack: 0.01, decay: 0.3, sustain: 0.7, release: 0.3 },
       filter: {
@@ -148,6 +153,7 @@ export const DEFAULT_PRESETS: Array<Preset> = [
         { id: 'osc-1', isActive: true, waveform: 'sine', volume: 100, detune: 0, transpose: 0 },
         { id: 'osc-2', isActive: true, waveform: 'triangle', volume: 80, detune: 3, transpose: 0 },
         { id: 'osc-3', isActive: true, waveform: 'sine', volume: 50, detune: -3, transpose: 12 },
+        { id: 'osc-4', isActive: false, waveform: 'sine', volume: 100, detune: 0, transpose: 0 },
       ],
       amplitude: { attack: 1.2, decay: 0.5, sustain: 0.7, release: 2.0 },
       filter: {
@@ -183,6 +189,7 @@ export const DEFAULT_PRESETS: Array<Preset> = [
         },
         { id: 'osc-2', isActive: true, waveform: 'sawtooth', volume: 100, detune: 7, transpose: 0 },
         { id: 'osc-3', isActive: true, waveform: 'sawtooth', volume: 80, detune: 0, transpose: 12 },
+        { id: 'osc-4', isActive: false, waveform: 'sine', volume: 100, detune: 0, transpose: 0 },
       ],
       amplitude: { attack: 0.01, decay: 0.1, sustain: 0.9, release: 0.2 },
       filter: {
@@ -224,6 +231,8 @@ export const DEFAULT_PRESETS: Array<Preset> = [
           detune: 10,
           transpose: 0,
         },
+        { id: 'osc-3', isActive: false, waveform: 'sine', volume: 100, detune: 0, transpose: 0 },
+        { id: 'osc-4', isActive: false, waveform: 'sine', volume: 100, detune: 0, transpose: 0 },
       ],
       amplitude: { attack: 0.01, decay: 0.1, sustain: 0.8, release: 0.1 },
       filter: {
@@ -252,6 +261,7 @@ export const DEFAULT_PRESETS: Array<Preset> = [
         { id: 'osc-1', isActive: true, waveform: 'sawtooth', volume: 100, detune: 0, transpose: 0 },
         { id: 'osc-2', isActive: true, waveform: 'sawtooth', volume: 70, detune: -5, transpose: 0 },
         { id: 'osc-3', isActive: true, waveform: 'sawtooth', volume: 70, detune: 5, transpose: 0 },
+        { id: 'osc-4', isActive: false, waveform: 'sine', volume: 100, detune: 0, transpose: 0 },
       ],
       amplitude: { attack: 0.3, decay: 0.4, sustain: 0.6, release: 1.0 },
       filter: {
@@ -287,6 +297,7 @@ export const DEFAULT_PRESETS: Array<Preset> = [
           detune: -2,
           transpose: 12,
         },
+        { id: 'osc-4', isActive: false, waveform: 'sine', volume: 100, detune: 0, transpose: 0 },
       ],
       amplitude: { attack: 1.5, decay: 0.8, sustain: 0.6, release: 2.5 },
       filter: {
@@ -314,6 +325,8 @@ export const DEFAULT_PRESETS: Array<Preset> = [
       oscillators: [
         { id: 'osc-1', isActive: true, waveform: 'triangle', volume: 100, detune: 0, transpose: 0 },
         { id: 'osc-2', isActive: true, waveform: 'square', volume: 40, detune: 0, transpose: 12 },
+        { id: 'osc-3', isActive: false, waveform: 'sine', volume: 100, detune: 0, transpose: 0 },
+        { id: 'osc-4', isActive: false, waveform: 'sine', volume: 100, detune: 0, transpose: 0 },
       ],
       amplitude: { attack: 0.01, decay: 0.15, sustain: 0.7, release: 0.15 },
       filter: {
@@ -342,6 +355,7 @@ export const DEFAULT_PRESETS: Array<Preset> = [
         { id: 'osc-1', isActive: true, waveform: 'square', volume: 100, detune: 0, transpose: 0 },
         { id: 'osc-2', isActive: true, waveform: 'square', volume: 60, detune: 0, transpose: 12 },
         { id: 'osc-3', isActive: true, waveform: 'square', volume: 40, detune: 0, transpose: 19 },
+        { id: 'osc-4', isActive: false, waveform: 'sine', volume: 100, detune: 0, transpose: 0 },
       ],
       amplitude: { attack: 0.01, decay: 0.01, sustain: 1.0, release: 0.05 },
       filter: {
@@ -369,6 +383,8 @@ export const DEFAULT_PRESETS: Array<Preset> = [
       oscillators: [
         { id: 'osc-1', isActive: true, waveform: 'square', volume: 100, detune: 0, transpose: 0 },
         { id: 'osc-2', isActive: true, waveform: 'square', volume: 50, detune: 0, transpose: 12 },
+        { id: 'osc-3', isActive: false, waveform: 'sine', volume: 100, detune: 0, transpose: 0 },
+        { id: 'osc-4', isActive: false, waveform: 'sine', volume: 100, detune: 0, transpose: 0 },
       ],
       amplitude: { attack: 0.01, decay: 0.3, sustain: 0.0, release: 0.1 },
       filter: {
@@ -396,6 +412,8 @@ export const DEFAULT_PRESETS: Array<Preset> = [
       oscillators: [
         { id: 'osc-1', isActive: true, waveform: 'sawtooth', volume: 100, detune: 0, transpose: 0 },
         { id: 'osc-2', isActive: true, waveform: 'square', volume: 70, detune: 0, transpose: -12 },
+        { id: 'osc-3', isActive: false, waveform: 'sine', volume: 100, detune: 0, transpose: 0 },
+        { id: 'osc-4', isActive: false, waveform: 'sine', volume: 100, detune: 0, transpose: 0 },
       ],
       amplitude: { attack: 0.01, decay: 0.4, sustain: 0.5, release: 0.2 },
       filter: {
@@ -423,6 +441,8 @@ export const DEFAULT_PRESETS: Array<Preset> = [
       oscillators: [
         { id: 'osc-1', isActive: true, waveform: 'square', volume: 100, detune: 0, transpose: 0 },
         { id: 'osc-2', isActive: true, waveform: 'square', volume: 50, detune: 0, transpose: 12 },
+        { id: 'osc-3', isActive: false, waveform: 'sine', volume: 100, detune: 0, transpose: 0 },
+        { id: 'osc-4', isActive: false, waveform: 'sine', volume: 100, detune: 0, transpose: 0 },
       ],
       amplitude: { attack: 0.01, decay: 0.2, sustain: 0.6, release: 0.2 },
       filter: {
@@ -458,6 +478,7 @@ export const DEFAULT_PRESETS: Array<Preset> = [
         },
         { id: 'osc-2', isActive: true, waveform: 'sawtooth', volume: 100, detune: 5, transpose: 0 },
         { id: 'osc-3', isActive: true, waveform: 'sawtooth', volume: 70, detune: 0, transpose: 12 },
+        { id: 'osc-3', isActive: false, waveform: 'sine', volume: 100, detune: 0, transpose: 0 },
       ],
       amplitude: { attack: 0.02, decay: 0.2, sustain: 0.8, release: 0.3 },
       filter: {
@@ -492,6 +513,8 @@ export const DEFAULT_PRESETS: Array<Preset> = [
           transpose: 0,
         },
         { id: 'osc-2', isActive: true, waveform: 'sawtooth', volume: 100, detune: 5, transpose: 0 },
+        { id: 'osc-3', isActive: false, waveform: 'sine', volume: 100, detune: 0, transpose: 0 },
+        { id: 'osc-4', isActive: false, waveform: 'sine', volume: 100, detune: 0, transpose: 0 },
       ],
       amplitude: { attack: 0.02, decay: 0.2, sustain: 0.75, release: 0.25 },
       filter: {
@@ -526,6 +549,8 @@ export const DEFAULT_PRESETS: Array<Preset> = [
           detune: 0,
           transpose: -12,
         },
+        { id: 'osc-3', isActive: false, waveform: 'sine', volume: 100, detune: 0, transpose: 0 },
+        { id: 'osc-4', isActive: false, waveform: 'sine', volume: 100, detune: 0, transpose: 0 },
       ],
       amplitude: { attack: 0.05, decay: 0.2, sustain: 0.7, release: 0.3 },
       filter: {
@@ -553,6 +578,8 @@ export const DEFAULT_PRESETS: Array<Preset> = [
       oscillators: [
         { id: 'osc-1', isActive: true, waveform: 'sawtooth', volume: 100, detune: 0, transpose: 0 },
         { id: 'osc-2', isActive: true, waveform: 'square', volume: 50, detune: 0, transpose: 0 },
+        { id: 'osc-3', isActive: false, waveform: 'sine', volume: 100, detune: 0, transpose: 0 },
+        { id: 'osc-4', isActive: false, waveform: 'sine', volume: 100, detune: 0, transpose: 0 },
       ],
       amplitude: { attack: 0.01, decay: 0.1, sustain: 0.8, release: 0.15 },
       filter: {
@@ -588,6 +615,7 @@ export const DEFAULT_PRESETS: Array<Preset> = [
         },
         { id: 'osc-2', isActive: true, waveform: 'sawtooth', volume: 100, detune: 5, transpose: 0 },
         { id: 'osc-3', isActive: true, waveform: 'sawtooth', volume: 70, detune: 0, transpose: 12 },
+        { id: 'osc-4', isActive: false, waveform: 'sine', volume: 100, detune: 0, transpose: 0 },
       ],
       amplitude: { attack: 0.01, decay: 0.2, sustain: 0.8, release: 0.3 },
       filter: {
@@ -622,6 +650,8 @@ export const DEFAULT_PRESETS: Array<Preset> = [
           detune: 0,
           transpose: -12,
         },
+        { id: 'osc-3', isActive: false, waveform: 'sine', volume: 100, detune: 0, transpose: 0 },
+        { id: 'osc-4', isActive: false, waveform: 'sine', volume: 100, detune: 0, transpose: 0 },
       ],
       amplitude: { attack: 0.01, decay: 0.5, sustain: 0.4, release: 0.2 },
       filter: {

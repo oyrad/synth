@@ -2,6 +2,7 @@ import { StatusBar } from './components/status-bar.tsx';
 import { LoadPresetOnInit } from './components/load-preset-on-init.tsx';
 import { useRequestMidiAccess } from './hooks/use-request-midi-access.ts';
 import { Synth } from './components/synth/synth.tsx';
+import { StartAudioDialog } from './components/start-audio-dialog.tsx';
 
 export default function App() {
   const { isGranted } = useRequestMidiAccess();
@@ -12,7 +13,7 @@ export default function App() {
 
       <StatusBar isMidiAccessGranted={isGranted} />
 
-      {/*<StartAudioDialog />*/}
+      <StartAudioDialog />
       <LoadPresetOnInit />
     </main>
   );
