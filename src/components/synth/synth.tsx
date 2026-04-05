@@ -49,8 +49,10 @@ export function Synth() {
         <div className="flex flex-col gap-4 h-fit">
           <Reverb className="flex-1" />
           <Delay className="flex-1" />
-          <Noise className="flex-1" />
-          <Distortion className="flex-1" />
+          <div className="flex gap-4 h-fit">
+            <Noise className="flex-1" />
+            <Distortion className="flex-1" />
+          </div>
         </div>
       </div>
     </div>

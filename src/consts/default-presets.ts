@@ -564,13 +564,13 @@ export const DEFAULT_PRESETS: Array<Preset> = [
       },
       delay: { isActive: true, mix: 0.15, time: 0.3, feedback: 0.2 },
       reverb: { isActive: true, mix: 0.3, time: 2.0 },
-      distortion: { isActive: true, amount: 0.2 },
-      noise: { isActive: false, volume: 0 },
+      distortion: { isActive: true, amount: 3 },
+      noise: { isActive: true, volume: 60 },
       lfo: {
         isActive: true,
         waveform: 'sine',
         frequency: 5.8,
-        depth: 30, // Natural vibrato feel
+        depth: 30,
         target: 'volume',
       },
     },

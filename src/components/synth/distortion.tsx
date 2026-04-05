@@ -39,7 +39,7 @@ export function Distortion({ className, ...rest }: HTMLAttributes<HTMLDivElement
         value={amount}
         min={0}
         max={100}
-        step={0.1}
+        step={1}
         onChange={(value) => updateDistortion({ amount: value[0] })}
       />
     </Card>

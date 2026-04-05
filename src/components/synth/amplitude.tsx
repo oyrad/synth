@@ -1,7 +1,6 @@
 import { AdsrVisualizer } from './adsr-visualizer.tsx';
 import { useSynthStore } from '../../stores/use-synth-store.ts';
 import type { HTMLAttributes } from 'react';
-import { cn } from '../../utils/cn.ts';
 import { SliderParam } from '../atoms/slider-param.tsx';
 import { Title } from '../atoms/title.tsx';
 import { Card } from '../atoms/card.tsx';
@@ -20,7 +19,7 @@ export function Amplitude({ className, ...rest }: HTMLAttributes<HTMLDivElement>
   const { attack, decay, sustain, release } = amplitude;
 
   return (
-    <Card className={cn('', className)} {...rest}>
+    <Card className={className} {...rest}>
       <Title>Amplitude</Title>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-2">
@@ -29,7 +28,7 @@ export function Amplitude({ className, ...rest }: HTMLAttributes<HTMLDivElement>
           labelRight={`${attack}s`}
           value={attack}
           min={0}
-          max={1}
+          max={2}
           step={0.01}
           onChange={(value) => updateAmplitude({ attack: value[0] })}
         />
@@ -59,7 +58,7 @@ export function Amplitude({ className, ...rest }: HTMLAttributes<HTMLDivElement>
           labelRight={`${release}s`}
           value={release}
           min={0}
-          max={2}
+          max={4}
           step={0.01}
           onChange={(value) => updateAmplitude({ release: value[0] })}
         />

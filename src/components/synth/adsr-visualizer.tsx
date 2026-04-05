@@ -19,7 +19,7 @@ export function AdsrVisualizer({
   const width = 300;
   const height = 100;
   const sustainWidth = 80;
-  const totalTime = 4;
+  const totalTime = 7;
 
   const timeScale = (width - sustainWidth) / totalTime;
 

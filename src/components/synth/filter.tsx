@@ -112,7 +112,7 @@ export function Filter({ className, ...rest }: HTMLAttributes<HTMLDivElement>) {
       />
 
       <SliderParam
-        labelLeft="Cutoff"
+        labelLeft="Frequency"
         labelRight={`${frequency} Hz`}
         value={hzToLog(frequency, MIN_FREQ, MAX_FREQ)}
         min={0}
@@ -146,7 +146,7 @@ export function Filter({ className, ...rest }: HTMLAttributes<HTMLDivElement>) {
           labelRight={`${attack}s`}
           value={attack}
           min={0}
-          max={1}
+          max={2}
           step={0.01}
           onChange={(value) => updateFilter({ attack: value[0] })}
         />
@@ -176,7 +176,7 @@ export function Filter({ className, ...rest }: HTMLAttributes<HTMLDivElement>) {
           labelRight={`${release}s`}
           value={release}
           min={0}
-          max={2}
+          max={4}
           step={0.01}
           onChange={(value) => updateFilter({ release: value[0] })}
         />
