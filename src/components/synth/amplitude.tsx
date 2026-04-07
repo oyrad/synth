@@ -24,6 +24,7 @@ export function Amplitude({ className, ...rest }: HTMLAttributes<HTMLDivElement>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-2">
         <SliderParam
+          id="amplitude-attack"
           labelLeft="Attack"
           labelRight={`${attack}s`}
           value={attack}
@@ -34,6 +35,7 @@ export function Amplitude({ className, ...rest }: HTMLAttributes<HTMLDivElement>
         />
 
         <SliderParam
+          id="amplitude-decay"
           labelLeft="Decay"
           labelRight={`${decay}s`}
           value={decay}
@@ -44,6 +46,7 @@ export function Amplitude({ className, ...rest }: HTMLAttributes<HTMLDivElement>
         />
 
         <SliderParam
+          id="amplitude-sustain"
           labelLeft="Sustain"
           labelRight={`${Math.floor(sustain * 100)}%`}
           value={sustain}
@@ -54,6 +57,7 @@ export function Amplitude({ className, ...rest }: HTMLAttributes<HTMLDivElement>
         />
 
         <SliderParam
+          id="amplitude-release"
           labelLeft="Release"
           labelRight={`${release}s`}
           value={release}

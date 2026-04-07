@@ -6,6 +6,14 @@ import { SliderParam } from '../atoms/slider-param.tsx';
 import { Title } from '../atoms/title.tsx';
 import { Card } from '../atoms/card.tsx';
 import { WaveformSelect } from './waveform-select.tsx';
+import {
+  DETUNE_MAX,
+  DETUNE_MIN,
+  TRANSPOSE_MAX,
+  TRANSPOSE_MIN,
+  VOLUME_MAX,
+  VOLUME_MIN
+} from '../../consts/parameter-values.tsx';
 
 export interface OscillatorParameters {
   id: string;
@@ -56,31 +64,34 @@ export function Oscillators() {
           />
 
           <SliderParam
+            id={`oscillator-${id}-volume`}
             labelLeft="Volume"
             labelRight={`${volume}`}
             value={volume}
-            min={0}
-            max={100}
+            min={VOLUME_MIN}
+            max={VOLUME_MAX}
             step={1}
             onChange={(value) => updateOscillator(id, { volume: value[0] })}
           />
 
           <SliderParam
+            id={`oscillator-${id}-detune`}
             labelLeft="Detune"
             labelRight={`${detune} cents`}
             value={detune}
-            min={-64}
-            max={64}
+            min={DETUNE_MIN}
+            max={DETUNE_MAX}
             step={1}
             onChange={(value) => updateOscillator(id, { detune: value[0] })}
           />
 
           <SliderParam
+            id={`oscillator-${id}-transpose`}
             labelLeft="Transpose"
             labelRight={`${transpose} st`}
             value={transpose}
-            min={-24}
-            max={24}
+            min={TRANSPOSE_MIN}
+            max={TRANSPOSE_MAX}
             step={1}
             onChange={(value) => updateOscillator(id, { transpose: value[0] })}
           />

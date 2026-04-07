@@ -35,6 +35,7 @@ export function Reverb({ className, ...rest }: HTMLAttributes<HTMLDivElement>) {
       </div>
 
       <SliderParam
+        id="reverb-mix"
         labelLeft="Dry"
         labelRight="Wet"
         value={mix}
@@ -45,6 +46,7 @@ export function Reverb({ className, ...rest }: HTMLAttributes<HTMLDivElement>) {
       />
 
       <SliderParam
+        id="reverb-time"
         labelLeft="Time"
         labelRight={`${time}s`}
         value={time}

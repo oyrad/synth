@@ -38,6 +38,7 @@ export function Delay({ className, ...rest }: HTMLAttributes<HTMLDivElement>) {
       </div>
 
       <SliderParam
+        id="delay-mix"
         labelLeft="Dry"
         labelRight="Wet"
         value={mix}
@@ -48,6 +49,7 @@ export function Delay({ className, ...rest }: HTMLAttributes<HTMLDivElement>) {
       />
 
       <SliderParam
+        id="delay-time"
         labelLeft="Time"
         labelRight={`${time}s`}
         value={time}
@@ -58,6 +60,7 @@ export function Delay({ className, ...rest }: HTMLAttributes<HTMLDivElement>) {
       />
 
       <SliderParam
+        id="delay-feedback"
         labelLeft="Feedback"
         labelRight={`${feedback * 100}%`}
         value={feedback}

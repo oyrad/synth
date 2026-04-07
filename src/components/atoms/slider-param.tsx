@@ -2,8 +2,16 @@ import { Label } from '../ui/label.tsx';
 import { Slider } from '../ui/slider.tsx';
 import type { HTMLProps } from 'react';
 import { cn } from '../../utils/cn.ts';
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuTrigger,
+} from '../ui/context-menu.tsx';
+import { useAssignKnobStore } from '../../stores/use-assign-knob-store.tsx';
 
 interface SliderParamProps extends Omit<HTMLProps<HTMLDivElement>, 'onChange'> {
+  id: string;
   labelLeft: string;
   labelRight?: string;
   value: number;
@@ -14,6 +22,7 @@ interface SliderParamProps extends Omit<HTMLProps<HTMLDivElement>, 'onChange'> {
 }
 
 export function SliderParam({
+  id,
   labelLeft,
   labelRight = '',
   value,
@@ -24,13 +33,43 @@ export function SliderParam({
   className,
   ...rest
 }: SliderParamProps) {
+  const setIsAssignKnobModeActive = useAssignKnobStore((s) => s.setIsModeActive);
+  const setActiveParameterId = useAssignKnobStore((s) => s.setActiveParameterId);
+  const assignedKnobs = useAssignKnobStore((s) => s.assignedKnobs);
+  const unassignKnob = useAssignKnobStore((s) => s.unassignKnob);
+
+  const isKnobAssigned = Boolean(assignedKnobs[id]);
+
   return (
-    <div className={cn('flex flex-col gap-3.5', className)} {...rest}>
-      <div className="flex justify-between items-center">
-        <Label>{labelLeft}</Label>
-        <p className="text-xs">{labelRight}</p>
-      </div>
-      <Slider value={[value]} min={min} max={max} step={step} onValueChange={onChange} />
-    </div>
+    <ContextMenu>
+      <ContextMenuTrigger>
+        <div className={cn('flex flex-col gap-3.5', className)} {...rest}>
+          <div className="flex justify-between items-center">
+            <Label>{labelLeft}</Label>
+            <p className="text-xs">{labelRight}</p>
+          </div>
+          <Slider value={[value]} min={min} max={max} step={step} onValueChange={onChange} />
+        </div>
+      </ContextMenuTrigger>
+      <ContextMenuContent>
+        <ContextMenuItem
+          onSelect={() => {
+            setIsAssignKnobModeActive(true);
+            setActiveParameterId(id);
+          }}
+        >
+          Assign to knob
+        </ContextMenuItem>
+        {isKnobAssigned && (
+          <ContextMenuItem
+            onSelect={() => {
+              unassignKnob(id);
+            }}
+          >
+            Unassign knob
+          </ContextMenuItem>
+        )}
+      </ContextMenuContent>
+    </ContextMenu>
   );
 }

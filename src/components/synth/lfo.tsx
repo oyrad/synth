@@ -103,6 +103,7 @@ export function LFO({ className, ...rest }: HTMLAttributes<HTMLDivElement>) {
       </div>
 
       <SliderParam
+        id="lfo-frequency"
         labelLeft="Frequency"
         labelRight={`${frequency} Hz`}
         value={frequency}
@@ -113,6 +114,7 @@ export function LFO({ className, ...rest }: HTMLAttributes<HTMLDivElement>) {
       />
 
       <SliderParam
+        id="lfo-depth"
         labelLeft="Depth"
         labelRight={getDepthLabel(depth, target)}
         value={depth}

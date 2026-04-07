@@ -112,6 +112,7 @@ export function Filter({ className, ...rest }: HTMLAttributes<HTMLDivElement>) {
       />
 
       <SliderParam
+        id="filter-frequency"
         labelLeft="Frequency"
         labelRight={`${frequency} Hz`}
         value={hzToLog(frequency, MIN_FREQ, MAX_FREQ)}
@@ -122,6 +123,7 @@ export function Filter({ className, ...rest }: HTMLAttributes<HTMLDivElement>) {
       />
 
       <SliderParam
+        id="filter-resonance"
         labelLeft="Resonance"
         value={resonance}
         min={0}
@@ -131,6 +133,7 @@ export function Filter({ className, ...rest }: HTMLAttributes<HTMLDivElement>) {
       />
 
       <SliderParam
+        id="filter-depth"
         labelLeft="Depth"
         labelRight={`${depth} Hz`}
         value={depth}
@@ -142,6 +145,7 @@ export function Filter({ className, ...rest }: HTMLAttributes<HTMLDivElement>) {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-2">
         <SliderParam
+          id="filter-attack"
           labelLeft="Attack"
           labelRight={`${attack}s`}
           value={attack}
@@ -152,6 +156,7 @@ export function Filter({ className, ...rest }: HTMLAttributes<HTMLDivElement>) {
         />
 
         <SliderParam
+          id="filter-decay"
           labelLeft="Decay"
           labelRight={`${decay}s`}
           value={decay}
@@ -162,6 +167,7 @@ export function Filter({ className, ...rest }: HTMLAttributes<HTMLDivElement>) {
         />
 
         <SliderParam
+          id="filter-sustain"
           labelLeft="Sustain"
           labelRight={`${Math.floor(sustain * 100)}%`}
           value={sustain}
@@ -172,6 +178,7 @@ export function Filter({ className, ...rest }: HTMLAttributes<HTMLDivElement>) {
         />
 
         <SliderParam
+          id="filter-release"
           labelLeft="Release"
           labelRight={`${release}s`}
           value={release}
