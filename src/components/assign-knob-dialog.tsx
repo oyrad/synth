@@ -5,9 +5,18 @@ import { useAssignKnobStore } from '../stores/use-assign-knob-store.tsx';
 export function AssignKnobDialog() {
   const isAssignKnobModeActive = useAssignKnobStore((s) => s.isModeActive);
   const setIsAssignKnobModeActive = useAssignKnobStore((s) => s.setIsModeActive);
+  const setActiveParameterId = useAssignKnobStore((s) => s.setActiveParameterId);
 
   return (
-    <Dialog open={isAssignKnobModeActive} onOpenChange={setIsAssignKnobModeActive}>
+    <Dialog
+      open={isAssignKnobModeActive}
+      onOpenChange={(open) => {
+        setIsAssignKnobModeActive(open);
+        if (!open) {
+          setActiveParameterId(null);
+        }
+      }}
+    >
       <DialogContent showCloseButton={false} className="sm:max-w-md w-fit px-12">
         <DialogHeader className="text-center gap-4 py-2">
           <DialogTitle className="text-2xl">Listening for input</DialogTitle>

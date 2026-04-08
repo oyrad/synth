@@ -14,19 +14,13 @@ export function useMidiControls({ onNoteOn, onNoteOff }: UseMidiControlsParams) 
 
   const assignKnob = useAssignKnobStore((s) => s.assignKnob);
   const activeParameterId = useAssignKnobStore((s) => s.activeParameterId);
-  const setIsModeActive = useAssignKnobStore((s) => s.setIsModeActive);
   const isModeActive = useAssignKnobStore((s) => s.isModeActive);
   const assignedKnobs = useAssignKnobStore((s) => s.assignedKnobs);
-  const unassignKnob = useAssignKnobStore((s) => s.unassignKnob);
 
   const handleCC = useCallback(
     (controller: number, value: number, channel: number) => {
       if (isModeActive && activeParameterId) {
-        if (assignedKnobs[activeParameterId]) {
-          unassignKnob(activeParameterId);
-        }
         assignKnob(activeParameterId, { channel, ccNumber: controller });
-        setIsModeActive(false);
         return;
       }
 
@@ -49,15 +43,7 @@ export function useMidiControls({ onNoteOn, onNoteOff }: UseMidiControlsParams) 
         }
       }
     },
-    [
-      isModeActive,
-      activeParameterId,
-      assignedKnobs,
-      registry,
-      assignKnob,
-      unassignKnob,
-      setIsModeActive,
-    ],
+    [isModeActive, activeParameterId, assignedKnobs, registry, assignKnob],
   );
 
   useMidi({

@@ -4,35 +4,23 @@ import { Amplitude } from './amplitude/amplitude.tsx';
 import { Filter } from './filter/filter.tsx';
 import { Delay } from './delay/delay.tsx';
 import { Noise } from './noise/noise.tsx';
-import { useSynth } from '../../hooks/use-synth.ts';
-import { useKeyboard } from '../../hooks/use-keyboard.ts';
 import { Distortion } from './distortion/distortion.tsx';
 import { Reverb } from './reverb/reverb.tsx';
 import { WaveformVisualizer } from './waveform-visualizer.tsx';
 import { WaveformVisualizerDialog } from './waveform-visualizer-dialog.tsx';
 import { LFO } from './lfo/lfo.tsx';
 import { PresetControl } from '../preset-control.tsx';
-import { usePresetHotkeys } from '../../hooks/use-preset-hotkeys.ts';
+import { PresetHotkeys } from '../preset-hotkeys.ts';
 import { AssignKnobDialog } from '../assign-knob-dialog.tsx';
-import { useMidiControls } from '../../hooks/use-midi-controls.tsx';
+import { SynthGenerator } from './synth-generator.tsx';
 
 export function Synth() {
-  const { noteOn, noteOff } = useSynth();
-
-  useMidiControls({
-    onNoteOn: noteOn,
-    onNoteOff: noteOff,
-  });
-
-  useKeyboard({
-    onNoteOn: noteOn,
-    onNoteOff: noteOff,
-  });
-
-  usePresetHotkeys();
+  console.log('render');
 
   return (
     <>
+      <SynthGenerator />
+
       <div className="w-full flex flex-col gap-4">
         <div className="flex flex-col lg:flex-row gap-4 items-stretch">
           <PresetControl />
@@ -59,6 +47,7 @@ export function Synth() {
         </div>
       </div>
 
+      <PresetHotkeys />
       <AssignKnobDialog />
     </>
   );

@@ -4,16 +4,27 @@ import { useSettingsStore } from '../stores/use-settings-store.ts';
 import { Checkbox } from './ui/checkbox.tsx';
 import { Label } from './ui/label.tsx';
 import { toast } from 'sonner';
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from './ui/select.tsx';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from './ui/select.tsx';
 import { useMidiStore } from '../stores/use-midi-store.tsx';
 import { isMidiInput } from '../utils/midi.ts';
 import { Kbd } from './ui/kbd.tsx';
+import { useAssignKnobStore } from '../stores/use-assign-knob-store.tsx';
+import { Button } from './ui/button.tsx';
 
 export function SettingsDialog() {
   const { velocitySensitive, keyboardPlaying, setVelocitySensitive, setKeyboardPlaying } =
     useSettingsStore();
 
   const { inputs, selectedInput, setSelectedInput } = useMidiStore();
+
+  const clearAllMappings = useAssignKnobStore((s) => s.clearAll);
 
   return (
     <Dialog>
@@ -97,6 +108,22 @@ export function SettingsDialog() {
               Press <Kbd>1</Kbd> or <Kbd>2</Kbd> to shift the octave down or up.
             </p>
           </div>
+        </div>
+
+        <div className="flex items-center justify-between">
+          <Label htmlFor="velocity-sensitive" className="flex items-center gap-2">
+            Mapped controls
+          </Label>
+          <Button
+            variant="secondary"
+            size="xs"
+            onClick={() => {
+              clearAllMappings();
+              toast('Cleared all controls');
+            }}
+          >
+            Clear all
+          </Button>
         </div>
       </DialogContent>
     </Dialog>

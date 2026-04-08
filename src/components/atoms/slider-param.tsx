@@ -9,6 +9,7 @@ import {
   ContextMenuTrigger,
 } from '../ui/context-menu.tsx';
 import { useAssignKnobStore } from '../../stores/use-assign-knob-store.tsx';
+import { AudioWaveform } from 'lucide-react';
 
 interface SliderParamProps extends Omit<HTMLProps<HTMLDivElement>, 'onChange'> {
   id: string;
@@ -45,7 +46,10 @@ export function SliderParam({
       <ContextMenuTrigger>
         <div className={cn('flex flex-col gap-3.5', className)} {...rest}>
           <div className="flex justify-between items-center">
-            <Label>{labelLeft}</Label>
+            <div className="flex items-center gap-1">
+              {isKnobAssigned && <AudioWaveform className="size-3.5" />}
+              <Label>{labelLeft}</Label>
+            </div>
             <p className="text-xs">{labelRight}</p>
           </div>
           <Slider value={[value]} min={min} max={max} step={step} onValueChange={onChange} />

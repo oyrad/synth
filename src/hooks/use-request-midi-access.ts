@@ -6,7 +6,7 @@ export function useRequestMidiAccess() {
   const [isGranted, setIsGranted] = useState(false);
 
   const { setInputs, setSelectedInput } = useMidiStore();
-  const { setKeyboardPlaying } = useSettingsStore();
+  const setKeyboardPlaying = useSettingsStore((s) => s.setKeyboardPlaying);
 
   useEffect(() => {
     if (navigator.requestMIDIAccess) {

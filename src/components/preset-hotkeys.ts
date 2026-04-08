@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useSynthStore } from '../stores/use-synth-store.ts';
 import { usePresetStore } from '../stores/use-preset-store.ts';
 
-export function usePresetHotkeys() {
+export function PresetHotkeys() {
   const nextPreset = usePresetStore((s) => s.nextPreset);
   const previousPreset = usePresetStore((s) => s.previousPreset);
 
@@ -30,4 +30,6 @@ export function usePresetHotkeys() {
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [loadSynthParameters, nextPreset, previousPreset]);
+
+  return null;
 }
