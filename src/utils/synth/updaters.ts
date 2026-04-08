@@ -1,11 +1,11 @@
-import type { DelayParameters } from '../../components/synth/delay.tsx';
+import type { DelayParameters } from '../../components/synth/delay/delay.tsx';
 import type { AudioContextValue } from '../../audio-context.tsx';
-import type { DistortionParameters } from '../../components/synth/distortion.tsx';
+import type { DistortionParameters } from '../../components/synth/distortion/distortion.tsx';
 import { createDistortionCurve, createReverbBuffer } from '../audio.ts';
-import type { ReverbParameters } from '../../components/synth/reverb.tsx';
-import type { FilterParameters } from '../../components/synth/filter.tsx';
+import type { ReverbParameters } from '../../components/synth/reverb/reverb.tsx';
+import type { FilterParameters } from '../../components/synth/filter/filter.tsx';
 import type { Voice } from '../../hooks/use-synth.ts';
-import type { LFOParameters } from '../../components/synth/lfo.tsx';
+import type { LFOParameters } from '../../components/synth/lfo/lfo.tsx';
 
 interface UpdateFilterParams {
   filter: FilterParameters;

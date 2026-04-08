@@ -23,9 +23,6 @@ export function calculateVelocity({
   );
 }
 
-export const MIN_FREQ = 20;
-export const MAX_FREQ = 20000;
-
 export const hzToLog = (hz: number, min: number, max: number) =>
   Math.log(hz / min) / Math.log(max / min);
 export const logToHz = (pos: number, min: number, max: number) =>
@@ -47,20 +44,13 @@ export function createDistortionCurve(amount: number) {
   const n_samples = 44100;
   const curve = new Float32Array(n_samples);
 
-  // We use a fixed high-intensity distortion formula for the "Wet" sound
   const k = 50;
 
   for (let i = 0; i < n_samples; ++i) {
     const x = (i * 2) / n_samples - 1;
 
-    // 1. Calculate the "Wet" (Distorted) value
     const wet = ((3 + k) * x) / (3 + k * Math.abs(x));
-
-    // 2. Linear Interpolation (lerp)
-    // amount is 0 to 100, so 't' is 0.0 to 1.0
     const t = amount / 100;
-
-    // This blends between the clean signal (x) and distorted signal (wet)
     curve[i] = (1 - t) * x + t * wet;
   }
   return curve;

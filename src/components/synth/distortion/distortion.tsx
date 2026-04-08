@@ -1,10 +1,10 @@
-import { useSynthStore } from '../../stores/use-synth-store.ts';
-import { Switch } from '../ui/switch.tsx';
-import { cn } from '../../utils/cn.ts';
+import { useSynthStore } from '../../../stores/use-synth-store.ts';
+import { Switch } from '../../ui/switch.tsx';
+import { cn } from '../../../utils/cn.ts';
 import type { HTMLAttributes } from 'react';
-import { SliderParam } from '../atoms/slider-param.tsx';
-import { Card } from '../atoms/card.tsx';
-import { Title } from '../atoms/title.tsx';
+import { Card } from '../../atoms/card.tsx';
+import { Title } from '../../atoms/title.tsx';
+import { DistortionAmount } from './distortion-amount.tsx';
 
 export interface DistortionParameters {
   isActive: boolean;
@@ -12,7 +12,7 @@ export interface DistortionParameters {
 }
 
 export function Distortion({ className, ...rest }: HTMLAttributes<HTMLDivElement>) {
-  const { isActive, amount } = useSynthStore((s) => s.parameters.distortion);
+  const isActive = useSynthStore((s) => s.parameters.distortion.isActive);
   const updateDistortion = useSynthStore((s) => s.updateDistortion);
 
   return (
@@ -33,16 +33,7 @@ export function Distortion({ className, ...rest }: HTMLAttributes<HTMLDivElement
         />
       </div>
 
-      <SliderParam
-        id="distortion-amount"
-        labelLeft="Amount"
-        labelRight={`${amount}`}
-        value={amount}
-        min={0}
-        max={100}
-        step={1}
-        onChange={(value) => updateDistortion({ amount: value[0] })}
-      />
+      <DistortionAmount onChange={(value) => updateDistortion({ amount: value })} />
     </Card>
   );
 }

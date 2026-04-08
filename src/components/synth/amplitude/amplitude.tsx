@@ -1,9 +1,20 @@
-import { AdsrVisualizer } from './adsr-visualizer.tsx';
-import { useSynthStore } from '../../stores/use-synth-store.ts';
+import { AdsrVisualizer } from '../adsr-visualizer.tsx';
+import { useSynthStore } from '../../../stores/use-synth-store.ts';
 import type { HTMLAttributes } from 'react';
-import { SliderParam } from '../atoms/slider-param.tsx';
-import { Title } from '../atoms/title.tsx';
-import { Card } from '../atoms/card.tsx';
+import { SliderParam } from '../../atoms/slider-param.tsx';
+import { Title } from '../../atoms/title.tsx';
+import { Card } from '../../atoms/card.tsx';
+import {
+  ADSR_STEP,
+  ATTACK_MAX,
+  ATTACK_MIN,
+  DECAY_MAX,
+  DECAY_MIN,
+  RELEASE_MAX,
+  RELEASE_MIN,
+  SUSTAIN_MAX,
+  SUSTAIN_MIN,
+} from '../../../consts/parameter-values.ts';
 
 export interface AmplitudeParameters {
   attack: number;
@@ -28,9 +39,9 @@ export function Amplitude({ className, ...rest }: HTMLAttributes<HTMLDivElement>
           labelLeft="Attack"
           labelRight={`${attack}s`}
           value={attack}
-          min={0}
-          max={2}
-          step={0.01}
+          min={ATTACK_MIN}
+          max={ATTACK_MAX}
+          step={ADSR_STEP}
           onChange={(value) => updateAmplitude({ attack: value[0] })}
         />
 
@@ -39,9 +50,9 @@ export function Amplitude({ className, ...rest }: HTMLAttributes<HTMLDivElement>
           labelLeft="Decay"
           labelRight={`${decay}s`}
           value={decay}
-          min={0}
-          max={1}
-          step={0.01}
+          min={DECAY_MIN}
+          max={DECAY_MAX}
+          step={ADSR_STEP}
           onChange={(value) => updateAmplitude({ decay: value[0] })}
         />
 
@@ -50,9 +61,9 @@ export function Amplitude({ className, ...rest }: HTMLAttributes<HTMLDivElement>
           labelLeft="Sustain"
           labelRight={`${Math.floor(sustain * 100)}%`}
           value={sustain}
-          min={0}
-          max={1}
-          step={0.01}
+          min={SUSTAIN_MIN}
+          max={SUSTAIN_MAX}
+          step={ADSR_STEP}
           onChange={(value) => updateAmplitude({ sustain: value[0] })}
         />
 
@@ -61,9 +72,9 @@ export function Amplitude({ className, ...rest }: HTMLAttributes<HTMLDivElement>
           labelLeft="Release"
           labelRight={`${release}s`}
           value={release}
-          min={0}
-          max={4}
-          step={0.01}
+          min={RELEASE_MIN}
+          max={RELEASE_MAX}
+          step={ADSR_STEP}
           onChange={(value) => updateAmplitude({ release: value[0] })}
         />
       </div>

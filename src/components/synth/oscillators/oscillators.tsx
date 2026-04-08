@@ -1,19 +1,22 @@
-import { isOscillatorType } from '../../utils/midi.ts';
-import { useSynthStore } from '../../stores/use-synth-store.ts';
-import { Switch } from '../ui/switch.tsx';
-import { cn } from '../../utils/cn.ts';
-import { SliderParam } from '../atoms/slider-param.tsx';
-import { Title } from '../atoms/title.tsx';
-import { Card } from '../atoms/card.tsx';
-import { WaveformSelect } from './waveform-select.tsx';
+import { isOscillatorType } from '../../../utils/midi.ts';
+import { useSynthStore } from '../../../stores/use-synth-store.ts';
+import { Switch } from '../../ui/switch.tsx';
+import { cn } from '../../../utils/cn.ts';
+import { SliderParam } from '../../atoms/slider-param.tsx';
+import { Title } from '../../atoms/title.tsx';
+import { Card } from '../../atoms/card.tsx';
+import { WaveformSelect } from '../waveform-select.tsx';
 import {
   DETUNE_MAX,
   DETUNE_MIN,
+  DETUNE_STEP,
   TRANSPOSE_MAX,
   TRANSPOSE_MIN,
+  TRANSPOSE_STEP,
   VOLUME_MAX,
-  VOLUME_MIN
-} from '../../consts/parameter-values.tsx';
+  VOLUME_MIN,
+  VOLUME_STEP,
+} from '../../../consts/parameter-values.ts';
 
 export interface OscillatorParameters {
   id: string;
@@ -70,7 +73,7 @@ export function Oscillators() {
             value={volume}
             min={VOLUME_MIN}
             max={VOLUME_MAX}
-            step={1}
+            step={VOLUME_STEP}
             onChange={(value) => updateOscillator(id, { volume: value[0] })}
           />
 
@@ -81,7 +84,7 @@ export function Oscillators() {
             value={detune}
             min={DETUNE_MIN}
             max={DETUNE_MAX}
-            step={1}
+            step={DETUNE_STEP}
             onChange={(value) => updateOscillator(id, { detune: value[0] })}
           />
 
@@ -92,7 +95,7 @@ export function Oscillators() {
             value={transpose}
             min={TRANSPOSE_MIN}
             max={TRANSPOSE_MAX}
-            step={1}
+            step={TRANSPOSE_STEP}
             onChange={(value) => updateOscillator(id, { transpose: value[0] })}
           />
         </Card>

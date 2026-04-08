@@ -1,14 +1,14 @@
 import { create } from 'zustand/react';
 import { persist } from 'zustand/middleware';
 import { DEFAULT_PRESETS } from '../consts/default-presets.ts';
-import type { OscillatorParameters } from '../components/synth/oscillators.tsx';
-import type { AmplitudeParameters } from '../components/synth/amplitude.tsx';
-import type { DelayParameters } from '../components/synth/delay.tsx';
-import type { FilterParameters } from '../components/synth/filter.tsx';
-import type { NoiseParameters } from '../components/synth/noise.tsx';
-import type { DistortionParameters } from '../components/synth/distortion.tsx';
-import type { ReverbParameters } from '../components/synth/reverb.tsx';
-import type { LFOParameters } from '../components/synth/lfo.tsx';
+import type { OscillatorParameters } from '../components/synth/oscillators/oscillators.tsx';
+import type { AmplitudeParameters } from '../components/synth/amplitude/amplitude.tsx';
+import type { DelayParameters } from '../components/synth/delay/delay.tsx';
+import type { FilterParameters } from '../components/synth/filter/filter.tsx';
+import type { NoiseParameters } from '../components/synth/noise/noise.tsx';
+import type { DistortionParameters } from '../components/synth/distortion/distortion.tsx';
+import type { ReverbParameters } from '../components/synth/reverb/reverb.tsx';
+import type { LFOParameters } from '../components/synth/lfo/lfo.tsx';
 
 export interface Preset {
   id: string;

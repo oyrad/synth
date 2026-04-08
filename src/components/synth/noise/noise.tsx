@@ -1,10 +1,10 @@
-import { useSynthStore } from '../../stores/use-synth-store.ts';
-import { Switch } from '../ui/switch.tsx';
-import { cn } from '../../utils/cn.ts';
+import { useSynthStore } from '../../../stores/use-synth-store.ts';
+import { Switch } from '../../ui/switch.tsx';
+import { cn } from '../../../utils/cn.ts';
 import type { HTMLAttributes } from 'react';
-import { Card } from '../atoms/card.tsx';
-import { Title } from '../atoms/title.tsx';
-import { SliderParam } from '../atoms/slider-param.tsx';
+import { Card } from '../../atoms/card.tsx';
+import { Title } from '../../atoms/title.tsx';
+import { NoiseVolume } from './noise-volume.tsx';
 
 export interface NoiseParameters {
   isActive: boolean;
@@ -12,7 +12,7 @@ export interface NoiseParameters {
 }
 
 export function Noise({ className, ...rest }: HTMLAttributes<HTMLDivElement>) {
-  const { isActive, volume } = useSynthStore((s) => s.parameters.noise);
+  const isActive = useSynthStore((s) => s.parameters.noise.isActive);
   const updateNoise = useSynthStore((s) => s.updateNoise);
 
   return (
@@ -33,16 +33,7 @@ export function Noise({ className, ...rest }: HTMLAttributes<HTMLDivElement>) {
         />
       </div>
 
-      <SliderParam
-        id="noise-volume"
-        labelLeft="Volume"
-        labelRight={`${volume}`}
-        value={volume}
-        min={0}
-        max={100}
-        step={1}
-        onChange={(value) => updateNoise({ volume: value[0] })}
-      />
+      <NoiseVolume onChange={(value) => updateNoise({ volume: value })} />
     </Card>
   );
 }

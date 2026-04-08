@@ -14,6 +14,7 @@ export function MasterSettings({ className, ...rest }: HTMLAttributes<HTMLDivEle
   return (
     <Card className={cn('', className)} {...rest}>
       <SliderParam
+        id="master-volume"
         labelLeft="Volume"
         labelRight={`${masterVolume}`}
         value={masterVolume}
@@ -24,6 +25,7 @@ export function MasterSettings({ className, ...rest }: HTMLAttributes<HTMLDivEle
       />
 
       <SliderParam
+        id="master-tune"
         labelLeft="Tune"
         labelRight={`${masterTune} cents`}
         value={masterTune}
