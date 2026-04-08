@@ -38,7 +38,7 @@ export function useMidiControls({ onNoteOn, onNoteOff }: UseMidiControlsParams) 
             : descriptor.min + (value / 127) * (descriptor.max - descriptor.min);
 
           requestAnimationFrame(() => {
-            descriptor.set(mapped);
+            descriptor.set(+mapped.toFixed(2));
           });
         }
       }

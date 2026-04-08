@@ -10,6 +10,7 @@ import {
 } from '../ui/context-menu.tsx';
 import { useAssignKnobStore } from '../../stores/use-assign-knob-store.tsx';
 import { AudioWaveform } from 'lucide-react';
+import { toast } from 'sonner';
 
 interface SliderParamProps extends Omit<HTMLProps<HTMLDivElement>, 'onChange'> {
   id: string;
@@ -55,7 +56,7 @@ export function SliderParam({
           <Slider value={[value]} min={min} max={max} step={step} onValueChange={onChange} />
         </div>
       </ContextMenuTrigger>
-      <ContextMenuContent>
+      <ContextMenuContent className="min-w-fit">
         <ContextMenuItem
           onSelect={() => {
             setIsAssignKnobModeActive(true);
@@ -68,6 +69,7 @@ export function SliderParam({
           <ContextMenuItem
             onSelect={() => {
               unassignKnob(id);
+              toast('Unassigned knob.');
             }}
           >
             Unassign knob

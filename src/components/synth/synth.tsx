@@ -10,16 +10,16 @@ import { WaveformVisualizer } from './waveform-visualizer.tsx';
 import { WaveformVisualizerDialog } from './waveform-visualizer-dialog.tsx';
 import { LFO } from './lfo/lfo.tsx';
 import { PresetControl } from '../preset-control.tsx';
-import { PresetHotkeys } from '../preset-hotkeys.ts';
+import { PresetHotkeys } from '../preset-hotkeys.tsx';
 import { AssignKnobDialog } from '../assign-knob-dialog.tsx';
-import { SynthGenerator } from './synth-generator.tsx';
+import { SoundGenerator } from './sound-generator.tsx';
 
 export function Synth() {
   console.log('render');
 
   return (
     <>
-      <SynthGenerator />
+      <SoundGenerator />
 
       <div className="w-full flex flex-col gap-4">
         <div className="flex flex-col lg:flex-row gap-4 items-stretch">

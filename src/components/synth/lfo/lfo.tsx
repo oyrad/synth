@@ -42,14 +42,11 @@ export function LFO({ className, ...rest }: HTMLAttributes<HTMLDivElement>) {
 
       <div className="flex items-center gap-4">
         <LFOWaveform onChange={(waveform) => updateLFO({ waveform })} />
-
         <ArrowRight className="size-12" />
-
         <LFOTarget onChange={(target) => updateLFO({ target })} />
       </div>
 
       <LFOFrequency onChange={(frequency) => updateLFO({ frequency })} />
-
       <LFODepth onChange={(depth) => updateLFO({ depth })} />
     </Card>
   );
