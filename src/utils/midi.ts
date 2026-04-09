@@ -1,4 +1,10 @@
-export type MidiMessageType = 'note_on' | 'note_off' | 'cc' | 'unknown';
+export type MidiMessageType =
+  | 'note_on'
+  | 'note_off'
+  | 'cc'
+  | 'next_preset'
+  | 'previous_preset'
+  | 'unknown';
 
 export interface ParsedMidiMessage {
   type: MidiMessageType;
@@ -42,3 +48,6 @@ export function isFilterType(value: string): value is BiquadFilterType {
 export function isMidiInput(value: MIDIInput | null): value is MIDIInput {
   return value !== null;
 }
+
+export type CCKey = `${number}-${number}`;
+export const toCCKey = (ccNumber: number, channel: number): CCKey => `${ccNumber}-${channel}`;

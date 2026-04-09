@@ -15,7 +15,7 @@ import {
 import { useMidiStore } from '../stores/use-midi-store.tsx';
 import { isMidiInput } from '../utils/midi.ts';
 import { Kbd } from './ui/kbd.tsx';
-import { useAssignKnobStore } from '../stores/use-assign-knob-store.tsx';
+import { useMidiCCStore } from '../stores/use-midi-cc-store.tsx';
 import { Button } from './ui/button.tsx';
 
 export function SettingsDialog() {
@@ -24,7 +24,7 @@ export function SettingsDialog() {
 
   const { inputs, selectedInput, setSelectedInput } = useMidiStore();
 
-  const clearAllMappings = useAssignKnobStore((s) => s.clearAll);
+  const clearAllMappings = useMidiCCStore((s) => s.clearAll);
 
   return (
     <Dialog>

@@ -1,5 +1,5 @@
 import { useSynth } from '../../hooks/use-synth.ts';
-import { useMidiControls } from '../../hooks/use-midi-controls.tsx';
+import { useMidiControls } from '../../hooks/use-midi-controls.ts';
 import { useKeyboard } from '../../hooks/use-keyboard.ts';
 
 export function SoundGenerator() {

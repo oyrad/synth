@@ -8,7 +8,7 @@ import {
   ContextMenuItem,
   ContextMenuTrigger,
 } from '../ui/context-menu.tsx';
-import { useAssignKnobStore } from '../../stores/use-assign-knob-store.tsx';
+import { useMidiCCStore } from '../../stores/use-midi-cc-store.tsx';
 import { AudioWaveform } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -35,12 +35,12 @@ export function SliderParam({
   className,
   ...rest
 }: SliderParamProps) {
-  const setIsAssignKnobModeActive = useAssignKnobStore((s) => s.setIsModeActive);
-  const setActiveParameterId = useAssignKnobStore((s) => s.setActiveParameterId);
-  const assignedKnobs = useAssignKnobStore((s) => s.assignedKnobs);
-  const unassignKnob = useAssignKnobStore((s) => s.unassignKnob);
+  const setIsAssignKnobModeActive = useMidiCCStore((s) => s.setIsAssignModeActive);
+  const setActiveParameterId = useMidiCCStore((s) => s.setActiveParameterId);
+  const assignedKnobs = useMidiCCStore((s) => s.assignedKnobs);
+  const unassignKnob = useMidiCCStore((s) => s.unassignByParameterId);
 
-  const isKnobAssigned = Boolean(assignedKnobs[id]);
+  const isKnobAssigned = Object.values(assignedKnobs).includes(id);
 
   return (
     <ContextMenu>
@@ -56,8 +56,9 @@ export function SliderParam({
           <Slider value={[value]} min={min} max={max} step={step} onValueChange={onChange} />
         </div>
       </ContextMenuTrigger>
-      <ContextMenuContent className="min-w-fit">
+      <ContextMenuContent className="min-w-fit flex flex-col gap-1 p-1">
         <ContextMenuItem
+          className="px-2"
           onSelect={() => {
             setIsAssignKnobModeActive(true);
             setActiveParameterId(id);
@@ -67,6 +68,7 @@ export function SliderParam({
         </ContextMenuItem>
         {isKnobAssigned && (
           <ContextMenuItem
+            className="px-2"
             onSelect={() => {
               unassignKnob(id);
               toast('Unassigned knob.');

@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { useMidi } from './use-midi';
-import { useAssignKnobStore } from '../stores/use-assign-knob-store';
+import { useMidiCCStore } from '../stores/use-midi-cc-store.tsx';
 import { useParameterRegistry } from './use-parameter-registry';
 import { logToHz } from '../utils/audio';
 
@@ -12,10 +12,10 @@ interface UseMidiControlsParams {
 export function useMidiControls({ onNoteOn, onNoteOff }: UseMidiControlsParams) {
   const registry = useParameterRegistry();
 
-  const assignKnob = useAssignKnobStore((s) => s.assignKnob);
-  const activeParameterId = useAssignKnobStore((s) => s.activeParameterId);
-  const isModeActive = useAssignKnobStore((s) => s.isModeActive);
-  const assignedKnobs = useAssignKnobStore((s) => s.assignedKnobs);
+  const assignKnob = useMidiCCStore((s) => s.assignKnob);
+  const activeParameterId = useMidiCCStore((s) => s.activeParameterId);
+  const isModeActive = useMidiCCStore((s) => s.isAssignModeActive);
+  const getParameterId = useMidiCCStore((s) => s.getParameterId);
 
   const handleCC = useCallback(
     (controller: number, value: number, channel: number) => {
@@ -24,12 +24,8 @@ export function useMidiControls({ onNoteOn, onNoteOff }: UseMidiControlsParams) 
         return;
       }
 
-      const mapping = Object.entries(assignedKnobs).find(
-        ([_, m]) => m.ccNumber === controller && m.channel === channel,
-      );
-
-      if (mapping) {
-        const [parameterId] = mapping;
+      const parameterId = getParameterId(controller, channel);
+      if (parameterId) {
         const descriptor = registry[parameterId];
 
         if (descriptor) {
@@ -43,7 +39,7 @@ export function useMidiControls({ onNoteOn, onNoteOff }: UseMidiControlsParams) 
         }
       }
     },
-    [isModeActive, activeParameterId, assignedKnobs, registry, assignKnob],
+    [isModeActive, activeParameterId, getParameterId, assignKnob, registry],
   );
 
   useMidi({

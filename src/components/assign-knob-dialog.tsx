@@ -1,11 +1,13 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog.tsx';
 import { Kbd } from './ui/kbd.tsx';
-import { useAssignKnobStore } from '../stores/use-assign-knob-store.tsx';
+import { useMidiCCStore } from '../stores/use-midi-cc-store.tsx';
 
 export function AssignKnobDialog() {
-  const isAssignKnobModeActive = useAssignKnobStore((s) => s.isModeActive);
-  const setIsAssignKnobModeActive = useAssignKnobStore((s) => s.setIsModeActive);
-  const setActiveParameterId = useAssignKnobStore((s) => s.setActiveParameterId);
+  const isAssignKnobModeActive = useMidiCCStore((s) => s.isAssignModeActive);
+  const setIsAssignKnobModeActive = useMidiCCStore((s) => s.setIsAssignModeActive);
+  const setActiveParameterId = useMidiCCStore((s) => s.setActiveParameterId);
+
+  console.log(isAssignKnobModeActive);
 
   return (
     <Dialog

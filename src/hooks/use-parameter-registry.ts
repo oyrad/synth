@@ -86,7 +86,12 @@ export function useParameterRegistry(): Record<string, ParameterDescriptor> {
         max: FILTER_RESONANCE_MAX,
         set: (v) => updateFilter({ resonance: v }),
       },
-      'filter-depth': { min: 0, max: 10000, set: (v) => updateFilter({ depth: v }) },
+      'filter-depth': {
+        min: 1,
+        max: 10000,
+        logarithmic: true,
+        set: (v) => updateFilter({ depth: v }),
+      },
       'filter-attack': {
         min: ATTACK_MIN,
         max: ATTACK_MAX,

@@ -15,11 +15,11 @@ import { AssignKnobDialog } from '../assign-knob-dialog.tsx';
 import { SoundGenerator } from './sound-generator.tsx';
 
 export function Synth() {
-  console.log('render');
-
   return (
     <>
       <SoundGenerator />
+      <PresetHotkeys />
+      <AssignKnobDialog />
 
       <div className="w-full flex flex-col gap-4">
         <div className="flex flex-col lg:flex-row gap-4 items-stretch">
@@ -46,9 +46,6 @@ export function Synth() {
           </div>
         </div>
       </div>
-
-      <PresetHotkeys />
-      <AssignKnobDialog />
     </>
   );
 }
