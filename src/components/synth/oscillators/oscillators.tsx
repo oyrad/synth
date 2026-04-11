@@ -1,22 +1,12 @@
-import { isOscillatorType } from '../../../utils/midi.ts';
 import { useSynthStore } from '../../../stores/use-synth-store.ts';
 import { Switch } from '../../ui/switch.tsx';
 import { cn } from '../../../utils/cn.ts';
-import { SliderParam } from '../../atoms/slider-param.tsx';
 import { Title } from '../../atoms/title.tsx';
 import { Card } from '../../atoms/card.tsx';
-import { WaveformSelect } from '../waveform-select.tsx';
-import {
-  DETUNE_MAX,
-  DETUNE_MIN,
-  DETUNE_STEP,
-  TRANSPOSE_MAX,
-  TRANSPOSE_MIN,
-  TRANSPOSE_STEP,
-  VOLUME_MAX,
-  VOLUME_MIN,
-  VOLUME_STEP,
-} from '../../../consts/parameter-values.ts';
+import { OscillatorWaveform } from './oscillator-waveform.tsx';
+import { OscillatorVolume } from './oscillator-volume.tsx';
+import { OscillatorDetune } from './oscillator-detune.tsx';
+import { OscillatorTranspose } from './oscillator-transpose.tsx';
 
 export interface OscillatorParameters {
   id: string;
@@ -27,78 +17,63 @@ export interface OscillatorParameters {
   transpose: number;
 }
 
-export function Oscillators() {
-  const oscillators = useSynthStore((s) => s.parameters.oscillators);
+function Oscillator({ index }: { index: number }) {
+  const id = useSynthStore((s) => s.parameters.oscillators[index].id);
+  const isActive = useSynthStore((s) => s.parameters.oscillators[index].isActive);
   const updateOscillator = useSynthStore((s) => s.updateOscillator);
 
   return (
+    <Card
+      key={id}
+      isActive={isActive}
+      className={cn(
+        index === 0 &&
+          'bg-blue-600/20 border-blue-600/80 dark:bg-blue-600/30 dark:border-blue-600/60',
+        index === 1 &&
+          'bg-green-600/20 border-green-600/80 dark:bg-green-600/30 dark:border-green-600/60',
+        index === 2 &&
+          'bg-rose-600/20 border-rose-600/80 dark:bg-rose-600/30 dark:border-rose-600/60',
+        index === 3 &&
+          'bg-yellow-600/20 border-yellow-600/80 dark:bg-yellow-600/30 dark:border-yellow-600/60',
+      )}
+    >
+      <div className="flex justify-between items-center">
+        <Title>oscillator {index + 1}</Title>
+        <Switch
+          className="pointer-events-auto"
+          checked={isActive}
+          onCheckedChange={(checked) => updateOscillator(id, { isActive: checked })}
+        />
+      </div>
+
+      <OscillatorWaveform
+        oscIndex={index}
+        onChange={(value) => updateOscillator(id, { waveform: value })}
+      />
+
+      <OscillatorVolume
+        oscIndex={index}
+        onChange={(value) => updateOscillator(id, { volume: value })}
+      />
+
+      <OscillatorDetune
+        oscIndex={index}
+        onChange={(value) => updateOscillator(id, { detune: value })}
+      />
+
+      <OscillatorTranspose
+        oscIndex={index}
+        onChange={(value) => updateOscillator(id, { transpose: value })}
+      />
+    </Card>
+  );
+}
+
+export function Oscillators() {
+  return (
     <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-4 gap-4">
-      {oscillators.map(({ id, isActive, waveform, volume, detune, transpose }, index) => (
-        <Card
-          key={id}
-          isActive={isActive}
-          className={cn(
-            index === 0 &&
-              'bg-blue-600/20 border-blue-600/80 dark:bg-blue-600/30 dark:border-blue-600/60',
-            index === 1 &&
-              'bg-green-600/20 border-green-600/80 dark:bg-green-600/30 dark:border-green-600/60',
-            index === 2 &&
-              'bg-rose-600/20 border-rose-600/80 dark:bg-rose-600/30 dark:border-rose-600/60',
-            index === 3 &&
-              'bg-yellow-600/20 border-yellow-600/80 dark:bg-yellow-600/30 dark:border-yellow-600/60',
-          )}
-        >
-          <div className="flex justify-between items-center">
-            <Title>oscillator {index + 1}</Title>
-            <Switch
-              className="pointer-events-auto"
-              checked={isActive}
-              onCheckedChange={(checked) => updateOscillator(id, { isActive: checked })}
-            />
-          </div>
-
-          <WaveformSelect
-            value={waveform}
-            onChange={(value) => {
-              if (isOscillatorType(value)) {
-                updateOscillator(id, { waveform: value });
-              }
-            }}
-          />
-
-          <SliderParam
-            id={`oscillator-${id}-volume`}
-            labelLeft="Volume"
-            labelRight={`${volume}`}
-            value={volume}
-            min={VOLUME_MIN}
-            max={VOLUME_MAX}
-            step={VOLUME_STEP}
-            onChange={(value) => updateOscillator(id, { volume: value[0] })}
-          />
-
-          <SliderParam
-            id={`oscillator-${id}-detune`}
-            labelLeft="Detune"
-            labelRight={`${detune} cents`}
-            value={detune}
-            min={DETUNE_MIN}
-            max={DETUNE_MAX}
-            step={DETUNE_STEP}
-            onChange={(value) => updateOscillator(id, { detune: value[0] })}
-          />
-
-          <SliderParam
-            id={`oscillator-${id}-transpose`}
-            labelLeft="Transpose"
-            labelRight={`${transpose} st`}
-            value={transpose}
-            min={TRANSPOSE_MIN}
-            max={TRANSPOSE_MAX}
-            step={TRANSPOSE_STEP}
-            onChange={(value) => updateOscillator(id, { transpose: value[0] })}
-          />
-        </Card>
+      {[0, 1, 2, 3].map((index) => (
+        <Oscillator key={index} index={index} />
       ))}
     </div>
   );
